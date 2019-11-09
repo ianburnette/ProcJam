@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,8 +22,10 @@ public class Controls : MonoBehaviour
     [SerializeField] GameObject spritePrefab;
     [SerializeField] SpriteGeneration spriteGeneration;
     [SerializeField] int imageGridSize;
-    [SerializeField] int animationFrameCount = 1;
     [SerializeField] GridLayoutGroup gridLayoutGroup;
+
+    [Header("Configuration")] 
+    [SerializeField] Configuration configuration;
 
     public void Generate()
     {
@@ -32,7 +35,7 @@ public class Controls : MonoBehaviour
         for (var i = 0; i < imageGridSize * imageGridSize; i++)
         {
             var sprite = Instantiate(spritePrefab, spriteParent);
-            sprite.GetComponent<FrameAnimation>().Frames = spriteGeneration.Generate(animationFrameCount);
+            sprite.GetComponent<FrameAnimation>().Frames = spriteGeneration.Generate(configuration);
         }
 
         void SetUpGridLayoutGroup()
@@ -49,3 +52,11 @@ public class Controls : MonoBehaviour
             DestroyImmediate(spriteParent.GetChild(i).gameObject);
     }
 }
+
+[Serializable]
+public class Configuration {
+    public ScalingMode scalingMode;
+    public int animationFrameCount;
+}
+
+public enum ScalingMode { none, x2, x4, eagle2, eagle3 }

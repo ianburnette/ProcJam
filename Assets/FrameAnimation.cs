@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,7 +36,20 @@ public class FrameAnimation : MonoBehaviour {
             currentFrameIndex++;
         }
 
-        if (frames.Count <= currentFrameIndex + 1)
+        //if (frames.Count <= currentFrameIndex + 1)
             image.sprite = frames[currentFrameIndex];
+    }
+
+    public void Export() {
+        var generatedTexture = new Texture2D(frames[0].texture.width * frames.Count, frames[0].texture.height);
+        for (var index = 0; index < frames.Count; index++) {
+            var frame = frames[index];
+            generatedTexture.SetPixels(index * frame.texture.width, 0, frame.texture.width, frame.texture.height, frame.texture.GetPixels());
+        }
+        var bytes = generatedTexture.EncodeToPNG();
+        var directory = $"{Application.dataPath}/Exported Sprites";
+        if (!Directory.Exists(directory))
+            Directory.CreateDirectory(directory);
+        File.WriteAllBytes($"{directory}/exported_sprite_{Time.time}.png", bytes);
     }
 }

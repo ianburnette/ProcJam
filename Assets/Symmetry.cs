@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class Symmetry : MonoBehaviour
@@ -19,10 +18,7 @@ public class Symmetry : MonoBehaviour
 
     [SerializeField] bool screwItUpALittle;
 
-    Texture2D localTexture;
-    
     public void AttemptToApplySymmetry(ref Texture2D texture, int frame) {
-        localTexture = texture;
         if (frame == 0) {
             horizontalSymmetryResult = Random.value < horizontalSymmetryChance;
             verticalSymmetryResult = Random.value < verticalSymmetryChance;
@@ -30,49 +26,46 @@ public class Symmetry : MonoBehaviour
             backwardDiagonalSymmetryResult = Random.value < backwardDiagonalSymmetryChance;
             lowerIsDominant = Random.value > .5f;
         }
-        if (horizontalSymmetryResult) StartCoroutine(ApplySymmetry(SymmetryDirection.horizontal));
-        if (verticalSymmetryResult) StartCoroutine(ApplySymmetry(SymmetryDirection.vertical));
-        if (forwardDiagonalSymmetryResult) StartCoroutine(ApplySymmetry(SymmetryDirection.forwardDiagonal));
-        if (backwardDiagonalSymmetryResult) StartCoroutine(ApplySymmetry(SymmetryDirection.backwardDiagonal));
+        if (horizontalSymmetryResult) ApplySymmetry(ref texture, SymmetryDirection.horizontal);
+        if (verticalSymmetryResult) ApplySymmetry(ref texture, SymmetryDirection.vertical);
+        if (forwardDiagonalSymmetryResult) ApplySymmetry(ref texture, SymmetryDirection.forwardDiagonal);
+        if (backwardDiagonalSymmetryResult) ApplySymmetry(ref texture, SymmetryDirection.backwardDiagonal);
     }
 
-    IEnumerator ApplySymmetry(SymmetryDirection direction)
+    void ApplySymmetry(ref Texture2D texture, SymmetryDirection direction)
     {
-        var halfwayPoint = localTexture.width / 2;
+        var halfwayPoint = texture.width / 2;
         if (randomizeSymmetryDominantSideEachFrame)
             lowerIsDominant = Random.value > .5f;
 
         if (direction == SymmetryDirection.horizontal ||
             direction == SymmetryDirection.vertical ||
             direction == SymmetryDirection.backwardDiagonal) {
-            for (var rowIndex = 0; rowIndex < localTexture.height; rowIndex++) {
-                for (var columnIndex = 0; columnIndex < localTexture.width; columnIndex++) {
+            for (var rowIndex = 0; rowIndex < texture.height; rowIndex++) {
+                for (var columnIndex = 0; columnIndex < texture.width; columnIndex++) {
                     int referenceValue;
                     switch (direction) {
                         case SymmetryDirection.horizontal:
                             referenceValue = screwItUpALittle ? columnIndex : rowIndex;
                             if ((lowerIsDominant && referenceValue >= halfwayPoint - 1) ||
                                 (!lowerIsDominant && referenceValue <= halfwayPoint + 1))
-                                SetSymmetricalPixel(localTexture, direction, columnIndex, rowIndex, halfwayPoint);
-                            yield return new WaitForEndOfFrame();
-                            localTexture.Apply();
+                                SetSymmetricalPixel(texture, direction, columnIndex, rowIndex, halfwayPoint);
+                            texture.Apply();
 
                             break;
                         case SymmetryDirection.vertical:
                             referenceValue = screwItUpALittle ? rowIndex : columnIndex;
                             if ((lowerIsDominant && referenceValue >= halfwayPoint - 1) ||
                                 (!lowerIsDominant && referenceValue <= halfwayPoint + 1))
-                                SetSymmetricalPixel(localTexture, direction, columnIndex, rowIndex, halfwayPoint);
-                            yield return new WaitForEndOfFrame();
-                            localTexture.Apply();
+                                SetSymmetricalPixel(texture, direction, columnIndex, rowIndex, halfwayPoint);
+                            texture.Apply();
 
                             break;
                         case SymmetryDirection.backwardDiagonal:
                             if ((lowerIsDominant && columnIndex > rowIndex) ||
                                 (!lowerIsDominant && columnIndex < rowIndex))
-                                localTexture.SetPixel(columnIndex, rowIndex, localTexture.GetPixel(rowIndex, columnIndex));
-                            yield return new WaitForEndOfFrame();
-                            localTexture.Apply();
+                                texture.SetPixel(columnIndex, rowIndex, texture.GetPixel(rowIndex, columnIndex));
+                            texture.Apply();
                             break;
                     }
                 }
@@ -80,13 +73,12 @@ public class Symmetry : MonoBehaviour
         }
         else
         {
-            for (var rowIndex = localTexture.height; rowIndex > 0; rowIndex--) {
-                for (var columnIndex = 0; columnIndex < localTexture.width; columnIndex++) {
+            for (var rowIndex = texture.height; rowIndex > 0; rowIndex--) {
+                for (var columnIndex = 0; columnIndex < texture.width; columnIndex++) {
                     if ((lowerIsDominant && columnIndex > rowIndex) || (!lowerIsDominant && columnIndex < rowIndex)) {
-                        localTexture.SetPixel(columnIndex, rowIndex,
-                            localTexture.GetPixel(localTexture.width - rowIndex, localTexture.width - columnIndex));
-                        yield return new WaitForEndOfFrame();
-                        localTexture.Apply();
+                        texture.SetPixel(columnIndex, rowIndex,
+                            texture.GetPixel(texture.width - rowIndex, texture.width - columnIndex));
+                        texture.Apply();
 
                     }
                 }
@@ -140,7 +132,6 @@ public class Symmetry : MonoBehaviour
            //         }
            //     }
            // }
-           yield return null;
     }
 
     static void SetSymmetricalPixel(Texture2D texture, SymmetryDirection direction, int x, int y, int halfwayPoint) {
