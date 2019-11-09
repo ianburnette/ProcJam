@@ -28,18 +28,18 @@ public class Outline : MonoBehaviour {
             outlineCoordinates.Add(new Vector2Int(coordinates.x, coordinates.y));
     }
 
-    PixelContext GetContext(Vector2Int coordinates, Texture2D texture, Color backgroundColor) =>
-        new PixelContext(
+    BooleanPixel4WayContext GetContext(Vector2Int coordinates, Texture2D texture, Color backgroundColor) =>
+        new BooleanPixel4WayContext(
             coordinates.y > 0 && texture.GetPixel(coordinates.x, coordinates.y-1) != backgroundColor,
             coordinates.x > 0 && texture.GetPixel(coordinates.x-1,coordinates.y) !=backgroundColor,
             coordinates.y < texture.height && texture.GetPixel(coordinates.x, coordinates.y+1) != backgroundColor,
             coordinates.x < texture.width && texture.GetPixel(coordinates.x+1,coordinates.y) != backgroundColor);
 }
 
-class PixelContext {
+class BooleanPixel4WayContext {
     readonly bool upPixel, downPixel, leftPixel, rightPixel;
 
-    public PixelContext(bool up, bool down, bool left, bool right) {
+    public BooleanPixel4WayContext(bool up, bool down, bool left, bool right) {
         upPixel = up;
         downPixel = down;
         leftPixel = left;

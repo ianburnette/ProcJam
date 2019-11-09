@@ -46,8 +46,10 @@ public class SpriteGeneration : MonoBehaviour
                 return new Rect(0, 0, imageSize * 4, imageSize * 4);
                 break;
             case ScalingMode.eagle2:
+                return new Rect(0, 0, imageSize * 2, imageSize * 2);
                 break;
             case ScalingMode.eagle3:
+                return new Rect(0, 0, imageSize * 3, imageSize * 3);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(configurationScalingMode), configurationScalingMode, null);
