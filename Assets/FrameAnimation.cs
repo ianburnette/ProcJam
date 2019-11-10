@@ -17,8 +17,13 @@ public class FrameAnimation : MonoBehaviour {
         set {
             frames = value;
             CancelInvoke();
-            InvokeRepeating(nameof(Animate), frameTime, frameTime);
+            InvokeRepeating(nameof(Animate), FrameTime, FrameTime);
         }
+    }
+
+    public float FrameTime {
+        get => frameTime;
+        set => frameTime = value;
     }
 
     void Animate() {

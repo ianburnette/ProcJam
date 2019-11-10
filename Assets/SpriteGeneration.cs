@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpriteGeneration : MonoBehaviour
+ public class SpriteGeneration : MonoBehaviour
 {
     [SerializeField] int imageSize = 32;
 
@@ -14,6 +14,7 @@ public class SpriteGeneration : MonoBehaviour
     [SerializeField] Falloff falloff;
     [SerializeField] Outline outline;
     [SerializeField] Scaling scaling;
+    [SerializeField] Cleanup cleanup;
     
     public List<Sprite> Generate(Configuration configuration) {
         var sprites = new List<Sprite>();
@@ -26,11 +27,16 @@ public class SpriteGeneration : MonoBehaviour
     Texture2D GenerateTexture(int frame, Configuration configuration)
     {
         var tex = noiseGeneration.GetNoise(imageSize, frame);
-        falloff.ApplyFalloff(ref tex);
+        falloff.ApplyFalloff(ref tex, configuration.allowPixelsOnEdgeOfSprite);
         symmetry.AttemptToApplySymmetry(ref tex, frame);
         var (backgroundColor, outlineColor) = recoloring.Recolor(ref tex, frame);
-        outline.OutlineTexture(ref tex, backgroundColor, outlineColor);
+        if (configuration.outlineEnabled && !configuration.applyOutlineAfterScaling)
+            outline.OutlineTexture(ref tex, backgroundColor, outlineColor);
+        if (configuration.chanceToDeleteLonePixels > UnityEngine.Random.value)
+            cleanup.Despeckle(ref tex, backgroundColor, configuration.lonePixelEvaluationMode);
         scaling.ScaleTexture(ref tex, configuration.scalingMode);
+        if (configuration.outlineEnabled && configuration.applyOutlineAfterScaling)
+            outline.OutlineTexture(ref tex, backgroundColor, outlineColor);
         tex.filterMode = FilterMode.Point;
         tex.Apply();    
         return tex;

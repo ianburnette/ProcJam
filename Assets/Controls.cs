@@ -35,7 +35,9 @@ public class Controls : MonoBehaviour
         for (var i = 0; i < imageGridSize * imageGridSize; i++)
         {
             var sprite = Instantiate(spritePrefab, spriteParent);
-            sprite.GetComponent<FrameAnimation>().Frames = spriteGeneration.Generate(configuration);
+            var frameAnimation = sprite.GetComponent<FrameAnimation>();
+            frameAnimation.FrameTime = configuration.timeBetweenFrames;     
+            frameAnimation.Frames = spriteGeneration.Generate(configuration);
         }
 
         void SetUpGridLayoutGroup()
@@ -55,8 +57,25 @@ public class Controls : MonoBehaviour
 
 [Serializable]
 public class Configuration {
+    [Header("Scaling")]
     public ScalingMode scalingMode;
-    public int animationFrameCount;
+    //TODO: second scaling mode
+    
+    [Header("Animation")]
+    [Range(1, 8)] public int animationFrameCount;
+    public float timeBetweenFrames;
+    public AnimationMode animationMode;
+
+    [Header("Outline")] 
+    public bool outlineEnabled;
+    public bool applyOutlineAfterScaling;
+
+    [Header("Cleanup")] 
+    public bool allowPixelsOnEdgeOfSprite;
+    public LonePixelEvaluationMode lonePixelEvaluationMode;
+    [Range(0f,1f)] public float chanceToDeleteLonePixels;
 }
 
 public enum ScalingMode { none, x2, x4, eagle2, eagle3 }
+public enum AnimationMode { loop, pingPong }
+public enum LonePixelEvaluationMode { CardinalDirectionsOnly, IncludeDiagonals }

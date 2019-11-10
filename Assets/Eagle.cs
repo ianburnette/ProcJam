@@ -5,11 +5,11 @@ public static class Eagle {
     public static void SetPixelSampled(Texture2D tex, ref Texture2D newTex, int newColumn, int newRow, int scale) {
         switch (scale) {
             case 2:
-                var pixelContext = GetPixelContext(tex, newColumn.Downsample(scale), newRow.Downsample(scale));
+                var pixelContext = ColorPixel9WayContext.GetPixelContext(tex, newColumn.Downsample(scale), newRow.Downsample(scale));
                 newTex.SetPixel(newColumn, newRow, pixelContext.Context(GetOrientation(newColumn, newRow, scale)));
                 break;
             case 3: 
-                var pixelContext3 = GetPixelContext(tex, newColumn.Downsample(scale), newRow.Downsample(scale));
+                var pixelContext3 = ColorPixel9WayContext.GetPixelContext(tex, newColumn.Downsample(scale), newRow.Downsample(scale));
                 newTex.SetPixel(newColumn, newRow, pixelContext3.Context(GetOrientation(newColumn, newRow, scale)));
                 break;
         }
@@ -42,18 +42,6 @@ public static class Eagle {
         return Orientation.Center;
     }
 
-    static ColorPixel9WayContext GetPixelContext(Texture2D tex, int column, int row) =>
-        new ColorPixel9WayContext(
-            center: tex.GetPixel(column, row),
-            upLeft: tex.GetPixel(column - 1, row + 1),
-            up: tex.GetPixel(column, row + 1),
-            upRight: tex.GetPixel(column + 1, row + 1),
-            left: tex.GetPixel(column - 1, row),
-            right: tex.GetPixel(column + 1, row),
-            downLeft: tex.GetPixel(column - 1, row - 1),
-            down: tex.GetPixel(column, row - 1),
-            downRight: tex.GetPixel(column + 1, row - 1)
-        );
 }
 
 public class ColorPixel9WayContext {
@@ -75,6 +63,19 @@ public class ColorPixel9WayContext {
         this.down = down; 
         this.downRight = downRight; 
     }
+
+    public static ColorPixel9WayContext GetPixelContext(Texture2D tex, int column, int row) =>
+        new ColorPixel9WayContext(
+            center: tex.GetPixel(column, row),
+            upLeft: tex.GetPixel(column - 1, row + 1),
+            up: tex.GetPixel(column, row + 1),
+            upRight: tex.GetPixel(column + 1, row + 1),
+            left: tex.GetPixel(column - 1, row),
+            right: tex.GetPixel(column + 1, row),
+            downLeft: tex.GetPixel(column - 1, row - 1),
+            down: tex.GetPixel(column, row - 1),
+            downRight: tex.GetPixel(column + 1, row - 1)
+        );
 
     Color UpLeftColor() => 
         (upLeft != null && left != null && up != null) && 
