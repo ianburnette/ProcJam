@@ -1,91 +1,74 @@
-﻿using UnityEngine;
+﻿using System.Diagnostics.Contracts;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class Symmetry : MonoBehaviour
 { 
-    [SerializeField, Range(0f,1f)] float horizontalSymmetryChance;
-    [SerializeField, Range(0f,1f)] float verticalSymmetryChance;
-    [SerializeField, Range(0f,1f)] float forwardDiagonalSymmetryChance;
-    [SerializeField, Range(0f,1f)] float backwardDiagonalSymmetryChance;
-
-    [SerializeField] bool randomizeSymmetryDominantSideEachFrame;
-
     bool horizontalSymmetryResult;
     bool verticalSymmetryResult;
     bool forwardDiagonalSymmetryResult;
     bool backwardDiagonalSymmetryResult;
     bool lowerIsDominant;
 
-    [SerializeField] bool screwItUpALittle;
-
-    public void AttemptToApplySymmetry(ref Texture2D texture, int frame) {
+    public void AttemptToApplySymmetry(ref Texture2D texture, int frame, Configuration configuration) {
         if (frame == 0) {
-            horizontalSymmetryResult = Random.value < horizontalSymmetryChance;
-            verticalSymmetryResult = Random.value < verticalSymmetryChance;
-            forwardDiagonalSymmetryResult = Random.value < forwardDiagonalSymmetryChance;
-            backwardDiagonalSymmetryResult = Random.value < backwardDiagonalSymmetryChance;
+            horizontalSymmetryResult = Random.value < configuration.horizontalSymmetryChance;
+            verticalSymmetryResult = Random.value < configuration.verticalSymmetryChance;
+            forwardDiagonalSymmetryResult = Random.value < configuration.forwardDiagonalSymmetryChance;
+            backwardDiagonalSymmetryResult = Random.value < configuration.backwardDiagonalSymmetryChance;
             lowerIsDominant = Random.value > .5f;
         }
-        if (horizontalSymmetryResult) ApplySymmetry(ref texture, SymmetryDirection.horizontal);
-        if (verticalSymmetryResult) ApplySymmetry(ref texture, SymmetryDirection.vertical);
-        if (forwardDiagonalSymmetryResult) ApplySymmetry(ref texture, SymmetryDirection.forwardDiagonal);
-        if (backwardDiagonalSymmetryResult) ApplySymmetry(ref texture, SymmetryDirection.backwardDiagonal);
+        if (horizontalSymmetryResult) ApplySymmetry(ref texture, SymmetryDirection.horizontal, configuration);
+        if (verticalSymmetryResult) ApplySymmetry(ref texture, SymmetryDirection.vertical, configuration);
+        if (forwardDiagonalSymmetryResult) ApplySymmetry(ref texture, SymmetryDirection.forwardDiagonal, configuration);
+        if (backwardDiagonalSymmetryResult) ApplySymmetry(ref texture, SymmetryDirection.backwardDiagonal, configuration);
     }
 
-    void ApplySymmetry(ref Texture2D texture, SymmetryDirection direction)
+    void ApplySymmetry(ref Texture2D texture, SymmetryDirection direction, Configuration configuration)
     {
         var halfwayPoint = texture.width / 2;
-        if (randomizeSymmetryDominantSideEachFrame)
-            lowerIsDominant = Random.value > .5f;
 
-        if (direction == SymmetryDirection.horizontal ||
-            direction == SymmetryDirection.vertical ||
-            direction == SymmetryDirection.backwardDiagonal) {
-            for (var rowIndex = 0; rowIndex < texture.height; rowIndex++) {
-                for (var columnIndex = 0; columnIndex < texture.width; columnIndex++) {
-                    int referenceValue;
-                    switch (direction) {
-                        case SymmetryDirection.horizontal:
-                            referenceValue = screwItUpALittle ? columnIndex : rowIndex;
-                            if ((lowerIsDominant && referenceValue >= halfwayPoint - 1) ||
-                                (!lowerIsDominant && referenceValue <= halfwayPoint + 1))
-                                SetSymmetricalPixel(texture, direction, columnIndex, rowIndex, halfwayPoint);
-                            texture.Apply();
-
-                            break;
-                        case SymmetryDirection.vertical:
-                            referenceValue = screwItUpALittle ? rowIndex : columnIndex;
-                            if ((lowerIsDominant && referenceValue >= halfwayPoint - 1) ||
-                                (!lowerIsDominant && referenceValue <= halfwayPoint + 1))
-                                SetSymmetricalPixel(texture, direction, columnIndex, rowIndex, halfwayPoint);
-                            texture.Apply();
-
-                            break;
-                        case SymmetryDirection.backwardDiagonal:
-                            if ((lowerIsDominant && columnIndex > rowIndex) ||
-                                (!lowerIsDominant && columnIndex < rowIndex))
+        for (var rowIndex = 0; rowIndex < texture.height; rowIndex++) {
+            for (var columnIndex = 0; columnIndex < texture.width; columnIndex++) {
+                int referenceValue;
+                switch (direction) {
+                    case SymmetryDirection.horizontal:
+                        referenceValue = configuration.allowQuarterSymmetry ? columnIndex : rowIndex;
+                        if ((lowerIsDominant && referenceValue >= halfwayPoint - 1) ||
+                            (!lowerIsDominant && referenceValue <= halfwayPoint + 1))
+                            SetSymmetricalPixel(texture, direction, columnIndex, rowIndex, halfwayPoint);
+                        break;
+                    case SymmetryDirection.vertical:
+                        referenceValue = configuration.allowQuarterSymmetry ? rowIndex : columnIndex;
+                        if ((lowerIsDominant && referenceValue >= halfwayPoint - 1) ||
+                            (!lowerIsDominant && referenceValue <= halfwayPoint + 1))
+                            SetSymmetricalPixel(texture, direction, columnIndex, rowIndex, halfwayPoint);
+                        break;
+                    case SymmetryDirection.forwardDiagonal:
+                        if (configuration.allowQuarterSymmetry) {
+                            if (lowerIsDominant && rowIndex < texture.width - columnIndex || !lowerIsDominant && rowIndex > texture.width - columnIndex)
+                                texture.SetPixel(columnIndex, rowIndex, texture.GetPixel(texture.width - rowIndex, texture.width - columnIndex));
+                        }
+                        else if (!configuration.allowQuarterSymmetry) {
+                            if (lowerIsDominant && columnIndex > rowIndex || !lowerIsDominant && columnIndex < rowIndex)
+                                texture.SetPixel(columnIndex, rowIndex, texture.GetPixel(texture.width - rowIndex, texture.width - columnIndex));
+                        }
+                        break;
+                    case SymmetryDirection.backwardDiagonal:  
+                        if (!configuration.allowQuarterSymmetry) {
+                            if ((lowerIsDominant && columnIndex > rowIndex) || (!lowerIsDominant && columnIndex < rowIndex))
                                 texture.SetPixel(columnIndex, rowIndex, texture.GetPixel(rowIndex, columnIndex));
-                            texture.Apply();
-                            break;
-                    }
+                        }
+                        else if (configuration.allowQuarterSymmetry) {
+                            if (lowerIsDominant && rowIndex < texture.width - columnIndex || !lowerIsDominant && rowIndex > texture.width - columnIndex)
+                                texture.SetPixel(columnIndex, rowIndex, texture.GetPixel(texture.width - rowIndex, texture.width - columnIndex));
+                        }
+                        break;
                 }
             }
         }
-        else
-        {
-            for (var rowIndex = texture.height; rowIndex > 0; rowIndex--) {
-                for (var columnIndex = 0; columnIndex < texture.width; columnIndex++) {
-                    if ((lowerIsDominant && columnIndex > rowIndex) || (!lowerIsDominant && columnIndex < rowIndex)) {
-                        texture.SetPixel(columnIndex, rowIndex,
-                            texture.GetPixel(texture.width - rowIndex, texture.width - columnIndex));
-                        texture.Apply();
 
-                    }
-                }
-            }
-        }
-        
-           // for (var rowIndex = 0; rowIndex < texture.height; rowIndex++) {
+            // for (var rowIndex = 0; rowIndex < texture.height; rowIndex++) {
            //     for (var columnIndex = 0; columnIndex < texture.width; columnIndex++) {
            //         int referenceValue;
            //         switch (direction) {

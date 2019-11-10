@@ -26,12 +26,19 @@ public class FrameAnimation : MonoBehaviour {
         set => frameTime = value;
     }
 
+    public AnimationMode animationMode;
+
     void Animate() {
         if (ascending && currentFrameIndex + 1 < frames.Count)
             currentFrameIndex++;
         else if (ascending && currentFrameIndex + 1 >= frames.Count) {
-            ascending = false;
-            currentFrameIndex--;
+            if (animationMode == AnimationMode.pingPong) {
+                ascending = false;
+                currentFrameIndex--;
+            }
+            else if (animationMode == AnimationMode.loop) {
+                currentFrameIndex = 0;
+            }
         }
         else if (!ascending && currentFrameIndex - 1 >= 0) {
             currentFrameIndex--;
@@ -39,7 +46,9 @@ public class FrameAnimation : MonoBehaviour {
         else if (!ascending && currentFrameIndex - 1 < 0) {
             ascending = true;
             currentFrameIndex++;
-        }else if (currentFrameIndex < 0)
+        }
+        
+        if (currentFrameIndex < 0)
             currentFrameIndex = 0;
 
         if (frames.Count >= currentFrameIndex + 1)
