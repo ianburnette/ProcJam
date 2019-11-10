@@ -17,7 +17,7 @@ class Recoloring : MonoBehaviour {
     [SerializeField] Color[] generatedColors;
     
     public (Color, Color) Recolor(ref Texture2D tex, int frame) {
-        if (frame==0)
+        if (frame == 0)
             GenerateColors();
         var colors = tex.GetPixels();
         var increment = 1f / colorCount;
