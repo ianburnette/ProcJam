@@ -13,6 +13,7 @@ public class MapGenerationEditor : Editor
         GUILayout.Label("Editor Controls", EditorStyles.boldLabel);
         if(GUILayout.Button("Generate")) myScript.Generate();
         if(GUILayout.Button("Reset")) myScript.Reset();
+        if (GUILayout.Button("Save Config as New Preset")) myScript.SaveAsPreset();
         DrawDefaultInspector();
     }
 }
@@ -20,11 +21,11 @@ public class MapGenerationEditor : Editor
 public class Controls : MonoBehaviour
 {
     [Header("Configuration")] 
-    [SerializeField] Configuration configuration;
     [SerializeField] Presets preset;
+    [SerializeField] Configuration configuration;
 
     [Header("Presets")] 
-    [SerializeField] Preset[] presets;
+    [SerializeField] List<Preset> presets;
     
     [Header("References")]
     [SerializeField] Transform spriteParent;
@@ -64,15 +65,25 @@ public class Controls : MonoBehaviour
         for (var i = spriteParent.childCount - 1; i > -1; i--) 
             DestroyImmediate(spriteParent.GetChild(i).gameObject);
     }
+
+    public void SaveAsPreset() => presets.Add(new Preset("unnamed preset", configuration));
 }
 
 [Serializable]
 public class Preset {
     public string name;
     public Configuration configuration;
+
+    public Preset(string name, Configuration config) {
+        this.name = name;
+        configuration = config;
+    }
 }
 
-public enum Presets {none = 0, bitsy = 1, island}
+public enum Presets {
+    none = 0, bitsy, island, spaceships, advanced_spaceships, transforming_spaceships,
+    pocket_monsters, pocket_monsters_low_rez_symmetrical, pocket_monsters_low_rez_outlined_imperfect_symmetry
+}
 
 [Serializable]
 public class Configuration {
@@ -84,8 +95,13 @@ public class Configuration {
     public int spritePixelSize = 16;
     
     [Header("Noise")]
-    public List<Octave> octaves;
-    public bool randomOrigin;
+    public List<Octave> octaves = new List<Octave> {
+        new Octave(5f, .8f),
+        new Octave(10f, .25f),
+        new Octave(20f, .125f),
+        new Octave(45, .0625f)
+    };
+    public bool randomOrigin = true;
     public float randomOriginBound = 255f;
     public Vector2 manualOrigin;
     public float animationFrameNoiseOffset = .2f;

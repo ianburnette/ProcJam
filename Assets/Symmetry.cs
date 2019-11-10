@@ -46,12 +46,15 @@ public class Symmetry : MonoBehaviour
                         break;
                     case SymmetryDirection.forwardDiagonal:
                         if (configuration.allowQuarterSymmetry) {
-                            if (lowerIsDominant && rowIndex < texture.width - columnIndex || !lowerIsDominant && rowIndex > texture.width - columnIndex)
-                                texture.SetPixel(columnIndex, rowIndex, texture.GetPixel(texture.width - rowIndex, texture.width - columnIndex));
+                            if (lowerIsDominant && columnIndex > rowIndex || !lowerIsDominant && columnIndex < rowIndex)
+                                texture.SetPixel(columnIndex, rowIndex,
+                                    texture.GetPixel(texture.width - rowIndex, texture.width - columnIndex));
                         }
                         else if (!configuration.allowQuarterSymmetry) {
-                            if (lowerIsDominant && columnIndex > rowIndex || !lowerIsDominant && columnIndex < rowIndex)
-                                texture.SetPixel(columnIndex, rowIndex, texture.GetPixel(texture.width - rowIndex, texture.width - columnIndex));
+                            if (lowerIsDominant && rowIndex < texture.width - columnIndex ||
+                                !lowerIsDominant && rowIndex > texture.width - columnIndex)
+                                texture.SetPixel(columnIndex, rowIndex,
+                                    texture.GetPixel(texture.width - rowIndex, texture.width - columnIndex));
                         }
                         break;
                     case SymmetryDirection.backwardDiagonal:  

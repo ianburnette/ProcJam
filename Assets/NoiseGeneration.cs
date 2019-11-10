@@ -18,8 +18,7 @@ public class NoiseGeneration : MonoBehaviour {
         
         var colors = new Color[size * size];
         if (frame == 0) {
-            if (config.randomOrigin) 
-                origin = new Vector2(RandomValue(), RandomValue());
+            origin = config.randomOrigin ? new Vector2(RandomValue(), RandomValue()) : config.manualOrigin;
         } else
             origin = new Vector2(origin.x + config.animationFrameNoiseOffset * frame, origin.y + config.animationFrameNoiseOffset * frame);
 
