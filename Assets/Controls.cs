@@ -13,6 +13,7 @@ public class MapGenerationEditor : Editor
         GUILayout.Label("Editor Controls", EditorStyles.boldLabel);
         if(GUILayout.Button("Generate")) myScript.Generate();
         if(GUILayout.Button("Reset")) myScript.Reset();
+        if(GUILayout.Button("Save Entire Spritesheet")) myScript.SaveSpritesheet();
         if (GUILayout.Button("Save Config as New Preset")) myScript.SaveAsPreset();
         DrawDefaultInspector();
     }
@@ -33,6 +34,8 @@ public class Controls : MonoBehaviour
     [SerializeField] SpriteGeneration spriteGeneration;
     [SerializeField] GridLayoutGroup gridLayoutGroup;
 
+    List<FrameAnimation> currentFrameAnimations; 
+
     public void Generate()
     {
         Reset();
@@ -48,7 +51,7 @@ public class Controls : MonoBehaviour
             frameAnimation.FrameTime = configuration.timeBetweenFrames;
             frameAnimation.animationMode = configuration.animationMode;
             frameAnimation.Frames = spriteGeneration.Generate(configuration);
-            
+            currentFrameAnimations.Add(frameAnimation);
         }
 
         void SetUpGridLayoutGroup() {
@@ -64,9 +67,41 @@ public class Controls : MonoBehaviour
     {
         for (var i = spriteParent.childCount - 1; i > -1; i--) 
             DestroyImmediate(spriteParent.GetChild(i).gameObject);
+        currentFrameAnimations.Clear();
     }
 
     public void SaveAsPreset() => presets.Add(new Preset("unnamed preset", configuration));
+
+    public void SaveSpritesheet() {
+        var pixelSize = configuration.spritePixelSize;
+        var spacing = configuration.spacing;
+        var gridSize = configuration.imageGridSize;
+        var frameCount = configuration.animationFrameCount;
+
+        var newTextureFrameWidth = (spacing + pixelSize + spacing) * gridSize * frameCount;
+        var newTextureFrameHeight = (spacing + pixelSize + spacing) * gridSize;
+        
+        var generatedTexture = new Texture2D(
+             newTextureFrameWidth * frameCount, newTextureFrameHeight);
+        for (var frame = 0; frame < frameCount; frame++) {
+            for (var column = 0; column < gridSize; column++) {
+                for (var row = 0; row < gridSize; row++) {
+                    var targetXcoord = spacing + ((row + frame * newTextureFrameWidth) * pixelSize * row) + spacing;
+                    var targetYcoord = spacing + (column * pixelSize) + spacing;
+                    var targetSpriteIndex = row + column * gridSize;
+                    print($"setting texture at {targetXcoord}, {targetYcoord}, and texture width is {generatedTexture.width} and height is {generatedTexture.height} and size of area is {pixelSize}");
+                    generatedTexture.SetPixels(
+                        targetXcoord, 
+                        targetYcoord, 
+                        pixelSize, pixelSize, 
+                        currentFrameAnimations[targetSpriteIndex].ImageComponent.sprite.texture
+                        .GetPixels(0, 0, pixelSize, pixelSize));
+                }
+            }
+        }
+        generatedTexture.Apply();
+        FrameAnimation.ExportTexture(generatedTexture, "Exported Spritesheets");
+    }
 }
 
 [Serializable]

@@ -26,6 +26,11 @@ public class FrameAnimation : MonoBehaviour {
         set => frameTime = value;
     }
 
+    public Image ImageComponent {
+        get => image;
+        set => image = value;
+    }
+
     public AnimationMode animationMode;
 
     void Animate() {
@@ -52,7 +57,7 @@ public class FrameAnimation : MonoBehaviour {
             currentFrameIndex = 0;
 
         if (frames.Count >= currentFrameIndex + 1)
-            image.sprite = frames[currentFrameIndex];
+            ImageComponent.sprite = frames[currentFrameIndex];
     }
 
     public void Export() {
@@ -61,10 +66,19 @@ public class FrameAnimation : MonoBehaviour {
             var frame = frames[index];
             generatedTexture.SetPixels(index * frame.texture.width, 0, frame.texture.width, frame.texture.height, frame.texture.GetPixels());
         }
+        ExportTexture(generatedTexture, "Exported Sprites");
+    }
+
+    public static void ExportTexture(Texture2D generatedTexture, string targetDirectory) {
         var bytes = generatedTexture.EncodeToPNG();
-        var directory = $"{Application.dataPath}/Exported Sprites";
+        var directory = ExtantDirectory(targetDirectory);
+        File.WriteAllBytes($"{directory}/exported_sprite_{Time.time}.png", bytes);
+    }
+
+    public static string ExtantDirectory(string name) {
+        var directory = $"{Application.dataPath}/{name}";
         if (!Directory.Exists(directory))
             Directory.CreateDirectory(directory);
-        File.WriteAllBytes($"{directory}/exported_sprite_{Time.time}.png", bytes);
+        return directory;
     }
 }
