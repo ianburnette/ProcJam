@@ -3,6 +3,8 @@
 public class NoiseGeneration : MonoBehaviour {
     [Header("Debug")]
     [SerializeField] Vector2 origin;
+
+    private float maxFrequencySum = 1.1f;
     
     public Texture2D GetNoise(int frame, Configuration configuration)
     {
@@ -22,13 +24,31 @@ public class NoiseGeneration : MonoBehaviour {
         } else
             origin = new Vector2(origin.x + config.animationFrameNoiseOffset * frame, origin.y + config.animationFrameNoiseOffset * frame);
 
+        var frequencies = new float[config.octaves.Count];
+        if (config.randomizeFrequency) {
+            var totalFrequency = 0f;
+            while (totalFrequency < .9f) {
+                var availableFrequency = maxFrequencySum;
+                for (int i = 0; i < config.octaves.Count; i++) {
+                    var frequency = Random.Range(0, availableFrequency);
+                    frequencies[i] = frequency;
+                    availableFrequency -= frequency;
+                    totalFrequency += frequency;
+                }
+            }
+            print($"frequencies: {frequencies[0]}, {frequencies[1]}, {frequencies[2]}, {frequencies[3]}");
+        } else {
+            for (int i = 0; i < config.octaves.Count; i++)
+                frequencies[i] = config.octaves[i].frequency;
+        }
+        
         for (var octaveIndex = 0; octaveIndex < config.octaves.Count; octaveIndex++) {
             for (var row = 0f; row < size; row++) {
                 for (var column = 0f; column < size; column++) {
                     var xCoordinate = origin.x + row / size * config.octaves[octaveIndex].scale;
                     var yCoordinate = origin.y + column / size * config.octaves[octaveIndex].scale;
                     var sample = Mathf.PerlinNoise(xCoordinate, yCoordinate);
-                    colors[(int) column * size + (int) row] += new Color(sample, sample, sample) * config.octaves[octaveIndex].frequency;
+                    colors[(int) column * size + (int) row] += new Color(sample, sample, sample) * frequencies[octaveIndex];
                 }
             }
         }

@@ -137,8 +137,9 @@ public class Configuration {
 
     [Header("Sprite")] 
     public int spritePixelSize = 16;
-    
+
     [Header("Noise")]
+    public bool randomizeFrequency;
     public List<Octave> octaves = new List<Octave> {
         new Octave(5f, .8f),
         new Octave(10f, .25f),
