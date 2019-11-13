@@ -96,7 +96,6 @@ public class Controls : MonoBehaviour
                     var targetXcoord = spacing + ((row * imageSize) + (frame * newTextureFrameWidth)) + spacing;
                     var targetYcoord = spacing + (column * imageSize) + spacing;
                     var targetSpriteIndex = row + column * gridSize;
-                    print($"setting texture at {targetXcoord}, {targetYcoord}, and texture width is {generatedTexture.width} and height is {generatedTexture.height} and size of area is {pixelSize}");
                     generatedTexture.SetPixels(
                         targetXcoord, 
                         targetYcoord, 
