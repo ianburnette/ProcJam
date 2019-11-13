@@ -1,27 +1,28 @@
 ﻿using System;
 using UnityEngine;
+using static ScalingMode;
 
 public class Scaling : MonoBehaviour
 {
-    public void ScaleTexture(ref Texture2D tex, ScalingMode configurationScalingMode) {
-        switch (configurationScalingMode) {
-            case ScalingMode.none: break;
-            case ScalingMode.x2:
-                tex = Scale(tex, 2); break;
-            case ScalingMode.x4:
-                tex = Scale(tex, 4); break;
-            case ScalingMode.eagle2:
-                tex = Scale(tex, 2, true);
-                break;
-            case ScalingMode.eagle3:
-                tex = Scale(tex, 3, true);
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(configurationScalingMode), configurationScalingMode, null);
-        }
+    public static void ScaleTexture(ref Texture2D tex, ScalingMode configurationScalingMode) {
+        tex = Scale(tex, ScalingFactor(configurationScalingMode), configurationScalingMode == eagle2 || configurationScalingMode == eagle3); 
     }
 
-    Texture2D Scale(Texture2D tex, int scale, bool eagle = false) {
+    public static int ScalingFactor(ScalingMode scalingMode) {
+        switch (scalingMode) {
+            case x2:
+                return 2;
+            case x4:
+                return 4;
+            case eagle2:
+                return 2;
+            case eagle3:
+                return 3;
+        }
+        return 1;
+    }
+
+    static Texture2D Scale(Texture2D tex, int scale, bool eagle = false) {
         var newTex = new Texture2D(tex.width * scale, tex.height * scale);
         for (var column = 0; column < newTex.width; column++) {
             for (var row = 0; row < newTex.height; row++) {

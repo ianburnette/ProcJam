@@ -11,6 +11,8 @@ using UnityEngine;
     [SerializeField] Outline outline;
     [SerializeField] Scaling scaling;
     [SerializeField] Cleanup cleanup;
+
+    public Color backgroundColor;
     
     public List<Sprite> Generate(Configuration configuration) {
         var sprites = new List<Sprite>();
@@ -25,9 +27,10 @@ using UnityEngine;
         var tex = noiseGeneration.GetNoise(frame, configuration);
         falloff.ApplyFalloff(ref tex, configuration.allowPixelsOnEdgeOfSprite, configuration);
         symmetry.AttemptToApplySymmetry(ref tex, frame, configuration);
-        var backgroundColor = Color.black;
-        var outlineColor = Color.black;
         
+        backgroundColor = Color.black;
+        var outlineColor = Color.black;
+
         if (configuration.colorEnabled) {
                 (backgroundColor, outlineColor) = recoloring.Recolor(ref tex, frame, configuration);
             if (configuration.outlineEnabled && !configuration.applyOutlineAfterScaling)
@@ -36,7 +39,7 @@ using UnityEngine;
                 cleanup.Despeckle(ref tex, backgroundColor, configuration.lonePixelEvaluationMode);
         }
         
-        scaling.ScaleTexture(ref tex, configuration.scalingMode);
+        Scaling.ScaleTexture(ref tex, configuration.scalingMode);
         if (configuration.colorEnabled && configuration.outlineEnabled && configuration.applyOutlineAfterScaling)
             outline.OutlineTexture(ref tex, backgroundColor, outlineColor);
         tex.filterMode = FilterMode.Point;

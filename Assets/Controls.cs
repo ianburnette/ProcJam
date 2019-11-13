@@ -80,10 +80,16 @@ public class Controls : MonoBehaviour
 
         var imageSize = spacing + pixelSize + spacing;
         var newTextureFrameWidth = imageSize * gridSize + spacing * 2;
+        var newTextureWidth = newTextureFrameWidth * frameCount;
         var newTextureFrameHeight = imageSize * gridSize + spacing * 2;
         
-        var generatedTexture = new Texture2D(
-             newTextureFrameWidth * frameCount, newTextureFrameHeight);
+        var generatedTexture = new Texture2D(newTextureFrameWidth * frameCount, newTextureFrameHeight);
+        
+        var backgroundPixels = new Color[newTextureWidth * newTextureFrameHeight];
+        for (int i = 0; i < newTextureWidth * newTextureFrameHeight; i++)
+            backgroundPixels[i] = spriteGeneration.backgroundColor;
+        generatedTexture.SetPixels(0,0,newTextureFrameWidth * frameCount, newTextureFrameHeight, backgroundPixels);
+        
         for (var frame = 0; frame < frameCount; frame++) {
             for (var column = 0; column < gridSize; column++) {
                 for (var row = gridSize - 1; row >= 0; row--) {
@@ -100,6 +106,9 @@ public class Controls : MonoBehaviour
                 }
             }
         }
+
+        Scaling.ScaleTexture(ref generatedTexture, configuration.scalingMode);
+        
         generatedTexture.Apply();
         FrameAnimation.ExportTexture(generatedTexture, "Exported Spritesheets");
     }
