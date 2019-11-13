@@ -34,7 +34,7 @@ public class Controls : MonoBehaviour
     [SerializeField] SpriteGeneration spriteGeneration;
     [SerializeField] GridLayoutGroup gridLayoutGroup;
 
-    List<FrameAnimation> currentFrameAnimations; 
+    public List<FrameAnimation> currentFrameAnimations; 
 
     public void Generate()
     {
@@ -74,27 +74,28 @@ public class Controls : MonoBehaviour
 
     public void SaveSpritesheet() {
         var pixelSize = configuration.spritePixelSize;
-        var spacing = configuration.spacing;
+        var spacing = configuration.spacing / 10;
         var gridSize = configuration.imageGridSize;
         var frameCount = configuration.animationFrameCount;
 
-        var newTextureFrameWidth = (spacing + pixelSize + spacing) * gridSize * frameCount;
-        var newTextureFrameHeight = (spacing + pixelSize + spacing) * gridSize;
+        var imageSize = spacing + pixelSize + spacing;
+        var newTextureFrameWidth = imageSize * gridSize + spacing * 2;
+        var newTextureFrameHeight = imageSize * gridSize + spacing * 2;
         
         var generatedTexture = new Texture2D(
              newTextureFrameWidth * frameCount, newTextureFrameHeight);
         for (var frame = 0; frame < frameCount; frame++) {
             for (var column = 0; column < gridSize; column++) {
-                for (var row = 0; row < gridSize; row++) {
-                    var targetXcoord = spacing + ((row + frame * newTextureFrameWidth) * pixelSize * row) + spacing;
-                    var targetYcoord = spacing + (column * pixelSize) + spacing;
+                for (var row = gridSize - 1; row >= 0; row--) {
+                    var targetXcoord = spacing + ((row * imageSize) + (frame * newTextureFrameWidth)) + spacing;
+                    var targetYcoord = spacing + (column * imageSize) + spacing;
                     var targetSpriteIndex = row + column * gridSize;
                     print($"setting texture at {targetXcoord}, {targetYcoord}, and texture width is {generatedTexture.width} and height is {generatedTexture.height} and size of area is {pixelSize}");
                     generatedTexture.SetPixels(
                         targetXcoord, 
                         targetYcoord, 
                         pixelSize, pixelSize, 
-                        currentFrameAnimations[targetSpriteIndex].ImageComponent.sprite.texture
+                        currentFrameAnimations[targetSpriteIndex].Frames[frame].texture
                         .GetPixels(0, 0, pixelSize, pixelSize));
                 }
             }

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +13,7 @@ public class FrameAnimation : MonoBehaviour {
     bool ascending = true;
 
     public List<Sprite> Frames {
+        get => frames;
         set {
             frames = value;
             CancelInvoke();
