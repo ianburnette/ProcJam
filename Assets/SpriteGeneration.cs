@@ -9,7 +9,6 @@ using UnityEngine;
     [SerializeField] Symmetry symmetry;
     [SerializeField] Falloff falloff;
     [SerializeField] Outline outline;
-    [SerializeField] Scaling scaling;
     [SerializeField] Cleanup cleanup;
 
     public Color backgroundColor;
