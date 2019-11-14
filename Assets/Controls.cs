@@ -91,22 +91,25 @@ public class Controls : MonoBehaviour
         generatedTexture.SetPixels(0,0,newTextureFrameWidth * frameCount, newTextureFrameHeight, backgroundPixels);
         
         for (var frame = 0; frame < frameCount; frame++) {
-            for (var column = 0; column < gridSize; column++) {
-                for (var row = gridSize - 1; row >= 0; row--) {
+            var spriteIndex = 0;
+            for (var column = gridSize - 1; column >= 0; column--) {
+                for (var row = 0; row < gridSize; row++) {
                     var targetXcoord = spacing + ((row * imageSize) + (frame * newTextureFrameWidth)) + spacing;
                     var targetYcoord = spacing + (column * imageSize) + spacing;
-                    var targetSpriteIndex = row + column * gridSize;
+                    //var targetSpriteIndex = row + column * gridSize;
+                    print($"getting sprite at column={column}, row={row}, index={spriteIndex}");
                     generatedTexture.SetPixels(
                         targetXcoord, 
                         targetYcoord, 
                         pixelSize, pixelSize, 
-                        currentFrameAnimations[targetSpriteIndex].Frames[frame].texture
+                        currentFrameAnimations[spriteIndex].Frames[frame].texture
                         .GetPixels(0, 0, pixelSize, pixelSize));
+                    spriteIndex++;
                 }
             }
         }
 
-        Scaling.ScaleTexture(ref generatedTexture, configuration.scalingMode);
+        //    Scaling.ScaleTexture(ref generatedTexture, configuration.scalingMode);
         
         generatedTexture.Apply();
         FrameAnimation.ExportTexture(generatedTexture, "Exported Spritesheets");
