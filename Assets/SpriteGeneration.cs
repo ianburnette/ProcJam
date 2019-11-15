@@ -37,8 +37,9 @@ using UnityEngine;
             if (configuration.chanceToDeleteLonePixels > Random.value)
                 cleanup.Despeckle(ref tex, backgroundColor, configuration.lonePixelEvaluationMode);
         }
-        
-        Scaling.ScaleTexture(ref tex, configuration.scalingMode);
+
+        if (configuration.scalingModes != null)
+            Scaling.ScaleTexture(ref tex, configuration.scalingModes);
         if (configuration.colorEnabled && configuration.outlineEnabled && configuration.applyOutlineAfterScaling)
             outline.OutlineTexture(ref tex, backgroundColor, outlineColor);
         tex.filterMode = FilterMode.Point;
@@ -47,7 +48,7 @@ using UnityEngine;
     }
 
     Rect RectAccordingToScalingMode(Configuration configuration) {
-        var scalingFactor = Scaling.ScalingFactor(configuration.scalingMode);
+        var scalingFactor = Scaling.ScalingFactorMultiple(configuration.scalingModes);
         return new Rect(0, 0, configuration.spritePixelSize * scalingFactor, configuration.spritePixelSize * scalingFactor);
     }
 }

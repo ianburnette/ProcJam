@@ -73,7 +73,7 @@ public class Controls : MonoBehaviour
     public void SaveAsPreset() => presets.Add(new Preset("unnamed preset", configuration));
 
     public void SaveSpritesheet() {
-        var scalingFactor = Scaling.ScalingFactor(configuration.scalingMode);
+        var scalingFactor = Scaling.ScalingFactorMultiple(configuration.scalingModes);
 
         var scaledPixelSize = configuration.spritePixelSize * scalingFactor;
         var scaledSpacing = (configuration.spacing / 10) * scalingFactor;
@@ -186,8 +186,7 @@ public class Configuration {
     public bool allowQuarterSymmetry;
 
     [Header("Scaling")]
-    public ScalingMode scalingMode;
-    //TODO: second scaling mode
+    public ScalingMode[] scalingModes;
 
     [Header("Animation")] 
     [Range(1, 8)] public int animationFrameCount = 1;
