@@ -73,37 +73,37 @@ public class Controls : MonoBehaviour
     public void SaveAsPreset() => presets.Add(new Preset("unnamed preset", configuration));
 
     public void SaveSpritesheet() {
-        var pixelSize = configuration.spritePixelSize;
-        var spacing = configuration.spacing / 10;
+        var scalingFactor = Scaling.ScalingFactor(configuration.scalingMode);
+
+        var scaledPixelSize = configuration.spritePixelSize * scalingFactor;
+        var scaledSpacing = (configuration.spacing / 10) * scalingFactor;
         var gridSize = configuration.imageGridSize;
         var frameCount = configuration.animationFrameCount;
 
-        var imageSize = spacing + pixelSize + spacing;
-        var newTextureFrameWidth = imageSize * gridSize + spacing * 2;
-        var newTextureWidth = newTextureFrameWidth * frameCount;
-        var newTextureFrameHeight = imageSize * gridSize + spacing * 2;
+        var scaledImageSize = scaledSpacing + scaledPixelSize + scaledSpacing;
+        var scaledNewTextureFrameWidth = scaledImageSize * gridSize + scaledSpacing * 2;
+        var scaledNewTextureWidth = scaledNewTextureFrameWidth * frameCount;
+        var scaledNewTextureFrameHeight = scaledImageSize * gridSize + scaledSpacing * 2;
         
-        var generatedTexture = new Texture2D(newTextureFrameWidth * frameCount, newTextureFrameHeight);
+        var generatedTexture = new Texture2D(scaledNewTextureFrameWidth * frameCount, scaledNewTextureFrameHeight);
         
-        var backgroundPixels = new Color[newTextureWidth * newTextureFrameHeight];
-        for (int i = 0; i < newTextureWidth * newTextureFrameHeight; i++)
+        var backgroundPixels = new Color[scaledNewTextureWidth * scaledNewTextureFrameHeight];
+        for (var i = 0; i < scaledNewTextureWidth * scaledNewTextureFrameHeight; i++)
             backgroundPixels[i] = spriteGeneration.backgroundColor;
-        generatedTexture.SetPixels(0,0,newTextureFrameWidth * frameCount, newTextureFrameHeight, backgroundPixels);
+        generatedTexture.SetPixels(0,0,scaledNewTextureFrameWidth * frameCount, scaledNewTextureFrameHeight, backgroundPixels);
         
         for (var frame = 0; frame < frameCount; frame++) {
             var spriteIndex = 0;
             for (var column = gridSize - 1; column >= 0; column--) {
                 for (var row = 0; row < gridSize; row++) {
-                    var targetXcoord = spacing + ((row * imageSize) + (frame * newTextureFrameWidth)) + spacing;
-                    var targetYcoord = spacing + (column * imageSize) + spacing;
-                    //var targetSpriteIndex = row + column * gridSize;
-                    print($"getting sprite at column={column}, row={row}, index={spriteIndex}");
+                    var targetXcoord = scaledSpacing + ((row * scaledImageSize) + (frame * scaledNewTextureFrameWidth)) + scaledSpacing;
+                    var targetYcoord = scaledSpacing + (column * scaledImageSize) + scaledSpacing;
                     generatedTexture.SetPixels(
                         targetXcoord, 
                         targetYcoord, 
-                        pixelSize, pixelSize, 
+                        scaledPixelSize, scaledPixelSize, 
                         currentFrameAnimations[spriteIndex].Frames[frame].texture
-                        .GetPixels(0, 0, pixelSize, pixelSize));
+                        .GetPixels(0, 0, scaledPixelSize, scaledPixelSize));
                     spriteIndex++;
                 }
             }
@@ -200,6 +200,6 @@ public class Configuration {
     [Range(0f,1f)] public float chanceToDeleteLonePixels;
 }
 
-public enum ScalingMode { none, x2, x4, eagle2, eagle3 }
+public enum ScalingMode { none, x2, x4, x10, eagle2, eagle3 }
 public enum AnimationMode { loop, pingPong }
 public enum LonePixelEvaluationMode { CardinalDirectionsOnly, IncludeDiagonals }

@@ -47,18 +47,7 @@ using UnityEngine;
     }
 
     Rect RectAccordingToScalingMode(Configuration configuration) {
-        switch (configuration.scalingMode) {
-            case ScalingMode.none:
-                return new Rect(0, 0, configuration.spritePixelSize, configuration.spritePixelSize);
-            case ScalingMode.x2:
-                return new Rect(0, 0, configuration.spritePixelSize * 2, configuration.spritePixelSize * 2);
-            case ScalingMode.x4:
-                return new Rect(0, 0, configuration.spritePixelSize * 4, configuration.spritePixelSize * 4);
-            case ScalingMode.eagle2:
-                return new Rect(0, 0, configuration.spritePixelSize * 2, configuration.spritePixelSize * 2);
-            case ScalingMode.eagle3:
-                return new Rect(0, 0, configuration.spritePixelSize * 3, configuration.spritePixelSize * 3);
-        }
-        return new Rect(0, 0, configuration.spritePixelSize, configuration.spritePixelSize);
+        var scalingFactor = Scaling.ScalingFactor(configuration.scalingMode);
+        return new Rect(0, 0, configuration.spritePixelSize * scalingFactor, configuration.spritePixelSize * scalingFactor);
     }
 }

@@ -13,7 +13,9 @@ public class Scaling : MonoBehaviour
             case x2:
                 return 2;
             case x4:
-                return 4;
+                return 4;            
+            case x10:
+                return 10;
             case eagle2:
                 return 2;
             case eagle3:
