@@ -24,25 +24,31 @@ using UnityEngine;
     Texture2D GenerateTexture(int frame, Configuration configuration)
     {
         var tex = noiseGeneration.GetNoise(frame, configuration);
-        falloff.ApplyFalloff(ref tex, configuration.allowPixelsOnEdgeOfSprite, configuration);
+        falloff.ApplyFalloff(ref tex, configuration);
         symmetry.AttemptToApplySymmetry(ref tex, frame, configuration);
         
         backgroundColor = Color.black;
         var outlineColor = Color.black;
 
         if (configuration.colorEnabled) {
-                (backgroundColor, outlineColor) = recoloring.Recolor(ref tex, frame, configuration);
-            if (configuration.outlineEnabled && !configuration.applyOutlineAfterScaling)
-                outline.OutlineTexture(ref tex, backgroundColor, outlineColor);
-            if (configuration.chanceToDeleteLonePixels > Random.value)
-                cleanup.Despeckle(ref tex, backgroundColor, configuration.lonePixelEvaluationMode);
+            (backgroundColor, outlineColor) = recoloring.Recolor(ref tex, frame, configuration);
         }
 
+        if (!configuration.allowPixelsOnEdgeOfSprite)
+            cleanup.RemovePixelsAtEdgeOfSprite(ref tex, backgroundColor);
+        
+        if (configuration.chanceToDeleteLonePixels > Random.value)
+            cleanup.Despeckle(ref tex, backgroundColor, configuration.lonePixelEvaluationMode);
+        
+        if (configuration.outlineEnabled && !configuration.applyOutlineAfterScaling)
+            outline.OutlineTexture(ref tex, backgroundColor, outlineColor);
+        
         if (configuration.scalingModes != null)
             Scaling.ScaleTexture(ref tex, configuration.scalingModes);
         if (configuration.colorEnabled && configuration.outlineEnabled && configuration.applyOutlineAfterScaling)
             outline.OutlineTexture(ref tex, backgroundColor, outlineColor);
-        tex.filterMode = FilterMode.Point;
+        tex.filterMode = configuration.filterMode;
+        tex.wrapMode = TextureWrapMode.Clamp;
         tex.Apply();    
         return tex;
     }
