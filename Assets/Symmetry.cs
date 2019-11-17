@@ -12,10 +12,10 @@ public class Symmetry : MonoBehaviour
 
     public void AttemptToApplySymmetry(ref Texture2D texture, int frame, Configuration configuration) {
         if (frame == 0) {
-            horizontalSymmetryResult = Random.value < configuration.horizontalSymmetryChance;
-            verticalSymmetryResult = Random.value < configuration.verticalSymmetryChance;
-            forwardDiagonalSymmetryResult = Random.value < configuration.forwardDiagonalSymmetryChance;
-            backwardDiagonalSymmetryResult = Random.value < configuration.backwardDiagonalSymmetryChance;
+            horizontalSymmetryResult = Random.value < configuration.symmetryConfig.horizontalSymmetryChance;
+            verticalSymmetryResult = Random.value < configuration.symmetryConfig.verticalSymmetryChance;
+            forwardDiagonalSymmetryResult = Random.value < configuration.symmetryConfig.forwardDiagonalSymmetryChance;
+            backwardDiagonalSymmetryResult = Random.value < configuration.symmetryConfig.backwardDiagonalSymmetryChance;
             lowerIsDominant = Random.value > .5f;
         }
         if (horizontalSymmetryResult) ApplySymmetry(ref texture, SymmetryDirection.horizontal, configuration);
@@ -33,24 +33,24 @@ public class Symmetry : MonoBehaviour
                 int referenceValue;
                 switch (direction) {
                     case SymmetryDirection.horizontal:
-                        referenceValue = configuration.allowQuarterSymmetry ? columnIndex : rowIndex;
+                        referenceValue = configuration.symmetryConfig.allowQuarterSymmetry ? columnIndex : rowIndex;
                         if ((lowerIsDominant && referenceValue >= halfwayPoint - 1) ||
                             (!lowerIsDominant && referenceValue <= halfwayPoint + 1))
                             SetSymmetricalPixel(texture, direction, columnIndex, rowIndex, halfwayPoint);
                         break;
                     case SymmetryDirection.vertical:
-                        referenceValue = configuration.allowQuarterSymmetry ? rowIndex : columnIndex;
+                        referenceValue = configuration.symmetryConfig.allowQuarterSymmetry ? rowIndex : columnIndex;
                         if ((lowerIsDominant && referenceValue >= halfwayPoint - 1) ||
                             (!lowerIsDominant && referenceValue <= halfwayPoint + 1))
                             SetSymmetricalPixel(texture, direction, columnIndex, rowIndex, halfwayPoint);
                         break;
                     case SymmetryDirection.forwardDiagonal:
-                        if (configuration.allowQuarterSymmetry) {
+                        if (configuration.symmetryConfig.allowQuarterSymmetry) {
                             if (lowerIsDominant && columnIndex > rowIndex || !lowerIsDominant && columnIndex < rowIndex)
                                 texture.SetPixel(columnIndex, rowIndex,
                                     texture.GetPixel(texture.width - rowIndex, texture.width - columnIndex));
                         }
-                        else if (!configuration.allowQuarterSymmetry) {
+                        else if (!configuration.symmetryConfig.allowQuarterSymmetry) {
                             if (lowerIsDominant && rowIndex < texture.width - columnIndex ||
                                 !lowerIsDominant && rowIndex > texture.width - columnIndex)
                                 texture.SetPixel(columnIndex, rowIndex,
@@ -58,11 +58,11 @@ public class Symmetry : MonoBehaviour
                         }
                         break;
                     case SymmetryDirection.backwardDiagonal:  
-                        if (!configuration.allowQuarterSymmetry) {
+                        if (!configuration.symmetryConfig.allowQuarterSymmetry) {
                             if ((lowerIsDominant && columnIndex > rowIndex) || (!lowerIsDominant && columnIndex < rowIndex))
                                 texture.SetPixel(columnIndex, rowIndex, texture.GetPixel(rowIndex, columnIndex));
                         }
-                        else if (configuration.allowQuarterSymmetry) {
+                        else if (configuration.symmetryConfig.allowQuarterSymmetry) {
                             if (lowerIsDominant && rowIndex < texture.width - columnIndex || !lowerIsDominant && rowIndex > texture.width - columnIndex)
                                 texture.SetPixel(columnIndex, rowIndex, texture.GetPixel(texture.width - rowIndex, texture.width - columnIndex));
                         }

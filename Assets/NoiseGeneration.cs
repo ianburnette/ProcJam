@@ -4,11 +4,11 @@ public class NoiseGeneration : MonoBehaviour {
     [Header("Debug")]
     [SerializeField] Vector2 origin;
 
-    private float maxFrequencySum = 1.1f;
+    float maxFrequencySum = 1.1f;
     
     public Texture2D GetNoise(int frame, Configuration configuration)
     {
-        var tex = new Texture2D(configuration.spritePixelSize, configuration.spritePixelSize);
+        var tex = new Texture2D(configuration.spriteConfig.spritePixelSize, configuration.spriteConfig.spritePixelSize);
         //GenerateNoise();
         tex.SetPixels(CalcNoise(configuration, frame));
         return tex;
@@ -16,20 +16,20 @@ public class NoiseGeneration : MonoBehaviour {
 
 
     Color[] CalcNoise(Configuration config, int frame) {
-        var size = config.spritePixelSize;
+        var size = config.spriteConfig.spritePixelSize;
         
         var colors = new Color[size * size];
         if (frame == 0) {
-            origin = config.randomOrigin ? new Vector2(RandomValue(), RandomValue()) : config.manualOrigin;
+            origin = config.noiseConfig.randomOrigin ? new Vector2(RandomValue(), RandomValue()) : config.noiseConfig.manualOrigin;
         } else
-            origin = new Vector2(origin.x + config.animationFrameNoiseOffset * frame, origin.y + config.animationFrameNoiseOffset * frame);
+            origin = new Vector2(origin.x + config.noiseConfig.animationFrameNoiseOffset * frame, origin.y + config.noiseConfig.animationFrameNoiseOffset * frame);
 
-        var frequencies = new float[config.octaves.Count];
-        if (config.randomizeFrequency) {
+        var frequencies = new float[config.noiseConfig.octaves.Count];
+        if (config.noiseConfig.randomizeFrequency) {
             var totalFrequency = 0f;
             while (totalFrequency < .9f) {
                 var availableFrequency = maxFrequencySum;
-                for (int i = 0; i < config.octaves.Count; i++) {
+                for (int i = 0; i < config.noiseConfig.octaves.Count; i++) {
                     var frequency = Random.Range(0, availableFrequency);
                     frequencies[i] = frequency;
                     availableFrequency -= frequency;
@@ -38,15 +38,15 @@ public class NoiseGeneration : MonoBehaviour {
             }
             print($"frequencies: {frequencies[0]}, {frequencies[1]}, {frequencies[2]}, {frequencies[3]}");
         } else {
-            for (int i = 0; i < config.octaves.Count; i++)
-                frequencies[i] = config.octaves[i].frequency;
+            for (int i = 0; i < config.noiseConfig.octaves.Count; i++)
+                frequencies[i] = config.noiseConfig.octaves[i].frequency;
         }
         
-        for (var octaveIndex = 0; octaveIndex < config.octaves.Count; octaveIndex++) {
+        for (var octaveIndex = 0; octaveIndex < config.noiseConfig.octaves.Count; octaveIndex++) {
             for (var row = 0f; row < size; row++) {
                 for (var column = 0f; column < size; column++) {
-                    var xCoordinate = origin.x + row / size * config.octaves[octaveIndex].scale;
-                    var yCoordinate = origin.y + column / size * config.octaves[octaveIndex].scale;
+                    var xCoordinate = origin.x + row / size * config.noiseConfig.octaves[octaveIndex].scale;
+                    var yCoordinate = origin.y + column / size * config.noiseConfig.octaves[octaveIndex].scale;
                     var sample = Mathf.PerlinNoise(xCoordinate, yCoordinate);
                     colors[(int) column * size + (int) row] += new Color(sample, sample, sample) * frequencies[octaveIndex];
                 }
@@ -57,7 +57,7 @@ public class NoiseGeneration : MonoBehaviour {
 
         float RandomValue()
         {
-            return Random.Range(-config.randomOriginBound, config.randomOriginBound);
+            return Random.Range(-config.noiseConfig.randomOriginBound, config.noiseConfig.randomOriginBound);
         }
         /*
         var newOctaves = new Octave[octaveCount];

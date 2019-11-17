@@ -4,18 +4,16 @@ using UnityEngine;
 
 [Serializable]
 public class Layout {
-    public int spacing;
-    public int imageGridSize;
+    public int spacing = 16;
+    public int imageGridSize = 16;
 }
 
 [Serializable]
-public class Configuration {
-    public Layout layout;
-    
-    [Header("Sprite")] 
+public class SpriteConfig {
     public int spritePixelSize = 16;
-
-    [Header("Noise")]
+}
+[Serializable]
+public class NoiseConfig{
     public bool randomizeFrequency;
     public List<Octave> octaves = new List<Octave> {
         new Octave(5f, .8f),
@@ -27,51 +25,71 @@ public class Configuration {
     public float randomOriginBound = 255f;
     public Vector2 manualOrigin;
     public float animationFrameNoiseOffset = .2f;
-
-    [Header("Falloff")]
+}[Serializable]
+public class FalloffConfig{
     public AnimationCurve falloffCurve;
-
-    [Header("Sprite Color")] 
+}
+[Serializable]
+public class SpriteColorConfig{
     public bool colorEnabled;
     public int paletteIndex;
     public int colorCountPerSprite;
     public bool overridePaletteColorsWithRandomColors;
-
-    [Header("Background Color")]
+}
+[Serializable]
+public class BackgroundColorConfig{
     public bool randomPaletteColorForBackground;
     public int paletteColorIndexForBackground;
     public bool overrideBackgroundColor;
     public Color backgroundColorOverride;
-
-    [Header("Outline")]
+}
+[Serializable]
+public class OutlineConfig{
     public bool outlineEnabled;
     public bool applyOutlineAfterScaling;
-    
+
     public bool randomPaletteColorForOutline;
     public int paletteColorIndexForOutline;
     public bool overrideOutlineColor;
     public Color outlineColorOverride;
-    
-    [Header("Symmetry")]
+}[Serializable]
+public class SymmetryConfig{
     [Range(0f,1f)] public float horizontalSymmetryChance;
     [Range(0f,1f)] public float verticalSymmetryChance;
     [Range(0f,1f)] public float backwardDiagonalSymmetryChance;
     [Range(0f,1f)] public float forwardDiagonalSymmetryChance;
     public bool allowQuarterSymmetry;
-
-    [Header("Scaling")]
+}
+[Serializable]
+public class ScalingConfig{
     public ScalingMode[] scalingModes;
     public FilterMode filterMode;
-
-    [Header("Animation")] 
-    [Range(1, 8)] public int animationFrameCount = 1;
-    public float timeBetweenFrames;
-    public AnimationMode animationMode;
-
-    [Header("Cleanup")] 
+}
+[Serializable]
+public class AnimationConfig{
+[Range(1, 8)] public int animationFrameCount = 1;
+public float timeBetweenFrames;
+public AnimationMode animationMode;
+}
+[Serializable]
+public class CleanupConfig{
     public bool allowPixelsOnEdgeOfSprite;
     public LonePixelEvaluationMode lonePixelEvaluationMode;
     [Range(0f,1f)] public float chanceToDeleteLonePixels;
+}
+[Serializable]
+public class Configuration {
+    public Layout layout;
+    public SpriteConfig spriteConfig;
+    public NoiseConfig noiseConfig;
+    public FalloffConfig falloffConfig;
+    public SpriteColorConfig spriteColorConfig;
+    public BackgroundColorConfig backgroundColorConfig;
+    public OutlineConfig outlineConfig;
+    public SymmetryConfig symmetryConfig;
+    public ScalingConfig scalingConfig;
+    public AnimationConfig animationConfig;
+    public CleanupConfig cleanupConfig;
 }
 
 [Serializable]

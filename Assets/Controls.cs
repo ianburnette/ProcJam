@@ -48,8 +48,8 @@ public class Controls : MonoBehaviour
         {
             var sprite = Instantiate(spritePrefab, spriteParent);
             var frameAnimation = sprite.GetComponent<FrameAnimation>();
-            frameAnimation.FrameTime = configuration.timeBetweenFrames;
-            frameAnimation.animationMode = configuration.animationMode;
+            frameAnimation.FrameTime = configuration.animationConfig.timeBetweenFrames;
+            frameAnimation.animationMode = configuration.animationConfig.animationMode;
             frameAnimation.Frames = spriteGeneration.Generate(configuration);
             currentFrameAnimations.Add(frameAnimation);
         }
@@ -73,12 +73,12 @@ public class Controls : MonoBehaviour
     public void SaveAsPreset() => presets.Add(new Preset("unnamed preset", configuration));
 
     public void SaveSpritesheet() {
-        var scalingFactor = Scaling.ScalingFactorMultiple(configuration.scalingModes);
+        var scalingFactor = Scaling.ScalingFactorMultiple(configuration.scalingConfig.scalingModes);
 
-        var scaledPixelSize = configuration.spritePixelSize * scalingFactor;
+        var scaledPixelSize = configuration.spriteConfig.spritePixelSize * scalingFactor;
         var scaledSpacing = (configuration.layout.spacing / 10) * scalingFactor;
         var gridSize = configuration.layout.imageGridSize;
-        var frameCount = configuration.animationFrameCount;
+        var frameCount = configuration.animationConfig.animationFrameCount;
 
         var scaledImageSize = scaledSpacing + scaledPixelSize + scaledSpacing;
         var scaledNewTextureFrameWidth = scaledImageSize * gridSize + scaledSpacing * 2;
