@@ -12,6 +12,7 @@ public class Layout {
 public class SpriteConfig {
     public int spritePixelSize = 16;
 }
+
 [Serializable]
 public class NoiseConfig{
     public bool randomizeFrequency;
@@ -25,10 +26,13 @@ public class NoiseConfig{
     public float randomOriginBound = 255f;
     public Vector2 manualOrigin;
     public float animationFrameNoiseOffset = .2f;
-}[Serializable]
+}
+
+[Serializable]
 public class FalloffConfig{
     public AnimationCurve falloffCurve;
 }
+
 [Serializable]
 public class SpriteColorConfig{
     public bool colorEnabled;
@@ -36,6 +40,7 @@ public class SpriteColorConfig{
     public int colorCountPerSprite;
     public bool overridePaletteColorsWithRandomColors;
 }
+
 [Serializable]
 public class BackgroundColorConfig{
     public bool randomPaletteColorForBackground;
@@ -43,6 +48,7 @@ public class BackgroundColorConfig{
     public bool overrideBackgroundColor;
     public Color backgroundColorOverride;
 }
+
 [Serializable]
 public class OutlineConfig{
     public bool outlineEnabled;
@@ -52,31 +58,49 @@ public class OutlineConfig{
     public int paletteColorIndexForOutline;
     public bool overrideOutlineColor;
     public Color outlineColorOverride;
-}[Serializable]
-public class SymmetryConfig{
-    [Range(0f,1f)] public float horizontalSymmetryChance;
-    [Range(0f,1f)] public float verticalSymmetryChance;
-    [Range(0f,1f)] public float backwardDiagonalSymmetryChance;
-    [Range(0f,1f)] public float forwardDiagonalSymmetryChance;
-    public bool allowQuarterSymmetry;
 }
+
+[Serializable]
+public class SymmetryConfig {
+    public bool allowMultipleSymmetryTypes = true;
+    
+    [Header("Horizontal")]
+    [Range(0f,1f)] public float horizontalSymmetryChance;
+    [Range(0f,1f)] public float quarterHorizontalSymmetryChance;
+    
+    [Header("Vertical")]
+    [Range(0f,1f)] public float verticalSymmetryChance;
+    [Range(0f,1f)] public float quarterVerticalSymmetryChance;
+    
+    [Header("Forward Diagonal")]
+    [Range(0f,1f)] public float forwardDiagonalSymmetryChance;    
+    [Range(0f,1f)] public float quarterForwardDiagonalSymmetryChance;
+    
+    [Header("Backward Diagonal")]
+    [Range(0f,1f)] public float backwardDiagonalSymmetryChance;
+    [Range(0f,1f)] public float quarterBackwardDiagonalSymmetryChance;
+}
+
 [Serializable]
 public class ScalingConfig{
     public ScalingMode[] scalingModes;
     public FilterMode filterMode;
 }
+
 [Serializable]
 public class AnimationConfig{
 [Range(1, 8)] public int animationFrameCount = 1;
 public float timeBetweenFrames;
 public AnimationMode animationMode;
 }
+
 [Serializable]
 public class CleanupConfig{
     public bool allowPixelsOnEdgeOfSprite;
     public LonePixelEvaluationMode lonePixelEvaluationMode;
     [Range(0f,1f)] public float chanceToDeleteLonePixels;
 }
+
 [Serializable]
 public class Configuration {
     public Layout layout;
@@ -104,7 +128,7 @@ public class Preset {
 }
 
 public enum Presets {
-    none = 0, bitsy, island, spaceships, advanced_spaceships, transforming_spaceships,
+    none = 0, assorted, bitsy, island, spaceships, advanced_spaceships, transforming_spaceships,
     pocket_monsters, pocket_monsters_low_rez_symmetrical, pocket_monsters_low_rez_outlined_imperfect_symmetry
 }
 

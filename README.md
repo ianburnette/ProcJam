@@ -11,6 +11,4 @@
 - In order to make this preset selectable in the dropdown, you must also add it to the "Presets" enum in Controls.cs
 
 # Known Issues
-- If you generate a sprite that is is too large (keep it under 128px if you're generating more than one at a time), has too many frames of animation (keep it under 4 if over 32x32), the program will hang for a long time while it processes.4
-- Various "Cleanup" tasks don't work as expected
-- After clicking "save config as new preset", you must enter and exit play mode before you can edit the actual configuration again
+- If you generate a sprite that is is too large (keep it under 128px if you're generating more than one at a time), has too many frames of animation (keep it under 4 if over 32x32), the program will hang for a long time while it processes.
