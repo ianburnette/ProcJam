@@ -36,7 +36,7 @@ public class Controls : MonoBehaviour
 
     public List<FrameAnimation> currentFrameAnimations;
 
-    public int gridSize;
+    public void GridSize(string val) => configuration.layout.imageGridSize = Convert.ToInt32(val);
 
     public void Generate()
     {
