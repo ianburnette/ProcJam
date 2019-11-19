@@ -95,6 +95,14 @@ public AnimationMode animationMode;
 }
 
 [Serializable]
+public class ShadingConfig {
+    public bool enableShading;
+    [Range(0, 1)] public float shadingIntensity;
+    public bool enableHighlights;
+    [Range(0, 1)] public float highlightIntensity;
+}
+
+[Serializable]
 public class CleanupConfig{
     public bool allowPixelsOnEdgeOfSprite;
     public LonePixelEvaluationMode lonePixelEvaluationMode;
@@ -113,6 +121,7 @@ public class Configuration {
     public SymmetryConfig symmetryConfig;
     public ScalingConfig scalingConfig;
     public AnimationConfig animationConfig;
+    public ShadingConfig shadingConfig;
     public CleanupConfig cleanupConfig;
 }
 

@@ -45,8 +45,8 @@ public static class Eagle {
 }
 
 public class ColorPixel9WayContext {
-    readonly Color center;
-    readonly Color? upLeft, up, upRight, left, right, downLeft, down, downRight;
+    public readonly Color center;
+    public readonly Color? upLeft, up, upRight, left, right, downLeft, down, downRight;
 
     public ColorPixel9WayContext(
         Color center, 

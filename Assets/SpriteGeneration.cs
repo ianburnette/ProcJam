@@ -39,6 +39,11 @@ using UnityEngine;
         
         if (configuration.cleanupConfig.chanceToDeleteLonePixels > Random.value)
             cleanup.Despeckle(ref tex, backgroundColor, configuration.cleanupConfig.lonePixelEvaluationMode);
+
+        if (configuration.shadingConfig.enableShading)
+            Shading.Shade(ref tex, backgroundColor, configuration.shadingConfig.shadingIntensity);
+        if (configuration.shadingConfig.enableHighlights)
+            Shading.Highlight(ref tex, backgroundColor, configuration.shadingConfig.highlightIntensity);
         
         if (configuration.outlineConfig.outlineEnabled && !configuration.outlineConfig.applyOutlineAfterScaling)
             outline.OutlineTexture(ref tex, backgroundColor, outlineColor);

@@ -34,7 +34,9 @@ public class Controls : MonoBehaviour
     [SerializeField] SpriteGeneration spriteGeneration;
     [SerializeField] GridLayoutGroup gridLayoutGroup;
 
-    public List<FrameAnimation> currentFrameAnimations; 
+    public List<FrameAnimation> currentFrameAnimations;
+
+    public int gridSize;
 
     public void Generate()
     {
