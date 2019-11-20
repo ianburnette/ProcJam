@@ -3,13 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class Layout {
+public class SizingConfig {
     public int spacing = 16;
     public int imageGridSize = 16;
-}
-
-[Serializable]
-public class SpriteConfig {
     public int pixelSize = 16;
 }
 

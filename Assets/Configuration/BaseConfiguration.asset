@@ -12,11 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c3634c57fd3424d8e91a4775ce2ffb4, type: 3}
   m_Name: BaseConfiguration
   m_EditorClassIdentifier: 
-  layout:
-    spacing: 16
-    imageGridSize: 16
-  spriteConfig:
-    pixelSize: 32
+  sizingConfig:
+    spacing: 8
+    imageGridSize: 9
+    pixelSize: 8
   noiseConfig:
     randomizeFrequency: 0
     octaves:
@@ -75,30 +74,30 @@ MonoBehaviour:
     overrideOutlineColor: 1
     outlineColorOverride: {r: 1, g: 1, b: 1, a: 1}
   symmetryConfig:
-    allowMultipleSymmetryTypes: 0
+    allowMultipleSymmetryTypes: 1
     enforceSomeTypeOfSymmetry: 1
-    horizontalSymmetryChance: 0.25
+    horizontalSymmetryChance: 0
     quarterHorizontalSymmetryChance: 0.4
-    verticalSymmetryChance: 0.25
+    verticalSymmetryChance: 0.33
     quarterVerticalSymmetryChance: 0.4
-    forwardDiagonalSymmetryChance: 0.25
+    forwardDiagonalSymmetryChance: 0.33
     quarterForwardDiagonalSymmetryChance: 0.4
-    backwardDiagonalSymmetryChance: 0.25
+    backwardDiagonalSymmetryChance: 0.33
     quarterBackwardDiagonalSymmetryChance: 0.4
   scalingConfig:
     scalingModes: 00000000
     filterMode: 0
   animationConfig:
-    animationFrameCount: 2
+    animationFrameCount: 1
     timeBetweenFrames: 0.2
     animationMode: 0
   shadingConfig:
-    enableShading: 0
+    enableShading: 1
     shadingByColor: 1
     shadingIntensity: 0.1
-    enableHighlights: 0
+    enableHighlights: 1
     highlightByColor: 1
-    highlightIntensity: 0.1
+    highlightIntensity: 0.2
   cleanupConfig:
     allowPixelsOnEdgeOfSprite: 0
     lonePixelEvaluationMode: 0

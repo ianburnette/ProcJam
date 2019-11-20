@@ -15,7 +15,7 @@ namespace Nothke.ProtoGUI
         public int buttonWidth = 120;
         public int toolbarOffset = 400;
 
-        private void Start()
+        void Start()
         {
             draggable = false;
             windowRect.y = -30;

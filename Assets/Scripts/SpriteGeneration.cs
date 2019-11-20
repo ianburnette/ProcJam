@@ -18,7 +18,7 @@ using UnityEngine;
         for (int i = 0; i < configuration.animationConfig.animationFrameCount; i++) {
             sprites.Add(
                 Sprite.Create(GenerateTexture(i, configuration), 
-                RectAccordingToScalingMode(configuration.scalingConfig.scalingModes, configuration.spriteConfig.pixelSize), 
+                RectAccordingToScalingMode(configuration.scalingConfig.scalingModes, configuration.sizingConfig.pixelSize), 
                 new Vector2(.5f, .5f)));
         }
         return sprites;
@@ -26,7 +26,7 @@ using UnityEngine;
 
     Texture2D GenerateTexture(int frame, ConfigurationAsset configuration)
     {
-        var tex = noiseGeneration.GetNoise(frame, configuration.noiseConfig, configuration.spriteConfig.pixelSize);
+        var tex = noiseGeneration.GetNoise(frame, configuration.noiseConfig, configuration.sizingConfig.pixelSize);
         falloff.ApplyFalloff(ref tex, configuration.falloffConfig);
         symmetry.AttemptToApplySymmetry(ref tex, frame, configuration.symmetryConfig);
         

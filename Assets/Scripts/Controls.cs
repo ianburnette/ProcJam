@@ -32,27 +32,32 @@ public class Controls : MonoBehaviour
 
     public List<FrameAnimation> currentFrameAnimations;
 
+    public ConfigurationAsset Configuration {
+        get => configuration;
+        set => configuration = value;
+    }
+
     public void Generate()
     {
         Reset();
         SetUpGridLayoutGroup();
 
-        for (var i = 0; i < configuration.layout.imageGridSize * configuration.layout.imageGridSize; i++)
+        for (var i = 0; i < Configuration.sizingConfig.imageGridSize * Configuration.sizingConfig.imageGridSize; i++)
         {
             var sprite = Instantiate(spritePrefab, spriteParent);
             var frameAnimation = sprite.GetComponent<FrameAnimation>();
-            frameAnimation.FrameTime = configuration.animationConfig.timeBetweenFrames;
-            frameAnimation.animationMode = configuration.animationConfig.animationMode;
-            frameAnimation.Frames = spriteGeneration.Generate(configuration);
+            frameAnimation.FrameTime = Configuration.animationConfig.timeBetweenFrames;
+            frameAnimation.animationMode = Configuration.animationConfig.animationMode;
+            frameAnimation.Frames = spriteGeneration.Generate(Configuration);
             currentFrameAnimations.Add(frameAnimation);
         }
 
         void SetUpGridLayoutGroup() {
-            var cellSize = (Screen.height / ((float) configuration.layout.imageGridSize)) - configuration.layout.spacing;
+            var cellSize = (Screen.height / ((float) Configuration.sizingConfig.imageGridSize)) - Configuration.sizingConfig.spacing;
             gridLayoutGroup.cellSize = new Vector2(cellSize, cellSize);
-            gridLayoutGroup.constraintCount = configuration.layout.imageGridSize;
-            gridLayoutGroup.spacing = new Vector2(configuration.layout.spacing, configuration.layout.spacing);
-            var padding = Mathf.Clamp(configuration.layout.spacing * 4, 32, 64);
+            gridLayoutGroup.constraintCount = Configuration.sizingConfig.imageGridSize;
+            gridLayoutGroup.spacing = new Vector2(Configuration.sizingConfig.spacing, Configuration.sizingConfig.spacing);
+            var padding = Mathf.Clamp(Configuration.sizingConfig.spacing * 4, 32, 64);
             gridLayoutGroup.padding = new RectOffset(padding, padding, padding, padding);
         }
     }
@@ -67,18 +72,17 @@ public class Controls : MonoBehaviour
     public void SaveAsPreset() {
         var preset = Instantiate(ScriptableObject.CreateInstance<ConfigurationAsset>());
         preset.SetValues(
-            configuration.layout,
-            configuration.spriteConfig,
-            configuration.noiseConfig,
-            configuration.falloffConfig,
-            configuration.colorConfig,
-            configuration.backgroundColorConfig,
-            configuration.outlineConfig,
-            configuration.symmetryConfig,
-            configuration.scalingConfig,
-            configuration.animationConfig,
-            configuration.shadingConfig,
-            configuration.cleanupConfig
+            Configuration.sizingConfig,
+            Configuration.noiseConfig,
+            Configuration.falloffConfig,
+            Configuration.colorConfig,
+            Configuration.backgroundColorConfig,
+            Configuration.outlineConfig,
+            Configuration.symmetryConfig,
+            Configuration.scalingConfig,
+            Configuration.animationConfig,
+            Configuration.shadingConfig,
+            Configuration.cleanupConfig
             );
         
         SaveScriptableObject();
@@ -104,12 +108,12 @@ public class Controls : MonoBehaviour
     }
 
     public void SaveSpritesheet() {
-        var scalingFactor = Scaling.ScalingFactorMultiple(configuration.scalingConfig.scalingModes);
+        var scalingFactor = Scaling.ScalingFactorMultiple(Configuration.scalingConfig.scalingModes);
 
-        var scaledPixelSize = configuration.spriteConfig.pixelSize * scalingFactor;
-        var scaledSpacing = (configuration.layout.spacing / 10) * scalingFactor;
-        var gridSize = configuration.layout.imageGridSize;
-        var frameCount = configuration.animationConfig.animationFrameCount;
+        var scaledPixelSize = Configuration.sizingConfig.pixelSize * scalingFactor;
+        var scaledSpacing = (Configuration.sizingConfig.spacing / 10) * scalingFactor;
+        var gridSize = Configuration.sizingConfig.imageGridSize;
+        var frameCount = Configuration.animationConfig.animationFrameCount;
 
         var scaledImageSize = scaledSpacing + scaledPixelSize + scaledSpacing;
         var scaledNewTextureFrameWidth = scaledImageSize * gridSize + scaledSpacing * 2;

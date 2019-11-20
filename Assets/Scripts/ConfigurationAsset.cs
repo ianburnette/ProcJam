@@ -2,8 +2,7 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "Configuration", menuName = "SpriteConfiguration", order = 1)]
 public class ConfigurationAsset : ScriptableObject {
-    public Layout layout;
-    public SpriteConfig spriteConfig;
+    public SizingConfig sizingConfig;
     public NoiseConfig noiseConfig;
     public FalloffConfig falloffConfig;
     public ColorConfig colorConfig;
@@ -16,8 +15,7 @@ public class ConfigurationAsset : ScriptableObject {
     public CleanupConfig cleanupConfig;
 
     public void SetValues(
-        Layout layout,
-        SpriteConfig spriteConfig,
+        SizingConfig sizingConfig,
         NoiseConfig noiseConfig,
         FalloffConfig falloffConfig,
         ColorConfig colorConfig,
@@ -29,8 +27,7 @@ public class ConfigurationAsset : ScriptableObject {
         ShadingConfig shadingConfig,
         CleanupConfig cleanupConfig
     ) {
-        this.layout = layout;
-        this.spriteConfig = spriteConfig;
+        this.sizingConfig = sizingConfig;
         this.noiseConfig = noiseConfig;
         this.falloffConfig = falloffConfig;
         this.colorConfig = colorConfig;
