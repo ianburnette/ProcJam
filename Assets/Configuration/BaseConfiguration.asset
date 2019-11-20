@@ -16,7 +16,7 @@ MonoBehaviour:
     spacing: 16
     imageGridSize: 16
   spriteConfig:
-    pixelSize: 16
+    pixelSize: 32
   noiseConfig:
     randomizeFrequency: 0
     octaves:
