@@ -14,26 +14,50 @@ public class Symmetry : MonoBehaviour
     bool quarterBackwardDiagonalSymmetryResult;
     bool lowerIsDominant;
 
-    public void AttemptToApplySymmetry(ref Texture2D texture, int frame, Configuration configuration) {
+    public void AttemptToApplySymmetry(ref Texture2D texture, int frame, SymmetryConfig configuration) {
         if (frame == 0) {
-            horizontalSymmetryResult = Random.value < configuration.symmetryConfig.horizontalSymmetryChance;
-            quarterHorizontalSymmetryResult = horizontalSymmetryResult && Random.value < configuration.symmetryConfig.quarterHorizontalSymmetryChance;
-            verticalSymmetryResult = Random.value < configuration.symmetryConfig.verticalSymmetryChance;
-            quarterVerticalSymmetryResult = verticalSymmetryResult && Random.value < configuration.symmetryConfig.quarterVerticalSymmetryChance;
-            forwardDiagonalSymmetryResult = Random.value < configuration.symmetryConfig.forwardDiagonalSymmetryChance;
-            quarterForwardDiagonalSymmetryResult = forwardDiagonalSymmetryResult && Random.value < configuration.symmetryConfig.quarterForwardDiagonalSymmetryChance;
-            backwardDiagonalSymmetryResult = Random.value < configuration.symmetryConfig.backwardDiagonalSymmetryChance;
-            quarterBackwardDiagonalSymmetryResult = backwardDiagonalSymmetryResult && Random.value < configuration.symmetryConfig.quarterBackwardDiagonalSymmetryChance;
-            lowerIsDominant = Random.value > .5f;
+            ResetAll();
+            if(!configuration.enforceSomeTypeOfSymmetry)
+                DetermineSymmetryDirectionsToApply(configuration);
+            else {
+                while (!horizontalSymmetryResult && !verticalSymmetryResult && !backwardDiagonalSymmetryResult && !forwardDiagonalSymmetryResult) {
+                    DetermineSymmetryDirectionsToApply(configuration);
+                }
+            }
         }
         if (horizontalSymmetryResult)
-            ApplySymmetry(ref texture, SymmetryDirection.Horizontal, configuration);
-        if (ShouldApplyVerticalSymmetry(configuration.symmetryConfig.allowMultipleSymmetryTypes))
-            ApplySymmetry(ref texture, SymmetryDirection.Vertical, configuration);
-        if (ShouldApplyForwardDiagonalSymmetry(configuration.symmetryConfig.allowMultipleSymmetryTypes))
-            ApplySymmetry(ref texture, SymmetryDirection.ForwardDiagonal, configuration);
-        if (ShouldApplyBackwardDiagonalSymmetry(configuration.symmetryConfig.allowMultipleSymmetryTypes))
-            ApplySymmetry(ref texture, SymmetryDirection.BackwardDiagonal, configuration);
+            ApplySymmetry(ref texture, SymmetryDirection.Horizontal);
+        if (ShouldApplyVerticalSymmetry(configuration.allowMultipleSymmetryTypes))
+            ApplySymmetry(ref texture, SymmetryDirection.Vertical);
+        if (ShouldApplyForwardDiagonalSymmetry(configuration.allowMultipleSymmetryTypes))
+            ApplySymmetry(ref texture, SymmetryDirection.ForwardDiagonal);
+        if (ShouldApplyBackwardDiagonalSymmetry(configuration.allowMultipleSymmetryTypes))
+            ApplySymmetry(ref texture, SymmetryDirection.BackwardDiagonal);
+    }
+
+    void ResetAll() {
+        horizontalSymmetryResult =
+            verticalSymmetryResult =
+                forwardDiagonalSymmetryResult =
+                    backwardDiagonalSymmetryResult =
+                        quarterHorizontalSymmetryResult =
+                            quarterVerticalSymmetryResult =
+                                quarterForwardDiagonalSymmetryResult =
+                                    quarterBackwardDiagonalSymmetryResult = false;
+    }
+
+    void DetermineSymmetryDirectionsToApply(SymmetryConfig configuration) {
+        lowerIsDominant = Random.value > .5f;
+        
+        horizontalSymmetryResult = Random.value < configuration.horizontalSymmetryChance;
+        verticalSymmetryResult = Random.value < configuration.verticalSymmetryChance;
+        forwardDiagonalSymmetryResult = Random.value < configuration.forwardDiagonalSymmetryChance;
+        backwardDiagonalSymmetryResult = Random.value < configuration.backwardDiagonalSymmetryChance;
+        
+        quarterHorizontalSymmetryResult = horizontalSymmetryResult && Random.value < configuration.quarterHorizontalSymmetryChance;
+        quarterVerticalSymmetryResult = verticalSymmetryResult && Random.value < configuration.quarterVerticalSymmetryChance;
+        quarterForwardDiagonalSymmetryResult = forwardDiagonalSymmetryResult && Random.value < configuration.quarterForwardDiagonalSymmetryChance;
+        quarterBackwardDiagonalSymmetryResult = backwardDiagonalSymmetryResult && Random.value < configuration.quarterBackwardDiagonalSymmetryChance;
     }
 
     bool ShouldApplyVerticalSymmetry(bool multipleSymmetriesAllowed) {
@@ -55,7 +79,7 @@ public class Symmetry : MonoBehaviour
         return false;
     }
 
-    void ApplySymmetry(ref Texture2D texture, SymmetryDirection direction, Configuration configuration)
+    void ApplySymmetry(ref Texture2D texture, SymmetryDirection direction)
     {
         var halfwayPoint = texture.width / 2;
 

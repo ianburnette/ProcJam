@@ -63,7 +63,7 @@ public class OutlineConfig{
 [Serializable]
 public class SymmetryConfig {
     public bool allowMultipleSymmetryTypes = true;
-    //TODO: some type mandatory option
+    public bool enforceSomeTypeOfSymmetry;
     
     [Header("Horizontal")]
     [Range(0f,1f)] public float horizontalSymmetryChance;
