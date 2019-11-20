@@ -24,18 +24,12 @@ public class InGameControls : WindowGUI {
         draggable = true;
     }
 
-    void Update() {
-        
-    }
-    
     protected override void Window()
     {
         Label("Here are some things:");
-        if (Button("Simple button!")) {
-            controls.Generate();
-        }
-        
-       // Slider2Value = Slider("Spacing", Slider2Value, 0, 100);
+        if (Button("Generate")) controls.Generate();
+
+        // Slider2Value = Slider("Spacing", Slider2Value, 0, 100);
 
         ToggleButton("Toggle", ref toggleOn);
 

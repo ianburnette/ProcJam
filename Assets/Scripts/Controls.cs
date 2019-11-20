@@ -52,7 +52,8 @@ public class Controls : MonoBehaviour
             gridLayoutGroup.cellSize = new Vector2(cellSize, cellSize);
             gridLayoutGroup.constraintCount = configuration.layout.imageGridSize;
             gridLayoutGroup.spacing = new Vector2(configuration.layout.spacing, configuration.layout.spacing);
-            gridLayoutGroup.padding = new RectOffset(configuration.layout.spacing, configuration.layout.spacing, configuration.layout.spacing, configuration.layout.spacing);
+            var padding = Mathf.Clamp(configuration.layout.spacing * 4, 32, 64);
+            gridLayoutGroup.padding = new RectOffset(padding, padding, padding, padding);
         }
     }
 
