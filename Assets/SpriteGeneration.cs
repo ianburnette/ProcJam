@@ -41,9 +41,9 @@ using UnityEngine;
             cleanup.Despeckle(ref tex, backgroundColor, configuration.cleanupConfig.lonePixelEvaluationMode);
 
         if (configuration.shadingConfig.enableShading)
-            Shading.Shade(ref tex, backgroundColor, configuration.shadingConfig.shadingIntensity);
+            Shading.Shade(ref tex, backgroundColor, configuration.shadingConfig.shadingIntensity, configuration.shadingConfig.shadingByColor);
         if (configuration.shadingConfig.enableHighlights)
-            Shading.Highlight(ref tex, backgroundColor, configuration.shadingConfig.highlightIntensity);
+            Shading.Highlight(ref tex, backgroundColor, configuration.shadingConfig.highlightIntensity, configuration.shadingConfig.highlightByColor);
         
         if (configuration.outlineConfig.outlineEnabled && !configuration.outlineConfig.applyOutlineAfterScaling)
             outline.OutlineTexture(ref tex, backgroundColor, outlineColor);

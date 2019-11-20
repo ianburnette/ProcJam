@@ -63,6 +63,7 @@ public class OutlineConfig{
 [Serializable]
 public class SymmetryConfig {
     public bool allowMultipleSymmetryTypes = true;
+    //TODO: some type mandatory option
     
     [Header("Horizontal")]
     [Range(0f,1f)] public float horizontalSymmetryChance;
@@ -97,8 +98,10 @@ public AnimationMode animationMode;
 [Serializable]
 public class ShadingConfig {
     public bool enableShading;
+    public bool shadingByColor;
     [Range(0, 1)] public float shadingIntensity;
     public bool enableHighlights;
+    public bool highlightByColor;
     [Range(0, 1)] public float highlightIntensity;
 }
 
