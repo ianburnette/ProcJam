@@ -11,53 +11,53 @@ class Recoloring : MonoBehaviour {
 
     Camera cam;
     
-    public (Color, Color) Recolor(ref Texture2D tex, int frame, Configuration configuration) {
+    public (Color, Color) Recolor(ref Texture2D tex, int frame, ColorConfig colorConfig, BackgroundColorConfig backgroundColorConfig, OutlineConfig outlineConfig) {
         if (!cam)
             cam = Camera.main;
-        cam.backgroundColor = BackgroundColor(configuration);
+        cam.backgroundColor = BackgroundColor(colorConfig, backgroundColorConfig);
         if (frame == 0)
-            GenerateColors(configuration);
+            GenerateColors(colorConfig, backgroundColorConfig);
         var colors = tex.GetPixels();
-        var increment = 1f / configuration.spriteColorConfig.colorCountPerSprite;
+        var increment = 1f / colorConfig.colorCountPerSprite;
         var newColors = new Color[colors.Length];
         for (var index = 0; index < colors.Length; index++) {
             var gray = colors[index].grayscale;
-            for (var i = 0; i < configuration.spriteColorConfig.colorCountPerSprite; i++) {
+            for (var i = 0; i < colorConfig.colorCountPerSprite; i++) {
                 if (gray >= i * increment && gray <= (i + 1) * increment)
                     newColors[index] = generatedColors[i];
             }
         }
         tex.SetPixels(newColors);
-        return (BackgroundColor(configuration), 
-                OutlineColor(configuration));
+        return (BackgroundColor(colorConfig, backgroundColorConfig), 
+                OutlineColor(outlineConfig));
     }
 
-    Color OutlineColor(Configuration config) {
-        if (config.outlineConfig.overrideOutlineColor)
-            return config.outlineConfig.outlineColorOverride;
-        if (config.outlineConfig.randomPaletteColorForOutline)
+    Color OutlineColor(OutlineConfig outlineConfig) {
+        if (outlineConfig.overrideOutlineColor)
+            return outlineConfig.outlineColorOverride;
+        if (outlineConfig.randomPaletteColorForOutline)
             return generatedColors[Random.Range(0, generatedColors.Length - 1)];
-        return generatedColors[config.outlineConfig.paletteColorIndexForOutline];
+        return generatedColors[outlineConfig.paletteColorIndexForOutline];
     }
 
-    Color BackgroundColor(Configuration config) {
-        if (config.backgroundColorConfig.overrideBackgroundColor)
-            return config.backgroundColorConfig.backgroundColorOverride;
-        if (config.backgroundColorConfig.randomPaletteColorForBackground)
+    Color BackgroundColor(ColorConfig colorConfig, BackgroundColorConfig backgroundColorConfig) {
+        if (backgroundColorConfig.overrideBackgroundColor)
+            return backgroundColorConfig.backgroundColorOverride;
+        if (backgroundColorConfig.randomPaletteColorForBackground)
             return generatedColors[Random.Range(0, generatedColors.Length - 1)];
-        return generatedColors[config.backgroundColorConfig.paletteColorIndexForBackground];
+        return generatedColors[backgroundColorConfig.paletteColorIndexForBackground];
     }
 
-    void GenerateColors(Configuration config) {
-        generatedColors = new Color[config.spriteColorConfig.colorCountPerSprite];
-        if (!config.spriteColorConfig.overridePaletteColorsWithRandomColors) {
-            var colors = GetUniqueColorsFromTexture(palettes[config.spriteColorConfig.paletteIndex]);
+    void GenerateColors(ColorConfig colorConfig, BackgroundColorConfig backgroundColorConfig) {
+        generatedColors = new Color[colorConfig.colorCountPerSprite];
+        if (!colorConfig.overridePaletteColorsWithRandomColors) {
+            var colors = GetUniqueColorsFromTexture(palettes[colorConfig.paletteIndex]);
             generatedColors[0] = 
-                config.backgroundColorConfig.overrideBackgroundColor ? 
-                config.backgroundColorConfig.backgroundColorOverride : 
-                config.backgroundColorConfig.randomPaletteColorForBackground ? 
+                backgroundColorConfig.overrideBackgroundColor ? 
+                backgroundColorConfig.backgroundColorOverride : 
+                backgroundColorConfig.randomPaletteColorForBackground ? 
                     colors[Random.Range(0, colors.Count-1)] : 
-                    colors[config.backgroundColorConfig.paletteColorIndexForBackground];
+                    colors[backgroundColorConfig.paletteColorIndexForBackground];
             
             for (var index = 1; index < generatedColors.Length; index++) {
                 generatedColors[index] = colors[Random.Range(0, colors.Count)];

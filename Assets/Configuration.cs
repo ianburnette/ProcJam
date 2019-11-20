@@ -10,7 +10,7 @@ public class Layout {
 
 [Serializable]
 public class SpriteConfig {
-    public int spritePixelSize = 16;
+    public int pixelSize = 16;
 }
 
 [Serializable]
@@ -34,7 +34,7 @@ public class FalloffConfig{
 }
 
 [Serializable]
-public class SpriteColorConfig{
+public class ColorConfig{
     public bool colorEnabled;
     public int paletteIndex;
     public int colorCountPerSprite;
@@ -118,7 +118,7 @@ public class Configuration {
     public SpriteConfig spriteConfig;
     public NoiseConfig noiseConfig;
     public FalloffConfig falloffConfig;
-    public SpriteColorConfig spriteColorConfig;
+    public ColorConfig colorConfig;
     public BackgroundColorConfig backgroundColorConfig;
     public OutlineConfig outlineConfig;
     public SymmetryConfig symmetryConfig;

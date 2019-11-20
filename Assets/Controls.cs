@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DefaultNamespace;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,13 +9,13 @@ using UnityEngine.UI;
 public class MapGenerationEditor : Editor
 {
     public override void OnInspectorGUI()
-    {
+    {    
         var myScript = (Controls)target;
         GUILayout.Label("Editor Controls", EditorStyles.boldLabel);
         if(GUILayout.Button("Generate")) myScript.Generate();
         if(GUILayout.Button("Reset")) myScript.Reset();
         if(GUILayout.Button("Save Entire Spritesheet")) myScript.SaveSpritesheet();
-        if (GUILayout.Button("Save Config as New Preset")) myScript.SaveAsPreset();
+        //if (GUILayout.Button("Save Config as New Preset")) myScript.SaveAsPreset();
         DrawDefaultInspector();
     }
 }
@@ -23,7 +24,7 @@ public class Controls : MonoBehaviour
 {
     [Header("Configuration")] 
     [SerializeField] Presets preset;
-    [SerializeField] Configuration configuration;
+    [SerializeField] ConfigurationAsset configuration;
 
     [Header("Presets")] 
     [SerializeField] List<Preset> presets;
@@ -47,8 +48,8 @@ public class Controls : MonoBehaviour
         Reset();
         SetUpGridLayoutGroup();
 
-        if (preset != 0)
-            configuration = presets[(int)preset - 1].configuration;
+     //  if (preset != 0)
+     //      configuration = presets[(int)preset - 1].configuration;
         
         for (var i = 0; i < configuration.layout.imageGridSize * configuration.layout.imageGridSize; i++)
         {
@@ -76,12 +77,12 @@ public class Controls : MonoBehaviour
         currentFrameAnimations.Clear();
     }
 
-    public void SaveAsPreset() => presets.Add(new Preset("unnamed preset", configuration));
+    //public void SaveAsPreset() => presets.Add(new Preset("unnamed preset", configuration));
 
     public void SaveSpritesheet() {
         var scalingFactor = Scaling.ScalingFactorMultiple(configuration.scalingConfig.scalingModes);
 
-        var scaledPixelSize = configuration.spriteConfig.spritePixelSize * scalingFactor;
+        var scaledPixelSize = configuration.spriteConfig.pixelSize * scalingFactor;
         var scaledSpacing = (configuration.layout.spacing / 10) * scalingFactor;
         var gridSize = configuration.layout.imageGridSize;
         var frameCount = configuration.animationConfig.animationFrameCount;

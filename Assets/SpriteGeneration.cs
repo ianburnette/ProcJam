@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DefaultNamespace;
 using UnityEngine;
 
  public class SpriteGeneration : MonoBehaviour
@@ -13,25 +14,29 @@ using UnityEngine;
 
     public Color backgroundColor;
     
-    public List<Sprite> Generate(Configuration configuration) {
+    public List<Sprite> Generate(ConfigurationAsset configuration) {
         var sprites = new List<Sprite>();
         for (int i = 0; i < configuration.animationConfig.animationFrameCount; i++) {
-            sprites.Add(Sprite.Create(GenerateTexture(i, configuration), RectAccordingToScalingMode(configuration), new Vector2(.5f, .5f)));
+            sprites.Add(
+                Sprite.Create(GenerateTexture(i, configuration), 
+                RectAccordingToScalingMode(configuration.scalingConfig.scalingModes, configuration.spriteConfig.pixelSize), 
+                new Vector2(.5f, .5f)));
         }
         return sprites;
     }
 
-    Texture2D GenerateTexture(int frame, Configuration configuration)
+    Texture2D GenerateTexture(int frame, ConfigurationAsset configuration)
     {
-        var tex = noiseGeneration.GetNoise(frame, configuration);
-        falloff.ApplyFalloff(ref tex, configuration);
-        symmetry.AttemptToApplySymmetry(ref tex, frame, configuration);
+        var tex = noiseGeneration.GetNoise(frame, configuration.noiseConfig, configuration.spriteConfig.pixelSize);
+        falloff.ApplyFalloff(ref tex, configuration.falloffConfig);
+        symmetry.AttemptToApplySymmetry(ref tex, frame, configuration.symmetryConfig);
         
         backgroundColor = Color.black;
         var outlineColor = Color.black;
 
-        if (configuration.spriteColorConfig.colorEnabled) {
-            (backgroundColor, outlineColor) = recoloring.Recolor(ref tex, frame, configuration);
+        if (configuration.colorConfig.colorEnabled) {
+            (backgroundColor, outlineColor) = recoloring.Recolor(ref tex, frame, 
+                configuration.colorConfig, configuration.backgroundColorConfig, configuration.outlineConfig);
         }
 
         if (!configuration.cleanupConfig.allowPixelsOnEdgeOfSprite)
@@ -50,7 +55,7 @@ using UnityEngine;
         
         if (configuration.scalingConfig.scalingModes != null)
             Scaling.ScaleTexture(ref tex, configuration.scalingConfig.scalingModes);
-        if (configuration.spriteColorConfig.colorEnabled && configuration.outlineConfig.outlineEnabled && configuration.outlineConfig.applyOutlineAfterScaling)
+        if (configuration.colorConfig.colorEnabled && configuration.outlineConfig.outlineEnabled && configuration.outlineConfig.applyOutlineAfterScaling)
             outline.OutlineTexture(ref tex, backgroundColor, outlineColor);
         tex.filterMode = configuration.scalingConfig.filterMode;
         tex.wrapMode = TextureWrapMode.Clamp;
@@ -58,8 +63,8 @@ using UnityEngine;
         return tex;
     }
 
-    Rect RectAccordingToScalingMode(Configuration configuration) {
-        var scalingFactor = Scaling.ScalingFactorMultiple(configuration.scalingConfig.scalingModes);
-        return new Rect(0, 0, configuration.spriteConfig.spritePixelSize * scalingFactor, configuration.spriteConfig.spritePixelSize * scalingFactor);
+    Rect RectAccordingToScalingMode(ScalingMode[] scalingModes, int spritePixelSize) {
+        var scalingFactor = Scaling.ScalingFactorMultiple(scalingModes);
+        return new Rect(0, 0, spritePixelSize * scalingFactor, spritePixelSize * scalingFactor);
     }
 }
