@@ -21,29 +21,29 @@ public class InGameControls : WindowGUI {
         draggable = true;
     }
     
-    protected override void Window()
-    {
-        Label("Here are some things:");
-        Button("Simple button!");
+   //protected override void Window()
+   //{
+   //    Label("Here are some things:");
+   //    Button("Simple button!");
 
-        ToggleButton("Toggle", ref toggleOn);
+   //    ToggleButton("Toggle", ref toggleOn);
 
-        Foldout("Foldout", ref showFoldout);
+   //    Foldout("Foldout", ref showFoldout);
 
-        if (showFoldout)
-        {
-            Label("Some things in the foldout:");
+   //    if (showFoldout)
+   //    {
+   //        Label("Some things in the foldout:");
 
-            // Inputs
-            floatInput = FloatField("Input fl", floatInput);
-            LabelField("Input str", ref stringInput);
-        }
+   //        // Inputs
+   //        floatInput = FloatField("Input fl", floatInput);
+   //        LabelField("Input str", ref stringInput);
+   //    }
 
-        // Float and int sliders:
-        slider1Value = Slider("Float", slider1Value, 0.0f, 1.0f, "F2");
-        slider2Value = Slider("Int", slider2Value, 0, 100);
+   //    // Float and int sliders:
+   //    slider1Value = Slider("Float", slider1Value, 0.0f, 1.0f, "F2");
+   //    slider2Value = Slider("Int", slider2Value, 0, 100);
 
-        // A "notched" float slider that will step by stepSize
-        slider3Value = Slider("Notched", slider3Value, 0, 2, 0.2f);
-    }
+   //    // A "notched" float slider that will step by stepSize
+   //    slider3Value = Slider("Notched", slider3Value, 0, 2, 0.2f);
+   //}
 }
