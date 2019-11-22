@@ -37,6 +37,11 @@ public class Controls : MonoBehaviour
         set => configuration = value;
     }
 
+    public SpriteGeneration Generation {
+        get => spriteGeneration;
+        set => spriteGeneration = value;
+    }
+
     public void Generate()
     {
         Reset();
@@ -48,7 +53,7 @@ public class Controls : MonoBehaviour
             var frameAnimation = sprite.GetComponent<FrameAnimation>();
             frameAnimation.FrameTime = Configuration.animationConfig.timeBetweenFrames;
             frameAnimation.animationMode = Configuration.animationConfig.animationMode;
-            frameAnimation.Frames = spriteGeneration.Generate(Configuration);
+            frameAnimation.Frames = Generation.Generate(Configuration);
             currentFrameAnimations.Add(frameAnimation);
         }
 
@@ -124,7 +129,7 @@ public class Controls : MonoBehaviour
         
         var backgroundPixels = new Color[scaledNewTextureWidth * scaledNewTextureFrameHeight];
         for (var i = 0; i < scaledNewTextureWidth * scaledNewTextureFrameHeight; i++)
-            backgroundPixels[i] = spriteGeneration.backgroundColor;
+            backgroundPixels[i] = Generation.backgroundColor;
         generatedTexture.SetPixels(0,0,scaledNewTextureFrameWidth * frameCount, scaledNewTextureFrameHeight, backgroundPixels);
         
         for (var frame = 0; frame < frameCount; frame++) {

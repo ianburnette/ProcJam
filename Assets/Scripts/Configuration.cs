@@ -34,7 +34,7 @@ public class ColorConfig{
     public bool colorEnabled;
     public int paletteIndex;
     public int colorCountPerSprite;
-    public bool overridePaletteColorsWithRandomColors;
+    public bool usePaletteColors;
 }
 
 [Serializable]
@@ -82,6 +82,16 @@ public class SymmetryConfig {
 public class ScalingConfig{
     public ScalingMode[] scalingModes;
     public FilterMode filterMode;
+
+    public void ResizeScalingMode(int newSize) {
+        if (newSize == scalingModes.Length) return;
+        var newScalingModes = new ScalingMode[newSize];
+        for (int i = 0; i < scalingModes.Length; i++) {
+            if(i>=newSize) continue;
+            newScalingModes[i] = scalingModes[i];
+        }
+        scalingModes = newScalingModes;
+    }
 }
 
 [Serializable]
@@ -108,6 +118,6 @@ public class CleanupConfig{
     [Range(0f,1f)] public float chanceToDeleteLonePixels;
 }
 
-public enum ScalingMode { none, x2, x4, x10, eagle2, eagle3 }
+public enum ScalingMode { none = 0, x2, x4, x10, eagle2, eagle3 }
 public enum AnimationMode { loop, pingPong }
 public enum LonePixelEvaluationMode { CardinalDirectionsOnly, IncludeDiagonals }

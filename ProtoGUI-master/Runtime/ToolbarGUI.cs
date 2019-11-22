@@ -35,8 +35,14 @@ namespace Nothke.ProtoGUI
             GUILayout.BeginHorizontal();
             for (int i = 0; i < windows.Count; i++)
             {
-                if (GUILayout.Button(windows[i].WindowLabel, GUILayout.Width(buttonWidth)))
-                    windows[i].Enabled = !windows[i].Enabled;
+                if (GUILayout.Button(windows[i].WindowLabel, GUILayout.Width(buttonWidth))) {
+                    for (int j = 0; j < windows.Count; j++) {
+                        if (j == i)
+                            windows[i].Enabled = !windows[i].Enabled;
+                        else
+                            windows[j].Enabled = false;
+                    }
+                }
             }
             GUILayout.EndHorizontal();
         }

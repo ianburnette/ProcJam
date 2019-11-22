@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Nothke.ProtoGUI
 {
@@ -138,6 +139,19 @@ namespace Nothke.ProtoGUI
             GUILayout.EndHorizontal();
 
             return value;
+        }  
+        
+        protected int IntField(string label, int value)
+        {
+            GUILayout.BeginHorizontal();
+
+            GUILayout.Label(label, GUILayout.Width(labelWidth));
+            var prevValue = value;
+            value = int.TryParse(GUILayout.TextField(value.ToString()), out var newValue) ? newValue : prevValue;
+
+            GUILayout.EndHorizontal();
+
+            return value;
         }
 
         #endregion
@@ -262,6 +276,16 @@ namespace Nothke.ProtoGUI
             }
 
             return false;
+        }
+
+        protected int MultiValueToggleButton(string name, int value, string[] possibleValues) {
+            if (!GUILayout.Button(name + possibleValues[value])) return value;
+            
+            if (value + 1 < possibleValues.Length)
+                value++;
+            else
+                value = 0;
+            return value;
         }
 
         #endregion

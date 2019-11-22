@@ -1,4 +1,6 @@
-﻿public class BasicControls : WindowGuiBase
+﻿using UnityEngine;
+
+public class BasicControls : WindowGuiBase
 {
     public override string WindowLabel => "Operations";
 
@@ -9,5 +11,6 @@
         if (Button("Save Spritesheet")) controls.SaveSpritesheet();
         if (Button("Save Config Preset")) controls.SaveAsPreset();
         if (Button("Close")) enabled = false;
+        windowRect.position = new Vector2(Screen.width - windowRect.size.x, 0);
     }
 }

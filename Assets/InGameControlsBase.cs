@@ -25,5 +25,6 @@ public abstract class WindowGuiBase : WindowGUI {
     protected override void Window() {
         if (Button("Generate")) controls.Generate();
         if (Button("Close")) enabled = false;
+        windowRect.position = new Vector2(Screen.width - windowRect.size.x, 0);
     }
 }

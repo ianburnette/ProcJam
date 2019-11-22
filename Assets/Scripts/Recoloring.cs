@@ -1,20 +1,28 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-class Recoloring : MonoBehaviour {
+public class Recoloring : MonoBehaviour {
 
     [Header("Palettes")]
-    [SerializeField] Texture2D[] palettes;
+    public Texture2D[] palettes;
 
     [Header("Debug")]
     [SerializeField] Color[] generatedColors;
+    [SerializeField] public List<Color>[] uniqueColorsInTextures;
 
     Camera cam;
+
+    void OnEnable() {
+        uniqueColorsInTextures = new List<Color>[palettes.Length];
+        for (var index = 0; index < palettes.Length; index++) {
+            var texture2D = palettes[index];
+            uniqueColorsInTextures[index] = GetUniqueColorsFromTexture(texture2D);
+        }
+    }
     
     public (Color, Color) Recolor(ref Texture2D tex, int frame, ColorConfig colorConfig, BackgroundColorConfig backgroundColorConfig, OutlineConfig outlineConfig) {
-        if (!cam)
-            cam = Camera.main;
-        cam.backgroundColor = BackgroundColor(colorConfig, backgroundColorConfig);
+        if (!cam) cam = Camera.main;
+        cam.backgroundColor = BackgroundColor(backgroundColorConfig, colorConfig);
         if (frame == 0)
             GenerateColors(colorConfig, backgroundColorConfig);
         var colors = tex.GetPixels();
@@ -28,8 +36,7 @@ class Recoloring : MonoBehaviour {
             }
         }
         tex.SetPixels(newColors);
-        return (BackgroundColor(colorConfig, backgroundColorConfig), 
-                OutlineColor(outlineConfig));
+        return (BackgroundColor(backgroundColorConfig, colorConfig), OutlineColor(outlineConfig));
     }
 
     Color OutlineColor(OutlineConfig outlineConfig) {
@@ -40,7 +47,9 @@ class Recoloring : MonoBehaviour {
         return generatedColors[outlineConfig.paletteColorIndexForOutline];
     }
 
-    Color BackgroundColor(ColorConfig colorConfig, BackgroundColorConfig backgroundColorConfig) {
+    Color BackgroundColor(BackgroundColorConfig backgroundColorConfig, ColorConfig colorConfig) {
+        if (!colorConfig.usePaletteColors)
+            return Color.black;
         if (backgroundColorConfig.overrideBackgroundColor)
             return backgroundColorConfig.backgroundColorOverride;
         if (backgroundColorConfig.randomPaletteColorForBackground)
@@ -50,22 +59,25 @@ class Recoloring : MonoBehaviour {
 
     void GenerateColors(ColorConfig colorConfig, BackgroundColorConfig backgroundColorConfig) {
         generatedColors = new Color[colorConfig.colorCountPerSprite];
-        if (!colorConfig.overridePaletteColorsWithRandomColors) {
-            var colors = GetUniqueColorsFromTexture(palettes[colorConfig.paletteIndex]);
-            generatedColors[0] = 
-                backgroundColorConfig.overrideBackgroundColor ? 
-                backgroundColorConfig.backgroundColorOverride : 
-                backgroundColorConfig.randomPaletteColorForBackground ? 
-                    colors[Random.Range(0, colors.Count-1)] : 
-                    colors[backgroundColorConfig.paletteColorIndexForBackground];
+        if (colorConfig.usePaletteColors) {
+            if (backgroundColorConfig.overrideBackgroundColor)
+                generatedColors[0] = backgroundColorConfig.backgroundColorOverride;
+            else if (backgroundColorConfig.randomPaletteColorForBackground) {
+                generatedColors[0] = uniqueColorsInTextures[colorConfig.paletteIndex][
+                    Random.Range(0, uniqueColorsInTextures[colorConfig.paletteIndex].Count - 1)];
+            } else {
+                generatedColors[0] =
+                    uniqueColorsInTextures[colorConfig.paletteIndex][
+                        backgroundColorConfig.paletteColorIndexForBackground];
+            }
             
             for (var index = 1; index < generatedColors.Length; index++) {
-                generatedColors[index] = colors[Random.Range(0, colors.Count)];
-                colors.Remove(generatedColors[index]);
+                generatedColors[index] = uniqueColorsInTextures[colorConfig.paletteIndex][Random.Range(0, uniqueColorsInTextures[colorConfig.paletteIndex].Count)];
+                //uniqueColorsInTextures.Remove(generatedColors[index]);
             }
         }
         else {
-            generatedColors[0] = Color.white;
+            generatedColors[0] = Color.black;
             for (var index = 1; index < generatedColors.Length; index++) 
                 generatedColors[index] = Random.ColorHSV(0f, 1f, 1f, 1f);
         }

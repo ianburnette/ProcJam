@@ -12,7 +12,12 @@ using UnityEngine;
     [SerializeField] Cleanup cleanup;
 
     public Color backgroundColor;
-    
+
+    public Recoloring Recoloring {
+        get => recoloring;
+        set => recoloring = value;
+    }
+
     public List<Sprite> Generate(ConfigurationAsset configuration) {
         var sprites = new List<Sprite>();
         for (int i = 0; i < configuration.animationConfig.animationFrameCount; i++) {
