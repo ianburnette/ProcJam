@@ -12,6 +12,7 @@
                 (int)controls.Configuration.scalingConfig.scalingModes[i], 
                 new[]{"None", "x2", "x4", "x10", "Eagle 2", "Eagle 3"});
         }
+        Label("Please note: the x2, x4, and x10 scaling modes are WIP and only take effect when the spritesheet is exported.");
         base.Window();
     }
 }

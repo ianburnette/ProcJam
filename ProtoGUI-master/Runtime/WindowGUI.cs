@@ -57,7 +57,7 @@ namespace Nothke.ProtoGUI
             }
         }
 
-        void WindowBase(int id)
+        protected void WindowBase(int id)
         {
             Window();
 

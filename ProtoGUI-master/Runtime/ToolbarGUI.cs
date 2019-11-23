@@ -13,14 +13,14 @@ namespace Nothke.ProtoGUI
         public List<GameWindow> windows;
 
         public int buttonWidth = 120;
-        public int toolbarOffset = 400;
-
+        public int toolbarOffset = 30;
+        public int toolbarHeight = 30;
+        
         void Start()
         {
             draggable = false;
             windowRect.x = buttonWidth;
             windowRect.width = 0;
-            windowRect.y = Screen.height-60;
 
             if (collectOnStart)
             {
@@ -32,6 +32,9 @@ namespace Nothke.ProtoGUI
 
         protected override void Window()
         {
+            windowRect.y = toolbarOffset;
+            windowRect.x = 0;
+            windowRect.width = Screen.width;
             GUILayout.BeginHorizontal();
             for (int i = 0; i < windows.Count; i++)
             {

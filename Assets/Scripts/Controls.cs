@@ -92,9 +92,9 @@ public class Controls : MonoBehaviour
             Configuration.cleanupConfig
             );
         
-       // SaveScriptableObject();
+       SaveScriptableObject();
 
-       /* void SaveScriptableObject() {
+        void SaveScriptableObject() {
             var path = AssetDatabase.GetAssetPath(Selection.activeObject);
             if (path == "") {
                 path = "Assets";
@@ -111,7 +111,7 @@ public class Controls : MonoBehaviour
             AssetDatabase.Refresh();
             EditorUtility.FocusProjectWindow();
             Selection.activeObject = preset;
-        }*/
+        }
     }
 
     public void SaveSpritesheet() {

@@ -17,13 +17,16 @@ public class Symmetry : MonoBehaviour
     public void AttemptToApplySymmetry(ref Texture2D texture, int frame, SymmetryConfig configuration) {
         if (frame == 0) {
             ResetAll();
-            if(!configuration.enforceSomeTypeOfSymmetry)
-                DetermineSymmetryDirectionsToApply(configuration);
-            else {
-                while (!horizontalSymmetryResult && !verticalSymmetryResult && !backwardDiagonalSymmetryResult && !forwardDiagonalSymmetryResult) {
+            if (configuration.enforceSomeTypeOfSymmetry && (
+                configuration.horizontalSymmetryChance + configuration.verticalSymmetryChance +
+                configuration.forwardDiagonalSymmetryChance + configuration.backwardDiagonalSymmetryChance > 0)) {
+                while (!horizontalSymmetryResult && !verticalSymmetryResult && 
+                       !backwardDiagonalSymmetryResult && !forwardDiagonalSymmetryResult) {
                     DetermineSymmetryDirectionsToApply(configuration);
                 }
             }
+            else
+                DetermineSymmetryDirectionsToApply(configuration);
         }
         if (horizontalSymmetryResult)
             ApplySymmetry(ref texture, SymmetryDirection.Horizontal);

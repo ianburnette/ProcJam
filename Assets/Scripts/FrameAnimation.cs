@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +14,11 @@ public class FrameAnimation : MonoBehaviour {
     int currentFrameIndex;
     bool ascending = true;
 
+    #if UNITY_WEBGL
+    [DllImport("__Internal")]
+    private static extern void ImageDownloader(string str, string fn);
+    #endif
+    
     public List<Sprite> Frames {
         get => frames;
         set {
@@ -71,8 +78,17 @@ public class FrameAnimation : MonoBehaviour {
 
     public static void ExportTexture(Texture2D generatedTexture, string targetDirectory) {
         var bytes = generatedTexture.EncodeToPNG();
-        var directory = ExtantDirectory(targetDirectory);
-        File.WriteAllBytes($"{directory}/exported_sprite_{Time.time}.png", bytes);
+        #if UNITY_WEBGL
+            ImageDownloader(System.Convert.ToBase64String(bytes), $"exported_sprite_{DateTime.Now}.png");
+        #endif
+        #if UNITY_STANDALONE_WIN
+            var directory = ExtantDirectory(targetDirectory);
+            File.WriteAllBytes($"{directory}/exported_sprite_{Time.time}.png", bytes);
+        #endif
+        #if UNITY_EDITOR
+            var directory = ExtantDirectory(targetDirectory);
+            File.WriteAllBytes($"{directory}/exported_sprite_{DateTime.Now}.png", bytes);
+        #endif
     }
 
     public static string ExtantDirectory(string name) {
