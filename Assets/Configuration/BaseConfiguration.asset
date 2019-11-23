@@ -67,12 +67,12 @@ MonoBehaviour:
     overrideBackgroundColor: 1
     backgroundColorOverride: {r: 0, g: 0, b: 0, a: 1}
   outlineConfig:
-    outlineEnabled: 1
+    outlineEnabled: 0
     applyOutlineAfterScaling: 1
     randomPaletteColorForOutline: 0
     paletteColorIndexForOutline: 0
     overrideOutlineColor: 1
-    outlineColorOverride: {r: 1, g: 1, b: 1, a: 1}
+    outlineColorOverride: {r: 0, g: 0, b: 0, a: 1}
   symmetryConfig:
     allowMultipleSymmetryTypes: 1
     enforceSomeTypeOfSymmetry: 1
@@ -88,7 +88,7 @@ MonoBehaviour:
     scalingModes: 00000000
     filterMode: 0
   animationConfig:
-    animationFrameCount: 3
+    animationFrameCount: 1
     timeBetweenFrames: 0.2
     animationMode: 1
   shadingConfig:

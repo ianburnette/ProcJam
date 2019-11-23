@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(Controls))]
 public class MapGenerationEditor : Editor
 {
@@ -18,6 +19,7 @@ public class MapGenerationEditor : Editor
         DrawDefaultInspector();
     }
 }
+#endif
 
 public class Controls : MonoBehaviour
 {
@@ -90,9 +92,9 @@ public class Controls : MonoBehaviour
             Configuration.cleanupConfig
             );
         
-        SaveScriptableObject();
+       // SaveScriptableObject();
 
-        void SaveScriptableObject() {
+       /* void SaveScriptableObject() {
             var path = AssetDatabase.GetAssetPath(Selection.activeObject);
             if (path == "") {
                 path = "Assets";
@@ -109,7 +111,7 @@ public class Controls : MonoBehaviour
             AssetDatabase.Refresh();
             EditorUtility.FocusProjectWindow();
             Selection.activeObject = preset;
-        }
+        }*/
     }
 
     public void SaveSpritesheet() {

@@ -9,7 +9,7 @@ public class BasicControls : WindowGuiBase
         if (Button("Generate")) controls.Generate();
         if (Button("Reset")) controls.Reset();
         if (Button("Save Spritesheet")) controls.SaveSpritesheet();
-        if (Button("Save Config Preset")) controls.SaveAsPreset();
+        //if (Button("Save Config Preset")) controls.SaveAsPreset();
         if (Button("Close")) enabled = false;
         windowRect.position = new Vector2(Screen.width - windowRect.size.x, 0);
     }
