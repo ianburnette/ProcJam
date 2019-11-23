@@ -36,7 +36,6 @@ public class NoiseGeneration : MonoBehaviour {
                     totalFrequency += frequency;
                 }
             }
-            print($"frequencies: {frequencies[0]}, {frequencies[1]}, {frequencies[2]}, {frequencies[3]}");
         } else {
             for (int i = 0; i < config.octaves.Count; i++)
                 frequencies[i] = config.octaves[i].frequency;

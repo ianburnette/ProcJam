@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class Recoloring : MonoBehaviour {
 
     [Header("Palettes")]
@@ -20,9 +21,11 @@ public class Recoloring : MonoBehaviour {
         }
     }
     
+    //TODO: allow option to choose the same colors for the whole spritesheet
     public (Color, Color) Recolor(ref Texture2D tex, int frame, ColorConfig colorConfig, BackgroundColorConfig backgroundColorConfig, OutlineConfig outlineConfig) {
         if (!cam) cam = Camera.main;
-        cam.backgroundColor = BackgroundColor(backgroundColorConfig, colorConfig);
+        var backgroundColor = BackgroundColor(backgroundColorConfig, colorConfig, frame);
+        cam.backgroundColor = backgroundColor;
         if (frame == 0)
             GenerateColors(colorConfig, backgroundColorConfig);
         var colors = tex.GetPixels();
@@ -36,23 +39,23 @@ public class Recoloring : MonoBehaviour {
             }
         }
         tex.SetPixels(newColors);
-        return (BackgroundColor(backgroundColorConfig, colorConfig), OutlineColor(outlineConfig));
+        return (backgroundColor, OutlineColor(outlineConfig,frame));
     }
 
-    Color OutlineColor(OutlineConfig outlineConfig) {
+    Color OutlineColor(OutlineConfig outlineConfig, int frame) {
         if (outlineConfig.overrideOutlineColor)
             return outlineConfig.outlineColorOverride;
-        if (outlineConfig.randomPaletteColorForOutline)
+        if (outlineConfig.randomPaletteColorForOutline && frame==0)
             return generatedColors[Random.Range(0, generatedColors.Length - 1)];
         return generatedColors[outlineConfig.paletteColorIndexForOutline];
     }
 
-    Color BackgroundColor(BackgroundColorConfig backgroundColorConfig, ColorConfig colorConfig) {
+    Color BackgroundColor(BackgroundColorConfig backgroundColorConfig, ColorConfig colorConfig, int frame) {
         if (!colorConfig.usePaletteColors)
             return Color.black;
         if (backgroundColorConfig.overrideBackgroundColor)
             return backgroundColorConfig.backgroundColorOverride;
-        if (backgroundColorConfig.randomPaletteColorForBackground)
+        if (backgroundColorConfig.randomPaletteColorForBackground && frame==0)
             return generatedColors[Random.Range(0, generatedColors.Length - 1)];
         return generatedColors[backgroundColorConfig.paletteColorIndexForBackground];
     }

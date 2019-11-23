@@ -14,23 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sizingConfig:
     spacing: 8
-    imageGridSize: 9
-    pixelSize: 8
+    imageGridSize: 16
+    pixelSize: 16
   noiseConfig:
     randomizeFrequency: 0
     octaves:
-    - scale: 5
+    - scale: 2.9
       frequency: 0.8
     - scale: 10
       frequency: 0.25
     - scale: 20
-      frequency: 0.125
-    - scale: 45
-      frequency: 0.0625
+      frequency: 0.12
+    - scale: 45.45
+      frequency: 0.07
     randomOrigin: 1
     randomOriginBound: 255
-    manualOrigin: {x: 0, y: 0}
-    animationFrameNoiseOffset: 0.2
+    manualOrigin: {x: 160, y: 160}
+    animationFrameNoiseOffset: 0.07
   falloffConfig:
     falloffCurve:
       serializedVersion: 2
@@ -58,17 +58,17 @@ MonoBehaviour:
       m_RotationOrder: 4
   colorConfig:
     colorEnabled: 1
-    paletteIndex: 0
-    colorCountPerSprite: 3
-    overridePaletteColorsWithRandomColors: 0
+    paletteIndex: 1
+    colorCountPerSprite: 4
+    usePaletteColors: 1
   backgroundColorConfig:
     randomPaletteColorForBackground: 0
-    paletteColorIndexForBackground: 0
-    overrideBackgroundColor: 0
-    backgroundColorOverride: {r: 0, g: 0, b: 0, a: 0}
+    paletteColorIndexForBackground: 2
+    overrideBackgroundColor: 1
+    backgroundColorOverride: {r: 0, g: 0, b: 0, a: 1}
   outlineConfig:
-    outlineEnabled: 0
-    applyOutlineAfterScaling: 0
+    outlineEnabled: 1
+    applyOutlineAfterScaling: 1
     randomPaletteColorForOutline: 0
     paletteColorIndexForOutline: 0
     overrideOutlineColor: 1
@@ -76,28 +76,28 @@ MonoBehaviour:
   symmetryConfig:
     allowMultipleSymmetryTypes: 1
     enforceSomeTypeOfSymmetry: 1
-    horizontalSymmetryChance: 0
-    quarterHorizontalSymmetryChance: 0.4
-    verticalSymmetryChance: 0.33
-    quarterVerticalSymmetryChance: 0.4
-    forwardDiagonalSymmetryChance: 0.33
-    quarterForwardDiagonalSymmetryChance: 0.4
-    backwardDiagonalSymmetryChance: 0.33
-    quarterBackwardDiagonalSymmetryChance: 0.4
+    horizontalSymmetryChance: 0.25
+    quarterHorizontalSymmetryChance: 0.5
+    verticalSymmetryChance: 0.25
+    quarterVerticalSymmetryChance: 0.5
+    forwardDiagonalSymmetryChance: 0.25
+    quarterForwardDiagonalSymmetryChance: 0.5
+    backwardDiagonalSymmetryChance: 0.25
+    quarterBackwardDiagonalSymmetryChance: 0.5
   scalingConfig:
     scalingModes: 00000000
     filterMode: 0
   animationConfig:
-    animationFrameCount: 1
+    animationFrameCount: 3
     timeBetweenFrames: 0.2
-    animationMode: 0
+    animationMode: 1
   shadingConfig:
     enableShading: 1
     shadingByColor: 1
-    shadingIntensity: 0.1
+    shadingIntensity: 0.2
     enableHighlights: 1
     highlightByColor: 1
-    highlightIntensity: 0.2
+    highlightIntensity: 0.06
   cleanupConfig:
     allowPixelsOnEdgeOfSprite: 0
     lonePixelEvaluationMode: 0

@@ -18,9 +18,9 @@ namespace Nothke.ProtoGUI
         void Start()
         {
             draggable = false;
-            windowRect.y = -30;
             windowRect.x = buttonWidth;
             windowRect.width = 0;
+            windowRect.y = Screen.height-60;
 
             if (collectOnStart)
             {

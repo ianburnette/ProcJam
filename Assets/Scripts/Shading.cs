@@ -60,6 +60,7 @@ public static class Shading {
                         pixelContext.down != backgroundColor &&
                         pixelContext.downRight != backgroundColor) {
                         tex.SetPixel(column, row, thisPixel + Color.white * highlightIntensity);
+                        //TODO: this doesn't reliably know the background color
                     }
                 }
             }
