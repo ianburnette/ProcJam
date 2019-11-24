@@ -78,16 +78,17 @@ public class FrameAnimation : MonoBehaviour {
 
     public static void ExportTexture(Texture2D generatedTexture, string targetDirectory) {
         var bytes = generatedTexture.EncodeToPNG();
+        #if UNITY_EDITOR
+            var directory = ExtantDirectory(targetDirectory);
+            File.WriteAllBytes($"{directory}/exported_sprite_{DateTime.Now.Ticks}.png", bytes);
+            return;
+        #endif
         #if UNITY_WEBGL
-            ImageDownloader(System.Convert.ToBase64String(bytes), $"exported_sprite_{DateTime.Now}.png");
+            ImageDownloader(System.Convert.ToBase64String(bytes), $"exported_sprite_{DateTime.Now.Ticks}.png");
         #endif
         #if UNITY_STANDALONE_WIN
             var directory = ExtantDirectory(targetDirectory);
-            File.WriteAllBytes($"{directory}/exported_sprite_{Time.time}.png", bytes);
-        #endif
-        #if UNITY_EDITOR
-            var directory = ExtantDirectory(targetDirectory);
-            File.WriteAllBytes($"{directory}/exported_sprite_{DateTime.Now}.png", bytes);
+            File.WriteAllBytes($"{directory}/exported_sprite_{DateTime.Now.Ticks}.png", bytes);
         #endif
     }
 

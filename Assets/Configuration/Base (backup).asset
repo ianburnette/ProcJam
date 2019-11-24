@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c3634c57fd3424d8e91a4775ce2ffb4, type: 3}
+  m_Name: Base (backup)
+  m_EditorClassIdentifier: 
+  sizingConfig:
+    spacing: 8
+    imageGridSize: 16
+    pixelSize: 8
+  noiseConfig:
+    randomizeFrequency: 0
+    octaves:
+    - scale: 2.9
+      frequency: 0.8
+    - scale: 10
+      frequency: 0.25
+    - scale: 20
+      frequency: 0.12
+    - scale: 45.45
+      frequency: 0.07
+    randomOrigin: 1
+    randomOriginBound: 255
+    manualOrigin: {x: 160, y: 160}
+    animationFrameNoiseOffset: 0.12
+  falloffConfig:
+    falloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  colorConfig:
+    colorEnabled: 1
+    paletteIndex: 0
+    colorCountPerSprite: 2
+    usePaletteColors: 1
+  backgroundColorConfig:
+    randomPaletteColorForBackground: 0
+    paletteColorIndexForBackground: 2
+    overrideBackgroundColor: 1
+    backgroundColorOverride: {r: 0, g: 0, b: 0, a: 1}
+  outlineConfig:
+    outlineEnabled: 0
+    applyOutlineAfterScaling: 1
+    randomPaletteColorForOutline: 0
+    paletteColorIndexForOutline: 0
+    overrideOutlineColor: 1
+    outlineColorOverride: {r: 0, g: 0, b: 0, a: 1}
+  symmetryConfig:
+    allowMultipleSymmetryTypes: 1
+    enforceSomeTypeOfSymmetry: 1
+    horizontalSymmetryChance: 0.15
+    quarterHorizontalSymmetryChance: 0.5
+    verticalSymmetryChance: 0.4
+    quarterVerticalSymmetryChance: 0.5
+    forwardDiagonalSymmetryChance: 0.25
+    quarterForwardDiagonalSymmetryChance: 0.5
+    backwardDiagonalSymmetryChance: 0.25
+    quarterBackwardDiagonalSymmetryChance: 0.5
+  scalingConfig:
+    scalingModes: 00000000
+    filterMode: 0
+  animationConfig:
+    animationFrameCount: 2
+    timeBetweenFrames: 0.2
+    animationMode: 1
+  shadingConfig:
+    enableShading: 0
+    shadingByColor: 1
+    shadingIntensity: 0.2
+    enableHighlights: 0
+    highlightByColor: 1
+    highlightIntensity: 0.06
+  cleanupConfig:
+    allowPixelsOnEdgeOfSprite: 1
+    lonePixelEvaluationMode: 1
+    chanceToDeleteLonePixels: 1

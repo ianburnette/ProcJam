@@ -64,7 +64,7 @@ public class Controls : MonoBehaviour
             gridLayoutGroup.cellSize = new Vector2(cellSize, cellSize);
             gridLayoutGroup.constraintCount = Configuration.sizingConfig.imageGridSize;
             gridLayoutGroup.spacing = new Vector2(Configuration.sizingConfig.spacing, Configuration.sizingConfig.spacing);
-            var padding = Mathf.Clamp(Configuration.sizingConfig.spacing * 4, 32, 64);
+            var padding = Mathf.Clamp(Configuration.sizingConfig.spacing * 4, 32, 32);
             gridLayoutGroup.padding = new RectOffset(padding, padding, padding, padding);
         }
     }
@@ -91,7 +91,7 @@ public class Controls : MonoBehaviour
             Configuration.shadingConfig,
             Configuration.cleanupConfig
             );
-        
+        #if UNITY_EDITOR        
        SaveScriptableObject();
 
         void SaveScriptableObject() {
@@ -112,6 +112,7 @@ public class Controls : MonoBehaviour
             EditorUtility.FocusProjectWindow();
             Selection.activeObject = preset;
         }
+        #endif
     }
 
     public void SaveSpritesheet() {
