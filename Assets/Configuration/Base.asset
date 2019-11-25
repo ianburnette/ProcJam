@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sizingConfig:
     spacing: 8
-    imageGridSize: 16
-    pixelSize: 8
+    imageGridSize: 8
+    pixelSize: 16
   noiseConfig:
     randomizeFrequency: 0
     octaves:
@@ -58,8 +58,8 @@ MonoBehaviour:
       m_RotationOrder: 4
   colorConfig:
     colorEnabled: 1
-    paletteIndex: 0
-    colorCountPerSprite: 2
+    paletteIndex: 1
+    colorCountPerSprite: 4
     usePaletteColors: 1
   backgroundColorConfig:
     randomPaletteColorForBackground: 0
@@ -75,30 +75,39 @@ MonoBehaviour:
     outlineColorOverride: {r: 0, g: 0, b: 0, a: 1}
   symmetryConfig:
     allowMultipleSymmetryTypes: 1
-    enforceSomeTypeOfSymmetry: 1
-    horizontalSymmetryChance: 0.15
+    enforceSomeTypeOfSymmetry: 0
+    horizontalSymmetryChance: 0.2
     quarterHorizontalSymmetryChance: 0.5
-    verticalSymmetryChance: 0.4
+    verticalSymmetryChance: 0.2
     quarterVerticalSymmetryChance: 0.5
-    forwardDiagonalSymmetryChance: 0.25
+    forwardDiagonalSymmetryChance: 0.2
     quarterForwardDiagonalSymmetryChance: 0.5
-    backwardDiagonalSymmetryChance: 0.25
+    backwardDiagonalSymmetryChance: 0.2
     quarterBackwardDiagonalSymmetryChance: 0.5
   scalingConfig:
     scalingModes: 00000000
     filterMode: 0
   animationConfig:
-    animationFrameCount: 2
+    animationFrameCount: 3
     timeBetweenFrames: 0.2
     animationMode: 1
   shadingConfig:
-    enableShading: 0
+    enableShading: 1
     shadingByColor: 1
     shadingIntensity: 0.2
-    enableHighlights: 0
+    enableHighlights: 1
     highlightByColor: 1
-    highlightIntensity: 0.06
+    highlightIntensity: 0.5
   cleanupConfig:
-    allowPixelsOnEdgeOfSprite: 1
+    allowPixelsOnEdgeOfSprite: 0
     lonePixelEvaluationMode: 1
     chanceToDeleteLonePixels: 1
+  normalsConfig:
+    enableNormals: 1
+    normalStrength: 0.78
+    filterMode: 0
+    viewNormalsOnly: 0
+    disableNormalsDisplay: 0
+    rotatingLightEnabled: 0
+    cursorFollowLightEnabled: 0
+    globalLightEnabled: 1

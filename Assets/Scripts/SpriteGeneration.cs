@@ -81,7 +81,9 @@ using UnityEngine;
             NormalMapGenerator.CreateNormalMap(ref normalMap, 1f);
         }
 
-        normalsControls.RotatingLightEnabled = configuration.normalsConfig.rotatingLightEnabled;
+        normalsControls.RotationEnabled = configuration.normalsConfig.rotatingLightEnabled;
+        normalsControls.CursorLightEnabled = configuration.normalsConfig.cursorFollowLightEnabled;
+        normalsControls.GlobalLightEnabled = configuration.normalsConfig.globalLightEnabled;
         
         if (configuration.scalingConfig.scalingModes != null)
             Scaling.ScaleTexture(ref normalMap, configuration.scalingConfig.scalingModes);

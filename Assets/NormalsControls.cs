@@ -7,9 +7,9 @@ using UnityEngine.Experimental.Rendering.Universal;
 public class NormalsControls : WindowGuiBase {
     public override string WindowLabel => "Normals";
 
-    public Animator lightAnim;
+    public Animator rotatingLightAnim;
     public Transform spriteParent;
-    public Light2D light;
+    public Light2D rotatingLight, cursorLight;
 
     List<FrameAnimation> animations;
     
@@ -34,13 +34,31 @@ public class NormalsControls : WindowGuiBase {
         }
     }
 
-    public bool RotatingLightEnabled {
+    public bool RotationEnabled {
         get => controls.Configuration.normalsConfig.rotatingLightEnabled;
         set {
             if (controls != null)
                 controls.Configuration.normalsConfig.rotatingLightEnabled = value;
-            lightAnim.enabled = value;
-            light.lightType = value ? Light2D.LightType.Point : Light2D.LightType.Global;
+            rotatingLightAnim.enabled = value;
+            rotatingLight.lightType = value ? Light2D.LightType.Point : Light2D.LightType.Global;
+        }
+    }
+
+    public bool CursorLightEnabled {
+        get => controls.Configuration.normalsConfig.cursorFollowLightEnabled;
+        set {
+            if (controls != null)
+                controls.Configuration.normalsConfig.cursorFollowLightEnabled = value;
+            cursorLight.enabled = value;
+        }
+    }
+    
+    public bool GlobalLightEnabled {
+        get => controls.Configuration.normalsConfig.globalLightEnabled;
+        set {
+            if (controls != null)
+                controls.Configuration.normalsConfig.globalLightEnabled = value;
+            rotatingLight.enabled = value;
         }
     }
 
@@ -60,12 +78,21 @@ public class NormalsControls : WindowGuiBase {
         var normalsDisplay = DisableNormalsDisplay;
         ToggleButton("Disable Normals Display", ref normalsDisplay);
         DisableNormalsDisplay = normalsDisplay;
-        var lightEnabled = RotatingLightEnabled;
-        ToggleButton("Enable Rotating Light", ref lightEnabled);
-        RotatingLightEnabled = lightEnabled;
-        lightAnim.speed = Slider("Light Rotation Speed", 
-            (float) System.Math.Round(lightAnim.speed, 2), 0f, 2f);
 
+        var globalLightEnabled = GlobalLightEnabled;
+        ToggleButton("Enable Global Light", ref globalLightEnabled);
+        GlobalLightEnabled = globalLightEnabled;
+        
+        var rotationEnabled = RotationEnabled;
+        ToggleButton("Enable Rotating Light", ref rotationEnabled);
+        RotationEnabled = rotationEnabled;
+        rotatingLightAnim.speed = Slider("Light Rotation Speed", 
+            (float) System.Math.Round(rotatingLightAnim.speed, 2), 0f, 2f);
+
+        var cursorLightEnabled = CursorLightEnabled;
+        ToggleButton("Enable Cursor Follow Light", ref cursorLightEnabled);
+        CursorLightEnabled = cursorLightEnabled;
+        
         base.Window();
     }
 }

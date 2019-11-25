@@ -127,6 +127,8 @@ public class NormalsConfig {
     public bool viewNormalsOnly;
     public bool disableNormalsDisplay;
     public bool rotatingLightEnabled;
+    public bool cursorFollowLightEnabled;
+    public bool globalLightEnabled = true;
 }
 
 //TODO: the pure multipliers should be extracted to a export class, as they don't affect in-game appearance

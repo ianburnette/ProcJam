@@ -102,3 +102,12 @@ MonoBehaviour:
     allowPixelsOnEdgeOfSprite: 0
     lonePixelEvaluationMode: 0
     chanceToDeleteLonePixels: 1
+  normalsConfig:
+    enableNormals: 0
+    normalStrength: 0.5
+    filterMode: 0
+    viewNormalsOnly: 0
+    disableNormalsDisplay: 0
+    rotatingLightEnabled: 0
+    cursorFollowLightEnabled: 0
+    globalLightEnabled: 1

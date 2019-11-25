@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3c3634c57fd3424d8e91a4775ce2ffb4, type: 3}
-  m_Name: Islands
+  m_Name: Pocket Monsters 2 (low rez) 1
   m_EditorClassIdentifier: 
   sizingConfig:
-    spacing: 8
-    imageGridSize: 2
-    pixelSize: 128
+    spacing: 20
+    imageGridSize: 10
+    pixelSize: 16
   noiseConfig:
     randomizeFrequency: 0
     octaves:
@@ -30,7 +30,7 @@ MonoBehaviour:
     randomOrigin: 1
     randomOriginBound: 255
     manualOrigin: {x: 160, y: 160}
-    animationFrameNoiseOffset: 0.12
+    animationFrameNoiseOffset: 0.1
   falloffConfig:
     falloffCurve:
       serializedVersion: 2
@@ -58,8 +58,8 @@ MonoBehaviour:
       m_RotationOrder: 4
   colorConfig:
     colorEnabled: 1
-    paletteIndex: 4
-    colorCountPerSprite: 5
+    paletteIndex: 0
+    colorCountPerSprite: 4
     usePaletteColors: 1
   backgroundColorConfig:
     randomPaletteColorForBackground: 0
@@ -67,39 +67,39 @@ MonoBehaviour:
     overrideBackgroundColor: 1
     backgroundColorOverride: {r: 0, g: 0, b: 0, a: 1}
   outlineConfig:
-    outlineEnabled: 0
+    outlineEnabled: 1
     applyOutlineAfterScaling: 1
     randomPaletteColorForOutline: 0
     paletteColorIndexForOutline: 0
     overrideOutlineColor: 1
     outlineColorOverride: {r: 1, g: 1, b: 1, a: 1}
   symmetryConfig:
-    allowMultipleSymmetryTypes: 1
-    enforceSomeTypeOfSymmetry: 0
+    allowMultipleSymmetryTypes: 0
+    enforceSomeTypeOfSymmetry: 1
     horizontalSymmetryChance: 0
     quarterHorizontalSymmetryChance: 0.5
-    verticalSymmetryChance: 0
-    quarterVerticalSymmetryChance: 0.5
+    verticalSymmetryChance: 1
+    quarterVerticalSymmetryChance: 0.74
     forwardDiagonalSymmetryChance: 0
     quarterForwardDiagonalSymmetryChance: 0.5
     backwardDiagonalSymmetryChance: 0
     quarterBackwardDiagonalSymmetryChance: 0.5
   scalingConfig:
-    scalingModes: 04000000
+    scalingModes: 00000000
     filterMode: 0
   animationConfig:
-    animationFrameCount: 1
-    timeBetweenFrames: 0.2
+    animationFrameCount: 3
+    timeBetweenFrames: 0.25
     animationMode: 1
   shadingConfig:
-    enableShading: 1
+    enableShading: 0
     shadingByColor: 1
     shadingIntensity: 0.11
-    enableHighlights: 1
+    enableHighlights: 0
     highlightByColor: 1
     highlightIntensity: 0.09
   cleanupConfig:
-    allowPixelsOnEdgeOfSprite: 1
+    allowPixelsOnEdgeOfSprite: 0
     lonePixelEvaluationMode: 0
     chanceToDeleteLonePixels: 1
   normalsConfig:
