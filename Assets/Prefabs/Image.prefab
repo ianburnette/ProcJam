@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: a797f5270507cac41b375fc771349fba, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -103,8 +103,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 3380691839521294702}
-  frames: []
+  diffuseFrames: []
+  normalFrames: []
   frameTime: 0.2
+  animationMode: 0
 --- !u!114 &7625224143223583235
 MonoBehaviour:
   m_ObjectHideFlags: 0

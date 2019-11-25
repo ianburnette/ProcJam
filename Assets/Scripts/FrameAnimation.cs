@@ -8,7 +8,8 @@ using UnityEngine.UI;
 [ExecuteInEditMode]
 public class FrameAnimation : MonoBehaviour {
     [SerializeField] Image image;
-    [SerializeField] List<Sprite> frames = new List<Sprite>();
+    [SerializeField] List<Sprite> diffuseFrames = new List<Sprite>();
+    [SerializeField] List<Sprite> normalFrames = new List<Sprite>();
     [SerializeField] float frameTime;
 
     int currentFrameIndex;
@@ -19,12 +20,19 @@ public class FrameAnimation : MonoBehaviour {
     private static extern void ImageDownloader(string str, string fn);
     #endif
     
-    public List<Sprite> Frames {
-        get => frames;
+    public List<Sprite> DiffuseFrames {
+        get => diffuseFrames;
         set {
-            frames = value;
+            diffuseFrames = value;
             CancelInvoke();
             InvokeRepeating(nameof(Animate), FrameTime, FrameTime);
+        }
+    }    
+    
+    public List<Sprite> NormalFrames {
+        get => normalFrames;
+        set {
+            normalFrames = value;
         }
     }
 
@@ -39,11 +47,20 @@ public class FrameAnimation : MonoBehaviour {
     }
 
     public AnimationMode animationMode;
+    Material myMaterial;
+    public bool enableNormals;
+    public bool disableNormalsDisplay;
+    public bool normalsOnly;
+
+    void OnEnable() {
+        ImageComponent.material = Instantiate(ImageComponent.material);
+        myMaterial = ImageComponent.material;
+    }
 
     void Animate() {
-        if (ascending && currentFrameIndex + 1 < frames.Count)
+        if (ascending && currentFrameIndex + 1 < diffuseFrames.Count)
             currentFrameIndex++;
-        else if (ascending && currentFrameIndex + 1 >= frames.Count) {
+        else if (ascending && currentFrameIndex + 1 >= diffuseFrames.Count) {
             if (animationMode == AnimationMode.pingPong) {
                 ascending = false;
                 currentFrameIndex--;
@@ -63,32 +80,51 @@ public class FrameAnimation : MonoBehaviour {
         if (currentFrameIndex < 0)
             currentFrameIndex = 0;
 
-        if (frames.Count >= currentFrameIndex + 1)
-            ImageComponent.sprite = frames[currentFrameIndex];
+        if (diffuseFrames.Count >= currentFrameIndex + 1) {
+            if (!normalsOnly) 
+                ImageComponent.sprite = diffuseFrames[currentFrameIndex];
+            else if (normalFrames.Count >= currentFrameIndex + 1)
+                ImageComponent.sprite = normalFrames[currentFrameIndex];
+            if(enableNormals && !disableNormalsDisplay)
+                myMaterial.SetTexture("_NormalMap", normalFrames[currentFrameIndex].texture);
+            if (disableNormalsDisplay)
+                myMaterial.SetTexture("_NormalMap", null);
+        }
     }
 
     public void Export() {
-        var generatedTexture = new Texture2D(frames[0].texture.width * frames.Count, frames[0].texture.height);
-        for (var index = 0; index < frames.Count; index++) {
-            var frame = frames[index];
+        var generatedTexture = new Texture2D(diffuseFrames[0].texture.width * diffuseFrames.Count, diffuseFrames[0].texture.height);
+        for (var index = 0; index < diffuseFrames.Count; index++) {
+            var frame = diffuseFrames[index];
             generatedTexture.SetPixels(index * frame.texture.width, 0, frame.texture.width, frame.texture.height, frame.texture.GetPixels());
         }
-        ExportTexture(generatedTexture, "Exported Sprites");
+
+        var time = DateTime.Now.Ticks;
+        ExportTexture(generatedTexture, "Exported Sprites", "exported_sprite", time);
+
+        if (enableNormals) {
+            for (var index = 0; index < normalFrames.Count; index++) {
+                var frame = normalFrames[index];
+                generatedTexture.SetPixels(index * frame.texture.width, 0, 
+                    frame.texture.width, frame.texture.height, frame.texture.GetPixels());
+            }
+            ExportTexture(generatedTexture, "Exported Sprites", "exported_sprite_n", time);
+        }
     }
 
-    public static void ExportTexture(Texture2D generatedTexture, string targetDirectory) {
+    public static void ExportTexture(Texture2D generatedTexture, string targetDirectory, string name, long time) {
         var bytes = generatedTexture.EncodeToPNG();
         #if UNITY_EDITOR
             var directory = ExtantDirectory(targetDirectory);
-            File.WriteAllBytes($"{directory}/exported_sprite_{DateTime.Now.Ticks}.png", bytes);
+            File.WriteAllBytes($"{directory}/{name}_{time}.png", bytes);
             return;
         #endif
         #if UNITY_WEBGL
-            ImageDownloader(System.Convert.ToBase64String(bytes), $"exported_sprite_{DateTime.Now.Ticks}.png");
+            ImageDownloader(System.Convert.ToBase64String(bytes), $"{name}_{time}.png");
         #endif
         #if UNITY_STANDALONE_WIN
             var directory = ExtantDirectory(targetDirectory);
-            File.WriteAllBytes($"{directory}/exported_sprite_{DateTime.Now.Ticks}.png", bytes);
+            File.WriteAllBytes($"{directory}/{name}_{time}.png", bytes);
         #endif
     }
 

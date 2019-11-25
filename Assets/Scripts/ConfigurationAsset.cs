@@ -13,6 +13,7 @@ public class ConfigurationAsset : ScriptableObject {
     public AnimationConfig animationConfig;
     public ShadingConfig shadingConfig;
     public CleanupConfig cleanupConfig;
+    public NormalsConfig normalsConfig;
 
     public void SetValues(
         SizingConfig sizingConfig,
@@ -25,8 +26,9 @@ public class ConfigurationAsset : ScriptableObject {
         ScalingConfig scalingConfig,
         AnimationConfig animationConfig,
         ShadingConfig shadingConfig,
-        CleanupConfig cleanupConfig
-    ) {
+        CleanupConfig cleanupConfig,
+        NormalsConfig normalsConfig
+        ) {
         this.sizingConfig = sizingConfig;
         this.noiseConfig = noiseConfig;
         this.falloffConfig = falloffConfig;
@@ -38,5 +40,6 @@ public class ConfigurationAsset : ScriptableObject {
         this.animationConfig = animationConfig;
         this.shadingConfig = shadingConfig;
         this.cleanupConfig = cleanupConfig;
+        this.normalsConfig = normalsConfig;
     }
 }

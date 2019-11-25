@@ -118,6 +118,17 @@ public class CleanupConfig{
     [Range(0f,1f)] public float chanceToDeleteLonePixels;
 }
 
+[Serializable]
+public class NormalsConfig {
+    public bool enableNormals;
+    public float normalStrength = .5f;
+    public FilterMode filterMode;
+    
+    public bool viewNormalsOnly;
+    public bool disableNormalsDisplay;
+    public bool rotatingLightEnabled;
+}
+
 //TODO: the pure multipliers should be extracted to a export class, as they don't affect in-game appearance
 public enum ScalingMode { none = 0, x2, x4, x10, eagle2, eagle3 }
 public enum AnimationMode { loop, pingPong }

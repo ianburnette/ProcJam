@@ -10,6 +10,7 @@ using UnityEngine;
     [SerializeField] Falloff falloff;
     [SerializeField] Outline outline;
     [SerializeField] Cleanup cleanup;
+    [SerializeField] NormalsControls normalsControls;
 
     public Color backgroundColor;
 
@@ -18,18 +19,27 @@ using UnityEngine;
         set => recoloring = value;
     }
 
-    public List<Sprite> Generate(ConfigurationAsset configuration) {
+    public (List<Sprite>, List<Sprite>) Generate(ConfigurationAsset configuration) {
         var sprites = new List<Sprite>();
+        var normals = new List<Sprite>();
         for (int i = 0; i < configuration.animationConfig.animationFrameCount; i++) {
-            sprites.Add(
-                Sprite.Create(GenerateTexture(i, configuration), 
-                RectAccordingToScalingMode(configuration.scalingConfig.scalingModes, configuration.sizingConfig.pixelSize), 
-                new Vector2(.5f, .5f)));
+            var (texture, normal) = GenerateTexture(i, configuration);
+            var diffuseSprite = CreateSprite(texture);
+            var normalSprite = CreateSprite(normal);
+            sprites.Add(diffuseSprite);
+            normals.Add(normalSprite);
         }
-        return sprites;
+        return (sprites, normals);
+
+        Sprite CreateSprite(Texture2D texture) {
+            return Sprite.Create(texture,
+                RectAccordingToScalingMode(configuration.scalingConfig.scalingModes,
+                    configuration.sizingConfig.pixelSize),
+                new Vector2(.5f, .5f));
+        }
     }
 
-    Texture2D GenerateTexture(int frame, ConfigurationAsset configuration)
+    (Texture2D, Texture2D) GenerateTexture(int frame, ConfigurationAsset configuration)
     {
         var tex = noiseGeneration.GetNoise(frame, configuration.noiseConfig, configuration.sizingConfig.pixelSize);
         falloff.ApplyFalloff(ref tex, configuration.falloffConfig);
@@ -38,16 +48,12 @@ using UnityEngine;
         backgroundColor = Color.black;
         var outlineColor = Color.black;
 
+        var normalMap = tex;
+        
         if (configuration.colorConfig.colorEnabled) {
             (backgroundColor, outlineColor) = recoloring.Recolor(ref tex, frame, 
                 configuration.colorConfig, configuration.backgroundColorConfig, configuration.outlineConfig);
         }
-
-        if (!configuration.cleanupConfig.allowPixelsOnEdgeOfSprite)
-            cleanup.RemovePixelsAtEdgeOfSprite(ref tex, backgroundColor);
-        
-        if (configuration.cleanupConfig.chanceToDeleteLonePixels > Random.value)
-            cleanup.Despeckle(ref tex, backgroundColor, configuration.cleanupConfig.lonePixelEvaluationMode);
 
         if (configuration.shadingConfig.enableShading)
             Shading.Shade(ref tex, backgroundColor, configuration.shadingConfig.shadingIntensity, configuration.shadingConfig.shadingByColor);
@@ -61,10 +67,29 @@ using UnityEngine;
             Scaling.ScaleTexture(ref tex, configuration.scalingConfig.scalingModes);
         if (configuration.colorConfig.colorEnabled && configuration.outlineConfig.outlineEnabled && configuration.outlineConfig.applyOutlineAfterScaling)
             outline.OutlineTexture(ref tex, backgroundColor, outlineColor);
+
+        if (!configuration.cleanupConfig.allowPixelsOnEdgeOfSprite)
+            cleanup.RemovePixelsAtEdgeOfSprite(ref tex, backgroundColor);
+        if (configuration.cleanupConfig.chanceToDeleteLonePixels >= Random.value)
+            cleanup.Despeckle(ref tex, backgroundColor, configuration.cleanupConfig.lonePixelEvaluationMode);
+
+        tex.Apply();    
         tex.filterMode = configuration.scalingConfig.filterMode;
         tex.wrapMode = TextureWrapMode.Clamp;
-        tex.Apply();    
-        return tex;
+
+        if (configuration.normalsConfig.enableNormals) {
+            NormalMapGenerator.CreateNormalMap(ref normalMap, 1f);
+        }
+
+        normalsControls.RotatingLightEnabled = configuration.normalsConfig.rotatingLightEnabled;
+        
+        if (configuration.scalingConfig.scalingModes != null)
+            Scaling.ScaleTexture(ref normalMap, configuration.scalingConfig.scalingModes);
+        normalMap.wrapMode = TextureWrapMode.Clamp;
+        normalMap.filterMode = configuration.normalsConfig.filterMode;
+        normalMap.Apply();
+
+        return (tex, normalMap);
     }
 
     Rect RectAccordingToScalingMode(ScalingMode[] scalingModes, int spritePixelSize) {

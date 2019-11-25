@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -55,7 +56,10 @@ public class Controls : MonoBehaviour
             var frameAnimation = sprite.GetComponent<FrameAnimation>();
             frameAnimation.FrameTime = Configuration.animationConfig.timeBetweenFrames;
             frameAnimation.animationMode = Configuration.animationConfig.animationMode;
-            frameAnimation.Frames = Generation.Generate(Configuration);
+            var (diffuse, normal) = Generation.Generate(configuration);
+            frameAnimation.DiffuseFrames = diffuse;
+            if (configuration.normalsConfig.enableNormals) frameAnimation.NormalFrames = normal;
+            frameAnimation.enableNormals = configuration.normalsConfig.enableNormals;
             currentFrameAnimations.Add(frameAnimation);
         }
 
@@ -89,8 +93,9 @@ public class Controls : MonoBehaviour
             Configuration.scalingConfig,
             Configuration.animationConfig,
             Configuration.shadingConfig,
-            Configuration.cleanupConfig
-            );
+            Configuration.cleanupConfig,
+            configuration.normalsConfig
+        );
         #if UNITY_EDITOR        
        SaveScriptableObject();
 
@@ -127,35 +132,51 @@ public class Controls : MonoBehaviour
         var scaledNewTextureFrameWidth = scaledImageSize * gridSize + scaledSpacing * 2;
         var scaledNewTextureWidth = scaledNewTextureFrameWidth * frameCount;
         var scaledNewTextureFrameHeight = scaledImageSize * gridSize + scaledSpacing * 2;
-        
-        var generatedTexture = new Texture2D(scaledNewTextureFrameWidth * frameCount, scaledNewTextureFrameHeight);
-        
-        var backgroundPixels = new Color[scaledNewTextureWidth * scaledNewTextureFrameHeight];
-        for (var i = 0; i < scaledNewTextureWidth * scaledNewTextureFrameHeight; i++)
-            backgroundPixels[i] = Generation.backgroundColor;
-        generatedTexture.SetPixels(0,0,scaledNewTextureFrameWidth * frameCount, scaledNewTextureFrameHeight, backgroundPixels);
-        
-        for (var frame = 0; frame < frameCount; frame++) {
-            var spriteIndex = 0;
-            for (var column = gridSize - 1; column >= 0; column--) {
-                for (var row = 0; row < gridSize; row++) {
-                    var targetXcoord = scaledSpacing + ((row * scaledImageSize) + (frame * scaledNewTextureFrameWidth)) + scaledSpacing;
-                    var targetYcoord = scaledSpacing + (column * scaledImageSize) + scaledSpacing;
-                    generatedTexture.SetPixels(
-                        targetXcoord, 
-                        targetYcoord, 
-                        scaledPixelSize, scaledPixelSize, 
-                        currentFrameAnimations[spriteIndex].Frames[frame].texture
-                        .GetPixels(0, 0, scaledPixelSize, scaledPixelSize));
-                    spriteIndex++;
-                }
-            }
-        }
+
+        var generatedTexture = GenerateTexture(diffuse: true);
+
+        Texture2D normalsTexture = null;
+        if (configuration.normalsConfig.enableNormals) normalsTexture = GenerateTexture(diffuse: false);
 
         //    Scaling.ScaleTexture(ref generatedTexture, configuration.scalingMode);
-        
-        generatedTexture.Apply();
-        FrameAnimation.ExportTexture(generatedTexture, "Exported Spritesheets");
+
+        Texture2D GenerateTexture(bool diffuse) {
+            var texture = new Texture2D(scaledNewTextureFrameWidth * frameCount, scaledNewTextureFrameHeight);
+
+            var backgroundPixels = new Color[scaledNewTextureWidth * scaledNewTextureFrameHeight];
+            for (var i = 0; i < scaledNewTextureWidth * scaledNewTextureFrameHeight; i++)
+                backgroundPixels[i] = Generation.backgroundColor;
+            texture.SetPixels(0, 0, scaledNewTextureFrameWidth * frameCount, scaledNewTextureFrameHeight,
+                backgroundPixels);
+
+            for (var frame = 0; frame < frameCount; frame++) {
+                var spriteIndex = 0;
+                for (var column = gridSize - 1; column >= 0; column--) {
+                    for (var row = 0; row < gridSize; row++) {
+                        var targetXcoord = scaledSpacing + ((row * scaledImageSize) + (frame * scaledNewTextureFrameWidth)) +
+                                           scaledSpacing;
+                        var targetYcoord = scaledSpacing + (column * scaledImageSize) + scaledSpacing;
+                        texture.SetPixels(
+                            targetXcoord,
+                            targetYcoord,
+                            scaledPixelSize, scaledPixelSize,
+                            diffuse ? 
+                            currentFrameAnimations[spriteIndex].DiffuseFrames[frame].texture.GetPixels(0, 0, scaledPixelSize, scaledPixelSize) : 
+                            currentFrameAnimations[spriteIndex].NormalFrames[frame].texture.GetPixels(0, 0, scaledPixelSize, scaledPixelSize)
+                            ); 
+                        spriteIndex++;
+                    }
+                }
+            }
+            texture.Apply();
+            return texture;
+        }
+
+        var time = DateTime.Now.Ticks;
+        FrameAnimation.ExportTexture(generatedTexture, "Exported Spritesheets", "exported_spritesheet", time);
+        if (configuration.normalsConfig.enableNormals)
+            FrameAnimation.ExportTexture(normalsTexture, "Exported Spritesheets", "exported_spritesheet_n", time);
+            
     }
 }
 
