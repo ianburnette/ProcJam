@@ -16,6 +16,7 @@ namespace Nothke.ProtoGUI
         public int toolbarOffset = 30;
         public int toolbarHeight = 30;
         public int margin = 10;
+        public bool sizeDirty;
         
         void Start()
         {
@@ -36,6 +37,10 @@ namespace Nothke.ProtoGUI
             windowRect.y = toolbarOffset;
             windowRect.x = 0;
             windowRect.width = Screen.width;
+            if (sizeDirty) {
+                windowRect.height = 0;
+                sizeDirty = false;
+            }
             buttonWidth = (Screen.width / windows.Count) - margin;
             GUILayout.BeginHorizontal();
             for (int i = 0; i < windows.Count; i++)

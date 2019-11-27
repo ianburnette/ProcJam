@@ -5,6 +5,12 @@ public class BasicControls : WindowGuiBase {
     public ToolbarGUI toolbarGui;
     public override string WindowLabel => "Operations";
 
+    float myOffset = 30;
+
+    protected override void Start() {
+        base.Start();
+    }
+
     protected override void Window() {
         windowRect.position = new Vector2(Screen.width - windowRect.size.x, toolbarGui.toolbarHeight);
         Label("Click the Generate button to generate a new set of random sprites.");
@@ -21,5 +27,7 @@ public class BasicControls : WindowGuiBase {
         if (Button("Close")) enabled = false;
         Label("Made by Ian Burnette.");
         Label("UI made with ProtoGUI by nothke.");
+        windowRect.position = new Vector2(Screen.width - windowRect.size.x - myOffset, 
+            Screen.height - windowRect.height - myOffset);
     }
 }

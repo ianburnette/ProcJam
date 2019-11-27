@@ -135,10 +135,10 @@ MonoBehaviour:
       m_Top: 0
       m_Bottom: 0
     m_Font: {fileID: 12800000, guid: 1e169404bdf513945972b9d3aa0bf772, type: 3}
-    m_FontSize: 0
+    m_FontSize: 10
     m_FontStyle: 0
-    m_Alignment: 4
-    m_WordWrap: 0
+    m_Alignment: 3
+    m_WordWrap: 1
     m_RichText: 1
     m_TextClipping: 1
     m_ImagePosition: 0
@@ -269,7 +269,7 @@ MonoBehaviour:
       m_Top: 0
       m_Bottom: 0
     m_Font: {fileID: 12800000, guid: 1e169404bdf513945972b9d3aa0bf772, type: 3}
-    m_FontSize: 0
+    m_FontSize: 10
     m_FontStyle: 0
     m_Alignment: 0
     m_WordWrap: 1
@@ -470,10 +470,10 @@ MonoBehaviour:
       m_Top: 0
       m_Bottom: 0
     m_Font: {fileID: 12800000, guid: 1e169404bdf513945972b9d3aa0bf772, type: 3}
-    m_FontSize: 0
+    m_FontSize: 10
     m_FontStyle: 0
     m_Alignment: 1
-    m_WordWrap: 0
+    m_WordWrap: 1
     m_RichText: 1
     m_TextClipping: 1
     m_ImagePosition: 0
@@ -481,7 +481,7 @@ MonoBehaviour:
     m_FixedWidth: 0
     m_FixedHeight: 0
     m_StretchWidth: 1
-    m_StretchHeight: 0
+    m_StretchHeight: 1
   m_horizontalSlider:
     m_Name: horizontalslider
     m_Normal:
