@@ -360,7 +360,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &709028356
+--- !u!21 &628199307
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
@@ -588,7 +588,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89baa37976a13494caa82211c95967e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  configuration: {fileID: 11400000, guid: 03ddf66de1baca549935a865972c62bc, type: 2}
+  configuration: {fileID: 11400000, guid: c50c5383f64e3d34cab5a35b9834dac8, type: 2}
   spriteParent: {fileID: 920644193}
   spritePrefab: {fileID: 3380691839521294703, guid: dc2683663466fe246bcb529520ae7993,
     type: 3}
@@ -679,6 +679,7 @@ GameObject:
   m_Component:
   - component: {fileID: 920644193}
   - component: {fileID: 920644194}
+  - component: {fileID: 920644195}
   m_Layer: 5
   m_Name: SpriteParent
   m_TagString: Untagged
@@ -729,6 +730,22 @@ MonoBehaviour:
   m_Spacing: {x: 8, y: 8}
   m_Constraint: 1
   m_ConstraintCount: 12
+--- !u!114 &920644195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 920644192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 452d17c94e22e1943bccd6ee5ba95805, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxScale: 0.2
+  minScale: 5
+  scrollSpeed: 5.2
+  resizeSpeed: 3
 --- !u!1 &1246134770
 GameObject:
   m_ObjectHideFlags: 0
@@ -797,6 +814,7 @@ MonoBehaviour:
   toolbarOffset: -30
   toolbarHeight: 20
   margin: 3
+  sizeDirty: 0
 --- !u!114 &1246134772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -816,10 +834,9 @@ MonoBehaviour:
     width: 250
     height: 0
   controls: {fileID: 0}
-  offset: 30
   canvasScaler: {fileID: 816523442}
   protoGuiSkin: {fileID: 11400000, guid: 9c55abd95fd810844a5e9c67a209ad0b, type: 2}
-  toolbarRect: {fileID: 1246134771}
+  toolbarGui: {fileID: 1246134771}
 --- !u!4 &1246134773
 Transform:
   m_ObjectHideFlags: 0
@@ -870,7 +887,6 @@ MonoBehaviour:
     width: 250
     height: 0
   controls: {fileID: 0}
-  offset: 30
   toolbarGui: {fileID: 1246134771}
 --- !u!114 &1246134776
 MonoBehaviour:
@@ -891,7 +907,6 @@ MonoBehaviour:
     width: 250
     height: 0
   controls: {fileID: 0}
-  offset: 30
 --- !u!114 &1246134777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -911,7 +926,6 @@ MonoBehaviour:
     width: 250
     height: 0
   controls: {fileID: 0}
-  offset: 30
 --- !u!114 &1246134778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -931,7 +945,6 @@ MonoBehaviour:
     width: 250
     height: 0
   controls: {fileID: 0}
-  offset: 30
 --- !u!114 &1246134779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -951,7 +964,6 @@ MonoBehaviour:
     width: 250
     height: 0
   controls: {fileID: 0}
-  offset: 30
   grey: {r: 0.1509434, g: 0.1509434, b: 0.1509434, a: 1}
 --- !u!114 &1246134780
 MonoBehaviour:
@@ -972,7 +984,6 @@ MonoBehaviour:
     width: 250
     height: 0
   controls: {fileID: 0}
-  offset: 30
 --- !u!114 &1246134781
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -992,7 +1003,6 @@ MonoBehaviour:
     width: 250
     height: 0
   controls: {fileID: 0}
-  offset: 30
 --- !u!114 &1246134782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1012,7 +1022,6 @@ MonoBehaviour:
     width: 250
     height: 0
   controls: {fileID: 0}
-  offset: 30
 --- !u!114 &1246134783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1032,7 +1041,6 @@ MonoBehaviour:
     width: 250
     height: 0
   controls: {fileID: 0}
-  offset: 30
 --- !u!114 &1246134784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1052,7 +1060,6 @@ MonoBehaviour:
     width: 250
     height: 0
   controls: {fileID: 0}
-  offset: 30
 --- !u!114 &1246134785
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1072,9 +1079,8 @@ MonoBehaviour:
     width: 250
     height: 0
   controls: {fileID: 0}
-  offset: 30
   allConfigurations:
-  - {fileID: 11400000, guid: 03ddf66de1baca549935a865972c62bc, type: 2}
+  - {fileID: 11400000, guid: c50c5383f64e3d34cab5a35b9834dac8, type: 2}
   - {fileID: 11400000, guid: 958239080f97bbe46b30b07323f81af4, type: 2}
   - {fileID: 11400000, guid: d3d6157c3cd2ff949afe6d3eb2d6bc2d, type: 2}
   - {fileID: 11400000, guid: de36e0250ae42c247be03b29a2b3c026, type: 2}
@@ -1103,7 +1109,6 @@ MonoBehaviour:
     width: 250
     height: 0
   controls: {fileID: 0}
-  offset: 30
   rotatingLightAnim: {fileID: 1829873381}
   spriteParent: {fileID: 920644193}
   rotatingLight: {fileID: 2142093330}

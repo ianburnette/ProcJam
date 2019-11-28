@@ -41,8 +41,8 @@ public class SizingControls : WindowGuiBase {
         controls.Configuration.sizingConfig.pixelSize = Slider("Sprite Pixel Size", controls.Configuration.sizingConfig.pixelSize, 4, 128);
 
         Label("Window Controls");
-        scale = Slider("Canvas Size", (float) System.Math.Round(scale, 2), .5f, 4f);
-        canvasScaler.referenceResolution = baseReferenceResolution / scale;
+       //scale = Slider("Canvas Size", (float) System.Math.Round(scale, 2), .5f, 4f);
+       //canvasScaler.referenceResolution = baseReferenceResolution / scale;
         FontSize = Slider("Font Size", fontSize, 6, 20);
 
         protoGuiSkin.button.fontSize = protoGuiSkin.label.fontSize = protoGuiSkin.window.fontSize = fontSize;

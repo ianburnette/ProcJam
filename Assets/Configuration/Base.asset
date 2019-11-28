@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sizingConfig:
     spacing: 8
-    imageGridSize: 8
+    imageGridSize: 12
     pixelSize: 16
   noiseConfig:
     randomizeFrequency: 0
@@ -72,7 +72,7 @@ MonoBehaviour:
     randomPaletteColorForOutline: 0
     paletteColorIndexForOutline: 0
     overrideOutlineColor: 1
-    outlineColorOverride: {r: 0, g: 0, b: 0, a: 1}
+    outlineColorOverride: {r: 1, g: 1, b: 1, a: 1}
   symmetryConfig:
     allowMultipleSymmetryTypes: 1
     enforceSomeTypeOfSymmetry: 0
@@ -94,17 +94,17 @@ MonoBehaviour:
   shadingConfig:
     enableShading: 1
     shadingByColor: 1
-    shadingIntensity: 0.2
+    shadingIntensity: 0.11
     enableHighlights: 1
     highlightByColor: 1
-    highlightIntensity: 0.5
+    highlightIntensity: 0.09
   cleanupConfig:
     allowPixelsOnEdgeOfSprite: 0
-    lonePixelEvaluationMode: 1
+    lonePixelEvaluationMode: 0
     chanceToDeleteLonePixels: 1
   normalsConfig:
-    enableNormals: 1
-    normalStrength: 0.78
+    enableNormals: 0
+    normalStrength: 0.5
     filterMode: 0
     viewNormalsOnly: 0
     disableNormalsDisplay: 0
