@@ -1,4 +1,5 @@
-﻿using Nothke.ProtoGUI;
+﻿using System;
+using Nothke.ProtoGUI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,6 +35,8 @@ public class SizingControls : WindowGuiBase {
         }
     }
 
+   
+    
     protected override void Window()
     {
         controls.Configuration.sizingConfig.spacing = Slider("Spacing", controls.Configuration.sizingConfig.spacing, 0, 64);

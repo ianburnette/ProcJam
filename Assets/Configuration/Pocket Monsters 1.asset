@@ -58,8 +58,8 @@ MonoBehaviour:
       m_RotationOrder: 4
   colorConfig:
     colorEnabled: 1
-    paletteIndex: 1
-    colorCountPerSprite: 4
+    paletteIndex: 5
+    colorCountPerSprite: 3
     usePaletteColors: 1
   backgroundColorConfig:
     randomPaletteColorForBackground: 0
@@ -76,26 +76,26 @@ MonoBehaviour:
   symmetryConfig:
     allowMultipleSymmetryTypes: 1
     enforceSomeTypeOfSymmetry: 0
-    horizontalSymmetryChance: 0
+    horizontalSymmetryChance: 0.51
     quarterHorizontalSymmetryChance: 0.5
-    verticalSymmetryChance: 1
+    verticalSymmetryChance: 0.48
     quarterVerticalSymmetryChance: 0.5
-    forwardDiagonalSymmetryChance: 0
+    forwardDiagonalSymmetryChance: 0.46
     quarterForwardDiagonalSymmetryChance: 0.5
-    backwardDiagonalSymmetryChance: 0
+    backwardDiagonalSymmetryChance: 0.48
     quarterBackwardDiagonalSymmetryChance: 0.5
   scalingConfig:
     scalingModes: 00000000
     filterMode: 0
   animationConfig:
-    animationFrameCount: 3
-    timeBetweenFrames: 0.2
+    animationFrameCount: 6
+    timeBetweenFrames: 0.47
     animationMode: 1
   shadingConfig:
-    enableShading: 1
+    enableShading: 0
     shadingByColor: 1
     shadingIntensity: 0.11
-    enableHighlights: 1
+    enableHighlights: 0
     highlightByColor: 1
     highlightIntensity: 0.09
   cleanupConfig:
@@ -103,11 +103,11 @@ MonoBehaviour:
     lonePixelEvaluationMode: 0
     chanceToDeleteLonePixels: 1
   normalsConfig:
-    enableNormals: 0
+    enableNormals: 1
     normalStrength: 0.5
     filterMode: 0
-    viewNormalsOnly: 0
-    disableNormalsDisplay: 0
-    rotatingLightEnabled: 0
-    cursorFollowLightEnabled: 0
+    viewNormalsOnly: 1
+    disableNormalsDisplay: 1
+    rotatingLightEnabled: 1
+    cursorFollowLightEnabled: 1
     globalLightEnabled: 1

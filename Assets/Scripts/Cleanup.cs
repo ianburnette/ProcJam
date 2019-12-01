@@ -20,7 +20,7 @@ public class Cleanup : MonoBehaviour
         }
     }
 
-    public void RemovePixelsAtEdgeOfSprite(ref Texture2D tex, Color backgroundColor) {
+    public void RemovePixelsAtEdgeOfSprite(ref Texture2D tex, Color backgroundColor, Color outlineColor) {
         var colors = new Color[tex.width];
         for (int i = 0; i < tex.width; i++) colors[i] = backgroundColor;
 
@@ -28,5 +28,6 @@ public class Cleanup : MonoBehaviour
         tex.SetPixels(0, 0, 1, tex.height - 1, colors);
         tex.SetPixels(tex.width - 1, 0, 1, tex.height, colors);
         tex.SetPixels(0, tex.height - 1, tex.width, 1, colors);
+        //we should account for the outline color here.
     }
 }

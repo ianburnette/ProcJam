@@ -15,7 +15,7 @@ MonoBehaviour:
   sizingConfig:
     spacing: 8
     imageGridSize: 2
-    pixelSize: 128
+    pixelSize: 64
   noiseConfig:
     randomizeFrequency: 0
     octaves:
@@ -107,7 +107,7 @@ MonoBehaviour:
     normalStrength: 0.5
     filterMode: 0
     viewNormalsOnly: 0
-    disableNormalsDisplay: 0
+    disableNormalsDisplay: 1
     rotatingLightEnabled: 0
     cursorFollowLightEnabled: 0
     globalLightEnabled: 1

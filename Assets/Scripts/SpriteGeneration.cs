@@ -9,8 +9,8 @@ using UnityEngine;
     [SerializeField] Symmetry symmetry;
     [SerializeField] Falloff falloff;
     [SerializeField] Outline outline;
+    [SerializeField] public NormalGeneration normalGeneration;
     [SerializeField] Cleanup cleanup;
-    [SerializeField] NormalsControls normalsControls;
 
     public Color backgroundColor;
 
@@ -69,7 +69,7 @@ using UnityEngine;
             outline.OutlineTexture(ref tex, backgroundColor, outlineColor);
 
         if (!configuration.cleanupConfig.allowPixelsOnEdgeOfSprite)
-            cleanup.RemovePixelsAtEdgeOfSprite(ref tex, backgroundColor);
+            cleanup.RemovePixelsAtEdgeOfSprite(ref tex, backgroundColor, outlineColor);
         if (configuration.cleanupConfig.chanceToDeleteLonePixels >= Random.value)
             cleanup.Despeckle(ref tex, backgroundColor, configuration.cleanupConfig.lonePixelEvaluationMode);
 
@@ -78,12 +78,12 @@ using UnityEngine;
         tex.wrapMode = TextureWrapMode.Clamp;
 
         if (configuration.normalsConfig.enableNormals) {
-            NormalMapGenerator.CreateNormalMap(ref normalMap, 1f);
+            NormalGeneration.CreateNormalMap(ref normalMap, 1f);
         }
 
-        normalsControls.RotationEnabled = configuration.normalsConfig.rotatingLightEnabled;
-        normalsControls.CursorLightEnabled = configuration.normalsConfig.cursorFollowLightEnabled;
-        normalsControls.GlobalLightEnabled = configuration.normalsConfig.globalLightEnabled;
+        normalGeneration.RotationEnabled = configuration.normalsConfig.rotatingLightEnabled;
+        normalGeneration.CursorLightEnabled = configuration.normalsConfig.cursorFollowLightEnabled;
+        normalGeneration.GlobalLightEnabled = configuration.normalsConfig.globalLightEnabled;
         
         if (configuration.scalingConfig.scalingModes != null)
             Scaling.ScaleTexture(ref normalMap, configuration.scalingConfig.scalingModes);

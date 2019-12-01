@@ -19,14 +19,14 @@ MonoBehaviour:
   noiseConfig:
     randomizeFrequency: 0
     octaves:
-    - scale: 2.9
-      frequency: 0.8
-    - scale: 10
-      frequency: 0.25
-    - scale: 20
-      frequency: 0.12
-    - scale: 45.45
-      frequency: 0.07
+    - scale: 5.17
+      frequency: 0.53
+    - scale: 12.07
+      frequency: 0.34
+    - scale: 25.32
+      frequency: 0.13
+    - scale: 42.97
+      frequency: 0.05
     randomOrigin: 1
     randomOriginBound: 255
     manualOrigin: {x: 160, y: 160}
@@ -63,12 +63,12 @@ MonoBehaviour:
     usePaletteColors: 1
   backgroundColorConfig:
     randomPaletteColorForBackground: 0
-    paletteColorIndexForBackground: 2
+    paletteColorIndexForBackground: 1
     overrideBackgroundColor: 1
     backgroundColorOverride: {r: 0, g: 0, b: 0, a: 1}
   outlineConfig:
     outlineEnabled: 0
-    applyOutlineAfterScaling: 1
+    applyOutlineAfterScaling: 0
     randomPaletteColorForOutline: 0
     paletteColorIndexForOutline: 0
     overrideOutlineColor: 1
@@ -76,21 +76,21 @@ MonoBehaviour:
   symmetryConfig:
     allowMultipleSymmetryTypes: 1
     enforceSomeTypeOfSymmetry: 0
-    horizontalSymmetryChance: 0.2
-    quarterHorizontalSymmetryChance: 0.5
-    verticalSymmetryChance: 0.2
-    quarterVerticalSymmetryChance: 0.5
-    forwardDiagonalSymmetryChance: 0.2
-    quarterForwardDiagonalSymmetryChance: 0.5
-    backwardDiagonalSymmetryChance: 0.2
-    quarterBackwardDiagonalSymmetryChance: 0.5
+    horizontalSymmetryChance: 0.28
+    quarterHorizontalSymmetryChance: 0.26
+    verticalSymmetryChance: 0.79
+    quarterVerticalSymmetryChance: 0
+    forwardDiagonalSymmetryChance: 1
+    quarterForwardDiagonalSymmetryChance: 0
+    backwardDiagonalSymmetryChance: 1
+    quarterBackwardDiagonalSymmetryChance: 0
   scalingConfig:
     scalingModes: 00000000
     filterMode: 0
   animationConfig:
     animationFrameCount: 3
-    timeBetweenFrames: 0.2
-    animationMode: 1
+    timeBetweenFrames: 0.25
+    animationMode: 0
   shadingConfig:
     enableShading: 1
     shadingByColor: 1
@@ -100,14 +100,14 @@ MonoBehaviour:
     highlightIntensity: 0.09
   cleanupConfig:
     allowPixelsOnEdgeOfSprite: 0
-    lonePixelEvaluationMode: 0
+    lonePixelEvaluationMode: 1
     chanceToDeleteLonePixels: 1
   normalsConfig:
     enableNormals: 0
     normalStrength: 0.5
     filterMode: 0
     viewNormalsOnly: 0
-    disableNormalsDisplay: 0
+    disableNormalsDisplay: 1
     rotatingLightEnabled: 0
     cursorFollowLightEnabled: 0
     globalLightEnabled: 1

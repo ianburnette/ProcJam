@@ -30,8 +30,9 @@ public class Controls : MonoBehaviour
     [Header("References")]
     [SerializeField] Transform spriteParent;
     [SerializeField] GameObject spritePrefab;
-    [SerializeField] SpriteGeneration spriteGeneration;
+    [SerializeField] public SpriteGeneration spriteGeneration;
     [SerializeField] GridLayoutGroup gridLayoutGroup;
+    [SerializeField] public List<ConfigurationAsset> configurationAssets;
 
     public List<FrameAnimation> currentFrameAnimations;
 
@@ -178,5 +179,6 @@ public class Controls : MonoBehaviour
             FrameAnimation.ExportTexture(normalsTexture, "Exported Spritesheets", "exported_spritesheet_n", time);
             
     }
+
 }
 

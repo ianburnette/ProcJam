@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sizingConfig:
     spacing: 16
-    imageGridSize: 10
-    pixelSize: 16
+    imageGridSize: 4
+    pixelSize: 64
   noiseConfig:
     randomizeFrequency: 0
     octaves:
@@ -85,7 +85,7 @@ MonoBehaviour:
     backwardDiagonalSymmetryChance: 0.25
     quarterBackwardDiagonalSymmetryChance: 0
   scalingConfig:
-    scalingModes: 00000000
+    scalingModes: 0000000000000000
     filterMode: 0
   animationConfig:
     animationFrameCount: 3
@@ -107,7 +107,7 @@ MonoBehaviour:
     normalStrength: 0.5
     filterMode: 0
     viewNormalsOnly: 0
-    disableNormalsDisplay: 0
+    disableNormalsDisplay: 1
     rotatingLightEnabled: 0
     cursorFollowLightEnabled: 0
     globalLightEnabled: 1

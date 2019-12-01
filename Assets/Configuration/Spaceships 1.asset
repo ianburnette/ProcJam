@@ -58,17 +58,17 @@ MonoBehaviour:
       m_RotationOrder: 4
   colorConfig:
     colorEnabled: 1
-    paletteIndex: 1
-    colorCountPerSprite: 4
-    usePaletteColors: 1
+    paletteIndex: 0
+    colorCountPerSprite: 3
+    usePaletteColors: 0
   backgroundColorConfig:
     randomPaletteColorForBackground: 0
-    paletteColorIndexForBackground: 2
+    paletteColorIndexForBackground: 6
     overrideBackgroundColor: 1
     backgroundColorOverride: {r: 0, g: 0, b: 0, a: 1}
   outlineConfig:
-    outlineEnabled: 0
-    applyOutlineAfterScaling: 1
+    outlineEnabled: 1
+    applyOutlineAfterScaling: 0
     randomPaletteColorForOutline: 0
     paletteColorIndexForOutline: 0
     overrideOutlineColor: 1
@@ -88,7 +88,7 @@ MonoBehaviour:
     scalingModes: 00000000
     filterMode: 0
   animationConfig:
-    animationFrameCount: 1
+    animationFrameCount: 3
     timeBetweenFrames: 0.2
     animationMode: 1
   shadingConfig:
@@ -107,7 +107,7 @@ MonoBehaviour:
     normalStrength: 0.5
     filterMode: 0
     viewNormalsOnly: 0
-    disableNormalsDisplay: 0
+    disableNormalsDisplay: 1
     rotatingLightEnabled: 0
     cursorFollowLightEnabled: 0
     globalLightEnabled: 1

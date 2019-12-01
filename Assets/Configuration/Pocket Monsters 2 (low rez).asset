@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Pocket Monsters 2 (low rez)
   m_EditorClassIdentifier: 
   sizingConfig:
-    spacing: 0
+    spacing: 12
     imageGridSize: 10
     pixelSize: 16
   noiseConfig:
@@ -107,7 +107,7 @@ MonoBehaviour:
     normalStrength: 0.5
     filterMode: 0
     viewNormalsOnly: 0
-    disableNormalsDisplay: 0
+    disableNormalsDisplay: 1
     rotatingLightEnabled: 0
     cursorFollowLightEnabled: 0
     globalLightEnabled: 1
