@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Base
   m_EditorClassIdentifier: 
   sizingConfig:
-    spacing: 8
+    spacing: 6
     imageGridSize: 12
     pixelSize: 16
   noiseConfig:
@@ -30,7 +30,7 @@ MonoBehaviour:
     randomOrigin: 1
     randomOriginBound: 255
     manualOrigin: {x: 160, y: 160}
-    animationFrameNoiseOffset: 0.12
+    animationFrameNoiseOffset: 0.2
   falloffConfig:
     falloffCurve:
       serializedVersion: 2
@@ -63,34 +63,34 @@ MonoBehaviour:
     usePaletteColors: 1
   backgroundColorConfig:
     randomPaletteColorForBackground: 0
-    paletteColorIndexForBackground: 1
+    paletteColorIndexForBackground: 0
     overrideBackgroundColor: 1
     backgroundColorOverride: {r: 0, g: 0, b: 0, a: 1}
   outlineConfig:
     outlineEnabled: 0
-    applyOutlineAfterScaling: 0
+    applyOutlineAfterScaling: 1
     randomPaletteColorForOutline: 0
     paletteColorIndexForOutline: 0
     overrideOutlineColor: 1
     outlineColorOverride: {r: 1, g: 1, b: 1, a: 1}
   symmetryConfig:
     allowMultipleSymmetryTypes: 1
-    enforceSomeTypeOfSymmetry: 0
-    horizontalSymmetryChance: 0.28
-    quarterHorizontalSymmetryChance: 0.26
-    verticalSymmetryChance: 0.79
-    quarterVerticalSymmetryChance: 0
-    forwardDiagonalSymmetryChance: 1
-    quarterForwardDiagonalSymmetryChance: 0
-    backwardDiagonalSymmetryChance: 1
-    quarterBackwardDiagonalSymmetryChance: 0
+    enforceSomeTypeOfSymmetry: 1
+    horizontalSymmetryChance: 0.2
+    quarterHorizontalSymmetryChance: 0.5
+    verticalSymmetryChance: 0.2
+    quarterVerticalSymmetryChance: 0.5
+    forwardDiagonalSymmetryChance: 0.2
+    quarterForwardDiagonalSymmetryChance: 0.5
+    backwardDiagonalSymmetryChance: 0.2
+    quarterBackwardDiagonalSymmetryChance: 0.5
   scalingConfig:
-    scalingModes: 00000000
+    scalingModes: 000000000000000000000000000000000000000000000000
     filterMode: 0
   animationConfig:
     animationFrameCount: 3
-    timeBetweenFrames: 0.25
-    animationMode: 0
+    timeBetweenFrames: 0.2
+    animationMode: 1
   shadingConfig:
     enableShading: 1
     shadingByColor: 1

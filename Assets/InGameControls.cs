@@ -183,12 +183,12 @@ public class InGameControls : MonoBehaviour {
     //NORMALS
     public void EnableNormals(bool value) => Configuration.normalsConfig.enableNormals = value;
     public void NormalStrength(float value) => Configuration.normalsConfig.normalStrength = (float)Math.Round(value, 2);
-    public void ViewNormalsOnly(bool value) => Configuration.normalsConfig.viewNormalsOnly = value;
-    public void DisableNormalsRendering(bool value) => Configuration.normalsConfig.disableNormalsDisplay = value;
-    public void EnableGlobalLight(bool value) => Configuration.normalsConfig.globalLightEnabled = value;
-    public void EnableRotatingLight(bool value) => Configuration.normalsConfig.rotatingLightEnabled = value;
-    public void LightRotationSpeed(float value) => controls.spriteGeneration.normalGeneration.RotationSpeed = (float)Math.Round(value, 2);
-    public void EnableCursorFollowLight(bool value) => Configuration.normalsConfig.cursorFollowLightEnabled = value;
+    public void ViewNormalsOnly(bool value) => Configuration.normalsConfig.viewNormalsOnly =  controls.spriteGeneration.normalGeneration.ViewNormalsOnly = value;
+    public void DisableNormalsRendering(bool value) => Configuration.normalsConfig.disableNormalsDisplay = controls.spriteGeneration.normalGeneration.DisableNormalsDisplay = value;
+    public void EnableGlobalLight(bool value) => Configuration.normalsConfig.globalLightEnabled = controls.spriteGeneration.normalGeneration.GlobalLightEnabled = value;
+    public void EnableRotatingLight(bool value) => Configuration.normalsConfig.rotatingLightEnabled =  controls.spriteGeneration.normalGeneration.RotationEnabled = value;
+    public void LightRotationSpeed(float value) => controls.spriteGeneration.normalGeneration.RotationSpeed = controls.spriteGeneration.normalGeneration.RotationSpeed = (float)Math.Round(value, 2);
+    public void EnableCursorFollowLight(bool value) => Configuration.normalsConfig.cursorFollowLightEnabled = controls.spriteGeneration.normalGeneration.CursorLightEnabled = value;
     //SCALING
     public void ScalingPassCount(float value) {
         Configuration.scalingConfig.ResizeScalingMode((int)value);

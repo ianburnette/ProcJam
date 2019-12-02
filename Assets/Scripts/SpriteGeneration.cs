@@ -78,7 +78,7 @@ using UnityEngine;
         tex.wrapMode = TextureWrapMode.Clamp;
 
         if (configuration.normalsConfig.enableNormals) {
-            NormalGeneration.CreateNormalMap(ref normalMap, 1f);
+            NormalGeneration.CreateNormalMap(ref normalMap, configuration.normalsConfig.normalStrength);
         }
 
         normalGeneration.RotationEnabled = configuration.normalsConfig.rotatingLightEnabled;
