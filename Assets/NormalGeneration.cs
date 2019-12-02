@@ -79,9 +79,9 @@ public class NormalGeneration : MonoBehaviour
     public bool GlobalLightEnabled {
         get => controls.Configuration.normalsConfig.globalLightEnabled;
         set {
-            if (controls != null)
-                controls.Configuration.normalsConfig.globalLightEnabled = value;
-            rotatingLight.enabled = value;
+        //   if (controls != null)
+        //       controls.Configuration.normalsConfig.globalLightEnabled = value;
+        //   rotatingLight.enabled = value;
         }
     }
 

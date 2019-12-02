@@ -13,24 +13,24 @@ MonoBehaviour:
   m_Name: Current
   m_EditorClassIdentifier: 
   sizingConfig:
-    spacing: 6
-    imageGridSize: 12
-    pixelSize: 16
+    spacing: 8
+    imageGridSize: 16
+    pixelSize: 8
   noiseConfig:
     randomizeFrequency: 0
     octaves:
-    - scale: 5.17
-      frequency: 0.53
-    - scale: 12.07
-      frequency: 0.34
-    - scale: 25.32
-      frequency: 0.13
-    - scale: 42.97
-      frequency: 0.05
+    - scale: 2.9
+      frequency: 0.8
+    - scale: 10
+      frequency: 0
+    - scale: 20
+      frequency: 0.12
+    - scale: 45.45
+      frequency: 0.07
     randomOrigin: 1
     randomOriginBound: 255
     manualOrigin: {x: 160, y: 160}
-    animationFrameNoiseOffset: 0.2
+    animationFrameNoiseOffset: 0.12
   falloffConfig:
     falloffCurve:
       serializedVersion: 2
@@ -58,48 +58,48 @@ MonoBehaviour:
       m_RotationOrder: 4
   colorConfig:
     colorEnabled: 1
-    paletteIndex: 1
-    colorCountPerSprite: 4
+    paletteIndex: 0
+    colorCountPerSprite: 2
     usePaletteColors: 1
   backgroundColorConfig:
     randomPaletteColorForBackground: 0
-    paletteColorIndexForBackground: 0
+    paletteColorIndexForBackground: 2
     overrideBackgroundColor: 1
-    backgroundColorOverride: {r: 0, g: 0, b: 0, a: 1}
+    backgroundColorOverride: {r: 0, g: 0, b: 0, a: 0}
   outlineConfig:
     outlineEnabled: 0
     applyOutlineAfterScaling: 1
     randomPaletteColorForOutline: 0
     paletteColorIndexForOutline: 0
     overrideOutlineColor: 1
-    outlineColorOverride: {r: 1, g: 1, b: 1, a: 1}
+    outlineColorOverride: {r: 0, g: 0, b: 0, a: 1}
   symmetryConfig:
     allowMultipleSymmetryTypes: 1
     enforceSomeTypeOfSymmetry: 1
     horizontalSymmetryChance: 0.2
     quarterHorizontalSymmetryChance: 0.5
-    verticalSymmetryChance: 0.2
+    verticalSymmetryChance: 0.4
     quarterVerticalSymmetryChance: 0.5
     forwardDiagonalSymmetryChance: 0.2
     quarterForwardDiagonalSymmetryChance: 0.5
     backwardDiagonalSymmetryChance: 0.2
     quarterBackwardDiagonalSymmetryChance: 0.5
   scalingConfig:
-    scalingModes: 000000000000000000000000000000000000000000000000
+    scalingModes: 00000000
     filterMode: 0
   animationConfig:
-    animationFrameCount: 3
+    animationFrameCount: 2
     timeBetweenFrames: 0.2
     animationMode: 1
   shadingConfig:
-    enableShading: 1
-    shadingByColor: 1
-    shadingIntensity: 0.11
-    enableHighlights: 1
-    highlightByColor: 1
-    highlightIntensity: 0.09
+    enableShading: 0
+    shadingByColor: 0
+    shadingIntensity: 0
+    enableHighlights: 0
+    highlightByColor: 0
+    highlightIntensity: 0
   cleanupConfig:
-    allowPixelsOnEdgeOfSprite: 0
+    allowPixelsOnEdgeOfSprite: 1
     lonePixelEvaluationMode: 1
     chanceToDeleteLonePixels: 1
   normalsConfig:
@@ -107,7 +107,7 @@ MonoBehaviour:
     normalStrength: 0.5
     filterMode: 0
     viewNormalsOnly: 0
-    disableNormalsDisplay: 1
+    disableNormalsDisplay: 0
     rotatingLightEnabled: 0
     cursorFollowLightEnabled: 0
     globalLightEnabled: 1
