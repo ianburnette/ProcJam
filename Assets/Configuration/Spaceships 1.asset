@@ -59,11 +59,11 @@ MonoBehaviour:
   colorConfig:
     colorEnabled: 1
     paletteIndex: 0
-    colorCountPerSprite: 3
-    usePaletteColors: 0
+    colorCountPerSprite: 4
+    usePaletteColors: 1
   backgroundColorConfig:
     randomPaletteColorForBackground: 0
-    paletteColorIndexForBackground: 6
+    paletteColorIndexForBackground: 0
     overrideBackgroundColor: 1
     backgroundColorOverride: {r: 0, g: 0, b: 0, a: 1}
   outlineConfig:
@@ -76,19 +76,19 @@ MonoBehaviour:
   symmetryConfig:
     allowMultipleSymmetryTypes: 1
     enforceSomeTypeOfSymmetry: 1
-    horizontalSymmetryChance: 0.15
+    horizontalSymmetryChance: 0.1
     quarterHorizontalSymmetryChance: 0
-    verticalSymmetryChance: 0.25
+    verticalSymmetryChance: 0.3
     quarterVerticalSymmetryChance: 0
-    forwardDiagonalSymmetryChance: 0.25
+    forwardDiagonalSymmetryChance: 0.3
     quarterForwardDiagonalSymmetryChance: 0
-    backwardDiagonalSymmetryChance: 0.25
+    backwardDiagonalSymmetryChance: 0.3
     quarterBackwardDiagonalSymmetryChance: 0
   scalingConfig:
     scalingModes: 00000000
     filterMode: 0
   animationConfig:
-    animationFrameCount: 3
+    animationFrameCount: 1
     timeBetweenFrames: 0.2
     animationMode: 1
   shadingConfig:

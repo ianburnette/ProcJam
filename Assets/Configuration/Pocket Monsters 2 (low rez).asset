@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Pocket Monsters 2 (low rez)
   m_EditorClassIdentifier: 
   sizingConfig:
-    spacing: 12
+    spacing: 20
     imageGridSize: 10
     pixelSize: 16
   noiseConfig:
@@ -77,13 +77,13 @@ MonoBehaviour:
     allowMultipleSymmetryTypes: 0
     enforceSomeTypeOfSymmetry: 1
     horizontalSymmetryChance: 0
-    quarterHorizontalSymmetryChance: 0.5
+    quarterHorizontalSymmetryChance: 0
     verticalSymmetryChance: 1
-    quarterVerticalSymmetryChance: 0.74
+    quarterVerticalSymmetryChance: 0.5
     forwardDiagonalSymmetryChance: 0
-    quarterForwardDiagonalSymmetryChance: 0.5
+    quarterForwardDiagonalSymmetryChance: 0
     backwardDiagonalSymmetryChance: 0
-    quarterBackwardDiagonalSymmetryChance: 0.5
+    quarterBackwardDiagonalSymmetryChance: 0
   scalingConfig:
     scalingModes: 00000000
     filterMode: 0
@@ -92,15 +92,15 @@ MonoBehaviour:
     timeBetweenFrames: 0.25
     animationMode: 1
   shadingConfig:
-    enableShading: 1
+    enableShading: 0
     shadingByColor: 1
-    shadingIntensity: 0.32
-    enableHighlights: 1
+    shadingIntensity: 0.11
+    enableHighlights: 0
     highlightByColor: 1
-    highlightIntensity: 0.38
+    highlightIntensity: 0.09
   cleanupConfig:
-    allowPixelsOnEdgeOfSprite: 0
-    lonePixelEvaluationMode: 1
+    allowPixelsOnEdgeOfSprite: 1
+    lonePixelEvaluationMode: 0
     chanceToDeleteLonePixels: 1
   normalsConfig:
     enableNormals: 0

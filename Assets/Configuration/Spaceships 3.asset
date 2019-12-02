@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sizingConfig:
     spacing: 16
-    imageGridSize: 4
-    pixelSize: 64
+    imageGridSize: 10
+    pixelSize: 16
   noiseConfig:
     randomizeFrequency: 0
     octaves:
@@ -30,7 +30,7 @@ MonoBehaviour:
     randomOrigin: 1
     randomOriginBound: 255
     manualOrigin: {x: 160, y: 160}
-    animationFrameNoiseOffset: 0.12
+    animationFrameNoiseOffset: 0.2
   falloffConfig:
     falloffCurve:
       serializedVersion: 2
@@ -65,7 +65,7 @@ MonoBehaviour:
     randomPaletteColorForBackground: 0
     paletteColorIndexForBackground: 2
     overrideBackgroundColor: 1
-    backgroundColorOverride: {r: 0, g: 0, b: 0, a: 1}
+    backgroundColorOverride: {r: 0, g: 0, b: 0, a: 0}
   outlineConfig:
     outlineEnabled: 0
     applyOutlineAfterScaling: 1
@@ -76,19 +76,19 @@ MonoBehaviour:
   symmetryConfig:
     allowMultipleSymmetryTypes: 1
     enforceSomeTypeOfSymmetry: 1
-    horizontalSymmetryChance: 0.15
+    horizontalSymmetryChance: 0.2
     quarterHorizontalSymmetryChance: 0
-    verticalSymmetryChance: 0.25
+    verticalSymmetryChance: 0.2
     quarterVerticalSymmetryChance: 0
-    forwardDiagonalSymmetryChance: 0.25
+    forwardDiagonalSymmetryChance: 0.2
     quarterForwardDiagonalSymmetryChance: 0
-    backwardDiagonalSymmetryChance: 0.25
+    backwardDiagonalSymmetryChance: 0.2
     quarterBackwardDiagonalSymmetryChance: 0
   scalingConfig:
-    scalingModes: 0000000000000000
+    scalingModes: 00000000
     filterMode: 0
   animationConfig:
-    animationFrameCount: 3
+    animationFrameCount: 2
     timeBetweenFrames: 0.2
     animationMode: 1
   shadingConfig:
@@ -96,8 +96,8 @@ MonoBehaviour:
     shadingByColor: 1
     shadingIntensity: 0.2
     enableHighlights: 1
-    highlightByColor: 1
-    highlightIntensity: 0.06
+    highlightByColor: 0
+    highlightIntensity: 0.1
   cleanupConfig:
     allowPixelsOnEdgeOfSprite: 1
     lonePixelEvaluationMode: 1

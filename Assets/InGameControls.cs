@@ -208,9 +208,9 @@ public class InGameControls : MonoBehaviour {
     public void ChanceToDeleteLonePixel(float value) => Configuration.cleanupConfig.chanceToDeleteLonePixels = value;
     //PRESETS
     public void SetPreset(Int32 preset) {
-        Configuration = controls.configurationAssets[preset];
-        //RefreshUi();
+        Configuration.Copy(controls.configurationAssets[preset]);
         controls.Generate();
+        RefreshUi(true);
     }
 
     void OnEnable() {
@@ -298,7 +298,7 @@ public class InGameControls : MonoBehaviour {
         presets.onValueChanged.AddListener(SetPreset);
     }
     
-    public void RefreshUi() {
+    public void RefreshUi(bool omitPresets = false) {
         //SIZING
         spacing.value = Configuration.sizingConfig.spacing;
         imageGridSize.value = Configuration.sizingConfig.imageGridSize;
@@ -380,6 +380,7 @@ public class InGameControls : MonoBehaviour {
                                     LonePixelEvaluationMode.CardinalDirectionsOnly ? 0 : 1;
         chanceToDeleteLonePixel.value = Configuration.cleanupConfig.chanceToDeleteLonePixels;
         //PRESETS
+        if (omitPresets) return;
         presets.ClearOptions();
         var options = new List<TMP_Dropdown.OptionData>();
         foreach (var c in controls.configurationAssets)

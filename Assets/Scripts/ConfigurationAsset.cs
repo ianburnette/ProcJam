@@ -42,4 +42,19 @@ public class ConfigurationAsset : ScriptableObject {
         this.cleanupConfig = cleanupConfig;
         this.normalsConfig = normalsConfig;
     }
+
+    public void Copy(ConfigurationAsset source) {
+        sizingConfig = source.sizingConfig;
+        noiseConfig = source.noiseConfig;
+        falloffConfig = source.falloffConfig;
+        colorConfig = source.colorConfig;
+        backgroundColorConfig = source.backgroundColorConfig;
+        outlineConfig = source.outlineConfig;
+        symmetryConfig = source.symmetryConfig;
+        scalingConfig = source.scalingConfig;
+        animationConfig = source.animationConfig;
+        shadingConfig = source.shadingConfig;
+        cleanupConfig = source.cleanupConfig;
+        normalsConfig = source.normalsConfig;
+    }
 }

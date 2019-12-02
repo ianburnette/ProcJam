@@ -59,13 +59,13 @@ MonoBehaviour:
   colorConfig:
     colorEnabled: 1
     paletteIndex: 0
-    colorCountPerSprite: 4
+    colorCountPerSprite: 2
     usePaletteColors: 1
   backgroundColorConfig:
     randomPaletteColorForBackground: 0
     paletteColorIndexForBackground: 2
     overrideBackgroundColor: 1
-    backgroundColorOverride: {r: 0, g: 0, b: 0, a: 1}
+    backgroundColorOverride: {r: 0, g: 0, b: 0, a: 0}
   outlineConfig:
     outlineEnabled: 0
     applyOutlineAfterScaling: 1
@@ -76,13 +76,13 @@ MonoBehaviour:
   symmetryConfig:
     allowMultipleSymmetryTypes: 1
     enforceSomeTypeOfSymmetry: 1
-    horizontalSymmetryChance: 0.15
+    horizontalSymmetryChance: 0.2
     quarterHorizontalSymmetryChance: 0.5
     verticalSymmetryChance: 0.4
     quarterVerticalSymmetryChance: 0.5
-    forwardDiagonalSymmetryChance: 0.25
+    forwardDiagonalSymmetryChance: 0.2
     quarterForwardDiagonalSymmetryChance: 0.5
-    backwardDiagonalSymmetryChance: 0.25
+    backwardDiagonalSymmetryChance: 0.2
     quarterBackwardDiagonalSymmetryChance: 0.5
   scalingConfig:
     scalingModes: 00000000
@@ -92,12 +92,12 @@ MonoBehaviour:
     timeBetweenFrames: 0.2
     animationMode: 1
   shadingConfig:
-    enableShading: 1
-    shadingByColor: 1
-    shadingIntensity: 0.6001357
-    enableHighlights: 1
-    highlightByColor: 1
-    highlightIntensity: 0.58853006
+    enableShading: 0
+    shadingByColor: 0
+    shadingIntensity: 0
+    enableHighlights: 0
+    highlightByColor: 0
+    highlightIntensity: 0
   cleanupConfig:
     allowPixelsOnEdgeOfSprite: 1
     lonePixelEvaluationMode: 1
@@ -106,8 +106,8 @@ MonoBehaviour:
     enableNormals: 0
     normalStrength: 0.5
     filterMode: 0
-    viewNormalsOnly: 1
+    viewNormalsOnly: 0
     disableNormalsDisplay: 0
     rotatingLightEnabled: 0
-    cursorFollowLightEnabled: 1
+    cursorFollowLightEnabled: 0
     globalLightEnabled: 1

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3c3634c57fd3424d8e91a4775ce2ffb4, type: 3}
-  m_Name: Pocket Monsters 2 (low rez) 1
+  m_Name: Pocket Monsters 2 (low rez shaded)
   m_EditorClassIdentifier: 
   sizingConfig:
-    spacing: 20
+    spacing: 12
     imageGridSize: 10
     pixelSize: 16
   noiseConfig:
@@ -77,13 +77,13 @@ MonoBehaviour:
     allowMultipleSymmetryTypes: 0
     enforceSomeTypeOfSymmetry: 1
     horizontalSymmetryChance: 0
-    quarterHorizontalSymmetryChance: 0.5
+    quarterHorizontalSymmetryChance: 0
     verticalSymmetryChance: 1
-    quarterVerticalSymmetryChance: 0.74
+    quarterVerticalSymmetryChance: 0.5
     forwardDiagonalSymmetryChance: 0
-    quarterForwardDiagonalSymmetryChance: 0.5
+    quarterForwardDiagonalSymmetryChance: 0
     backwardDiagonalSymmetryChance: 0
-    quarterBackwardDiagonalSymmetryChance: 0.5
+    quarterBackwardDiagonalSymmetryChance: 0
   scalingConfig:
     scalingModes: 00000000
     filterMode: 0
@@ -92,22 +92,22 @@ MonoBehaviour:
     timeBetweenFrames: 0.25
     animationMode: 1
   shadingConfig:
-    enableShading: 0
+    enableShading: 1
     shadingByColor: 1
-    shadingIntensity: 0.11
-    enableHighlights: 0
+    shadingIntensity: 0.2
+    enableHighlights: 1
     highlightByColor: 1
-    highlightIntensity: 0.09
+    highlightIntensity: 0.2
   cleanupConfig:
-    allowPixelsOnEdgeOfSprite: 0
-    lonePixelEvaluationMode: 0
+    allowPixelsOnEdgeOfSprite: 1
+    lonePixelEvaluationMode: 1
     chanceToDeleteLonePixels: 1
   normalsConfig:
     enableNormals: 0
     normalStrength: 0.5
     filterMode: 0
     viewNormalsOnly: 0
-    disableNormalsDisplay: 0
+    disableNormalsDisplay: 1
     rotatingLightEnabled: 0
     cursorFollowLightEnabled: 0
     globalLightEnabled: 1
