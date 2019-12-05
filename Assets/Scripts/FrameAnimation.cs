@@ -10,6 +10,7 @@ public class FrameAnimation : MonoBehaviour {
     [SerializeField] Image image;
     [SerializeField] List<Sprite> diffuseFrames = new List<Sprite>();
     [SerializeField] List<Sprite> normalFrames = new List<Sprite>();
+    [SerializeField] List<GeneratedTexture> generatedTextures = new List<GeneratedTexture>();
     [SerializeField] float frameTime;
 
     int currentFrameIndex;
@@ -33,6 +34,13 @@ public class FrameAnimation : MonoBehaviour {
         get => normalFrames;
         set {
             normalFrames = value;
+        }
+    }    
+    
+    public List<GeneratedTexture> GeneratedTextures {
+        get => generatedTextures;
+        set {
+            generatedTextures = value;
         }
     }
 
@@ -93,6 +101,10 @@ public class FrameAnimation : MonoBehaviour {
     }
 
     public void Export() {
+        Controls.instance.Evolve(generatedTextures);
+        return;
+        
+        //TODO: context menu
         var generatedTexture = new Texture2D(diffuseFrames[0].texture.width * diffuseFrames.Count, diffuseFrames[0].texture.height);
         for (var index = 0; index < diffuseFrames.Count; index++) {
             var frame = diffuseFrames[index];

@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using UnityEngine.XR;
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(Controls))]
@@ -22,8 +23,9 @@ public class MapGenerationEditor : Editor
 }
 #endif
 
-public class Controls : MonoBehaviour
-{
+public class Controls : MonoBehaviour {
+    public static Controls instance;
+    
     [Header("Configuration")] 
     [SerializeField] ConfigurationAsset configuration;
 
@@ -46,6 +48,30 @@ public class Controls : MonoBehaviour
         set => spriteGeneration = value;
     }
 
+    void OnEnable() => instance = this;
+
+    public void Evolve(List<GeneratedTexture> source) => 
+        GenerateEvolution(new EvolutionConfig(source,
+        EvolutionType.noiseOffset, 
+        new InheritedSymmetryConfig(true, source[0].symmetryOutcome)));
+
+    public void GenerateEvolution(EvolutionConfig evolutionConfig) {
+        Reset();
+        var gridSize = Configuration.sizingConfig.imageGridSize;
+        var spritesToGenerate = gridSize * gridSize;
+        var rowCenter = (int) Math.Floor(gridSize / 2f);
+        var centerPoint = new Vector2Int(rowCenter, rowCenter);
+        for (var column = 0; column < gridSize; column++) {
+            for (var row = 0; row < gridSize; row++) {
+                evolutionConfig.offsetFromSource = new Vector2Int(column - centerPoint.x, row - centerPoint.y);
+                var frameAnimation = SetUpSprite();
+                var (diffuse, normal, generatedTextures) = Generation.Generate(configuration, evolutionConfig);
+                AssignSprite(frameAnimation, diffuse, normal, generatedTextures);
+                currentFrameAnimations.Add(frameAnimation);
+            }
+        }
+    }
+    
     public void Generate()
     {
         Reset();
@@ -53,14 +79,9 @@ public class Controls : MonoBehaviour
 
         for (var i = 0; i < Configuration.sizingConfig.imageGridSize * Configuration.sizingConfig.imageGridSize; i++)
         {
-            var sprite = Instantiate(spritePrefab, spriteParent);
-            var frameAnimation = sprite.GetComponent<FrameAnimation>();
-            frameAnimation.FrameTime = Configuration.animationConfig.timeBetweenFrames;
-            frameAnimation.animationMode = Configuration.animationConfig.animationMode;
-            var (diffuse, normal) = Generation.Generate(configuration);
-            frameAnimation.DiffuseFrames = diffuse;
-            if (configuration.normalsConfig.enableNormals) frameAnimation.NormalFrames = normal;
-            frameAnimation.enableNormals = configuration.normalsConfig.enableNormals;
+            var frameAnimation = SetUpSprite();
+            var (diffuse, normal, generatedTextures) = Generation.Generate(configuration, null);
+            AssignSprite(frameAnimation, diffuse, normal, generatedTextures);
             currentFrameAnimations.Add(frameAnimation);
         }
 
@@ -72,6 +93,21 @@ public class Controls : MonoBehaviour
             var padding = Mathf.Clamp(Configuration.sizingConfig.spacing * 4, 32, 32);
             gridLayoutGroup.padding = new RectOffset(padding, padding, padding, padding);
         }
+    }
+
+    void AssignSprite(FrameAnimation frameAnimation, List<Sprite> diffuse, List<Sprite> normal, List<GeneratedTexture> generatedTextures) {
+        frameAnimation.DiffuseFrames = diffuse;
+        if (configuration.normalsConfig.enableNormals) frameAnimation.NormalFrames = normal;
+        frameAnimation.GeneratedTextures = generatedTextures;
+        frameAnimation.enableNormals = configuration.normalsConfig.enableNormals;
+    }
+
+    FrameAnimation SetUpSprite() {
+        var sprite = Instantiate(spritePrefab, spriteParent);
+        var frameAnimation = sprite.GetComponent<FrameAnimation>();
+        frameAnimation.FrameTime = Configuration.animationConfig.timeBetweenFrames;
+        frameAnimation.animationMode = Configuration.animationConfig.animationMode;
+        return frameAnimation;
     }
 
     public void Reset()

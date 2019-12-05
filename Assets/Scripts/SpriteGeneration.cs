@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
- public class SpriteGeneration : MonoBehaviour
-{
+public class SpriteGeneration : MonoBehaviour {
+     public static SpriteGeneration instance;
+    
     [Header("Filtering")]
     [SerializeField] Recoloring recoloring;
     [SerializeField] NoiseGeneration noiseGeneration;
@@ -13,23 +15,28 @@ using UnityEngine;
     [SerializeField] Cleanup cleanup;
 
     public Color backgroundColor;
-
+    
     public Recoloring Recoloring {
         get => recoloring;
         set => recoloring = value;
     }
 
-    public (List<Sprite>, List<Sprite>) Generate(ConfigurationAsset configuration) {
+    void OnEnable() => instance = this;
+
+    public (List<Sprite>, List<Sprite>, List<GeneratedTexture>) Generate(ConfigurationAsset configuration, 
+        EvolutionConfig evolutionConfig = null) {
         var sprites = new List<Sprite>();
         var normals = new List<Sprite>();
-        for (int i = 0; i < configuration.animationConfig.animationFrameCount; i++) {
-            var (texture, normal) = GenerateTexture(i, configuration);
-            var diffuseSprite = CreateSprite(texture);
-            var normalSprite = CreateSprite(normal);
+        var generatedTextures = new List<GeneratedTexture>();
+        for (var i = 0; i < configuration.animationConfig.animationFrameCount; i++) {
+            var generatedTexture = GenerateTexture(i, configuration, evolutionConfig);
+            var diffuseSprite = CreateSprite(generatedTexture.texture);
+            var normalSprite = CreateSprite(generatedTexture.normal);
             sprites.Add(diffuseSprite);
             normals.Add(normalSprite);
+            generatedTextures.Add(generatedTexture);
         }
-        return (sprites, normals);
+        return (sprites, normals, generatedTextures);
 
         Sprite CreateSprite(Texture2D texture) {
             return Sprite.Create(texture,
@@ -39,11 +46,30 @@ using UnityEngine;
         }
     }
 
-    (Texture2D, Texture2D) GenerateTexture(int frame, ConfigurationAsset configuration)
-    {
-        var tex = noiseGeneration.GetNoise(frame, configuration.noiseConfig, configuration.sizingConfig.pixelSize);
+    GeneratedTexture GenerateTexture(
+        int frame, 
+        ConfigurationAsset configuration, 
+        EvolutionConfig evolutionConfig = null) {
+        
+        var generatedTexture = new GeneratedTexture();
+        
+        Vector2 origin;
+        if (evolutionConfig == null)
+            origin = noiseGeneration.GetOrigin(frame, configuration.noiseConfig);
+        else
+            origin = noiseGeneration.GetOriginWithOffset(frame, configuration.noiseConfig, evolutionConfig);
+        
+        generatedTexture.origin = origin;
+        var tex = noiseGeneration.GetNoise(configuration.noiseConfig, configuration.sizingConfig.pixelSize, origin);
         falloff.ApplyFalloff(ref tex, configuration.falloffConfig);
-        symmetry.AttemptToApplySymmetry(ref tex, frame, configuration.symmetryConfig);
+        if (evolutionConfig != null && evolutionConfig.inheritedSymmetryConfig.inherited) {
+            symmetry.AttemptToApplySymmetry(ref tex, frame, configuration.symmetryConfig, true, ref evolutionConfig.inheritedSymmetryConfig.outcome);
+            generatedTexture.symmetryOutcome = evolutionConfig.inheritedSymmetryConfig.outcome;
+        } else {
+            var symmetryOutcome = new SymmetryOutcome();
+            symmetry.AttemptToApplySymmetry(ref tex, frame, configuration.symmetryConfig, false, ref symmetryOutcome);
+            generatedTexture.symmetryOutcome = symmetryOutcome;
+        }
         
         backgroundColor = Color.black;
         var outlineColor = Color.black;
@@ -76,6 +102,7 @@ using UnityEngine;
         tex.Apply();    
         tex.filterMode = configuration.scalingConfig.filterMode;
         tex.wrapMode = TextureWrapMode.Clamp;
+        generatedTexture.texture = tex;
 
         if (configuration.normalsConfig.enableNormals) {
             NormalGeneration.CreateNormalMap(ref normalMap, configuration.normalsConfig.normalStrength);
@@ -90,8 +117,9 @@ using UnityEngine;
         normalMap.wrapMode = TextureWrapMode.Clamp;
         normalMap.filterMode = configuration.normalsConfig.filterMode;
         normalMap.Apply();
+        generatedTexture.normal = normalMap;
 
-        return (tex, normalMap);
+        return generatedTexture;
     }
 
     Rect RectAccordingToScalingMode(ScalingMode[] scalingModes, int spritePixelSize) {

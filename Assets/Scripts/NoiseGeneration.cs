@@ -3,26 +3,39 @@
 public class NoiseGeneration : MonoBehaviour {
     [Header("Debug")]
     [SerializeField] Vector2 origin;
+    [SerializeField] float noisePerEvolutionStep = .1f;
 
     float maxFrequencySum = 1.1f;
     
-    public Texture2D GetNoise(int frame, NoiseConfig noiseConfig, int spritePixelSize)
+    public Texture2D GetNoise(NoiseConfig noiseConfig, int spritePixelSize, Vector2 desiredOrigin)
     {
         var tex = new Texture2D(spritePixelSize, spritePixelSize);
-        //GenerateNoise();
-        tex.SetPixels(CalcNoise(noiseConfig, frame, spritePixelSize));
+        tex.SetPixels(CalcNoise(noiseConfig, spritePixelSize, desiredOrigin));
         return tex;
     }
 
-
-    Color[] CalcNoise(NoiseConfig config, int frame, int spritePixelSize) {
-        var size = spritePixelSize;
-        
-        var colors = new Color[size * size];
+    public Vector2 GetOriginWithOffset(int frame, NoiseConfig config, EvolutionConfig evolutionConfig) {
+        var sourceOriginThisFrame = evolutionConfig.evolutionSource[frame].origin;
+        origin = new Vector2(sourceOriginThisFrame.x + (evolutionConfig.offsetFromSource.x * noisePerEvolutionStep),
+         sourceOriginThisFrame.y + (evolutionConfig.offsetFromSource.y * noisePerEvolutionStep));
+        return origin;
+    }
+    
+    public Vector2 GetOrigin(int frame, NoiseConfig config) {
         if (frame == 0) {
-            origin = config.randomOrigin ? new Vector2(RandomValue(), RandomValue()) : config.manualOrigin;
+            origin = config.randomOrigin ? new Vector2(RandomValue(config.randomOriginBound), 
+                RandomValue(config.randomOriginBound)) : config.manualOrigin;
         } else
             origin = new Vector2(origin.x + config.animationFrameNoiseOffset * frame, origin.y + config.animationFrameNoiseOffset * frame);
+
+        return origin;
+    }
+    
+    float RandomValue(float randomBound) => Random.Range(-randomBound, randomBound);
+
+    Color[] CalcNoise(NoiseConfig config, int spritePixelSize, Vector2 origin) {
+        var size = spritePixelSize;
+        var colors = new Color[size * size];
 
         var frequencies = new float[config.octaves.Count];
         if (config.randomizeFrequency) {
@@ -54,10 +67,6 @@ public class NoiseGeneration : MonoBehaviour {
 
         return colors;
 
-        float RandomValue()
-        {
-            return Random.Range(-config.randomOriginBound, config.randomOriginBound);
-        }
         /*
         var newOctaves = new Octave[octaveCount];
         for (var octaveIndex = 0; octaveIndex < octaveCount; octaveIndex++) {
