@@ -7,6 +7,7 @@ public class GeneratedTexture {
     public Texture2D normal;
     public Vector2 origin;
     public SymmetryOutcome symmetryOutcome;
+    public ColorOutcome colorOutcome;
 }
 
 [Serializable]
@@ -41,6 +42,21 @@ public class SymmetryOutcome {
         this.lowerIsDominant = lowerIsDominant;
     }
     public SymmetryOutcome(){}
+}
+
+public class ColorOutcome {
+    public Color backgroundColor, outlineColor;
+    public Color[] generatedColors;
+
+    public ColorOutcome(Color backgroundColor, Color outlineColor, Color[] generatedColors) {
+        this.backgroundColor = backgroundColor;
+        this.outlineColor = outlineColor;
+        this.generatedColors = generatedColors;
+    }
+    
+    public static ColorOutcome None = new ColorOutcome(Color.black, Color.black, new Color[0]);
+
+    public ColorOutcome() {}
 }
 
 public class InheritedSymmetryConfig {

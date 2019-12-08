@@ -71,33 +71,40 @@ public class SpriteGeneration : MonoBehaviour {
             generatedTexture.symmetryOutcome = symmetryOutcome;
         }
         
-        backgroundColor = Color.black;
-        var outlineColor = Color.black;
-
         var normalMap = tex;
-        
-        if (configuration.colorConfig.colorEnabled) {
-            (backgroundColor, outlineColor) = recoloring.Recolor(ref tex, frame, 
-                configuration.colorConfig, configuration.backgroundColorConfig, configuration.outlineConfig);
+
+        ColorOutcome colorOutcome;
+        if (evolutionConfig == null) {
+            colorOutcome = ColorOutcome.None;
+        } else {
+            colorOutcome = evolutionConfig.evolutionSource[frame].colorOutcome;
         }
 
+        if (configuration.colorConfig.colorEnabled) {
+            colorOutcome = recoloring.Recolor(ref tex, frame,
+                configuration.colorConfig, configuration.backgroundColorConfig, configuration.outlineConfig,
+                colorOutcome);
+        }
+
+        generatedTexture.colorOutcome = colorOutcome;
+
         if (configuration.shadingConfig.enableShading)
-            Shading.Shade(ref tex, backgroundColor, configuration.shadingConfig.shadingIntensity, configuration.shadingConfig.shadingByColor);
+            Shading.Shade(ref tex, colorOutcome.backgroundColor, configuration.shadingConfig.shadingIntensity, configuration.shadingConfig.shadingByColor);
         if (configuration.shadingConfig.enableHighlights)
-            Shading.Highlight(ref tex, backgroundColor, configuration.shadingConfig.highlightIntensity, configuration.shadingConfig.highlightByColor);
+            Shading.Highlight(ref tex, colorOutcome.backgroundColor, configuration.shadingConfig.highlightIntensity, configuration.shadingConfig.highlightByColor);
         
         if (configuration.outlineConfig.outlineEnabled && !configuration.outlineConfig.applyOutlineAfterScaling)
-            outline.OutlineTexture(ref tex, backgroundColor, outlineColor);
+            outline.OutlineTexture(ref tex, colorOutcome.backgroundColor, colorOutcome.outlineColor);
         
         if (configuration.scalingConfig.scalingModes != null)
             Scaling.ScaleTexture(ref tex, configuration.scalingConfig.scalingModes);
         if (configuration.colorConfig.colorEnabled && configuration.outlineConfig.outlineEnabled && configuration.outlineConfig.applyOutlineAfterScaling)
-            outline.OutlineTexture(ref tex, backgroundColor, outlineColor);
+            outline.OutlineTexture(ref tex, colorOutcome.backgroundColor, colorOutcome.outlineColor);
 
         if (!configuration.cleanupConfig.allowPixelsOnEdgeOfSprite)
-            cleanup.RemovePixelsAtEdgeOfSprite(ref tex, backgroundColor, outlineColor);
+            cleanup.RemovePixelsAtEdgeOfSprite(ref tex, colorOutcome.backgroundColor, colorOutcome.outlineColor);
         if (configuration.cleanupConfig.chanceToDeleteLonePixels >= Random.value)
-            cleanup.Despeckle(ref tex, backgroundColor, configuration.cleanupConfig.lonePixelEvaluationMode);
+            cleanup.Despeckle(ref tex, colorOutcome.backgroundColor, configuration.cleanupConfig.lonePixelEvaluationMode);
 
         tex.Apply();    
         tex.filterMode = configuration.scalingConfig.filterMode;
