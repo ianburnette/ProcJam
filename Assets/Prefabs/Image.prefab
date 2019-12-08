@@ -105,8 +105,12 @@ MonoBehaviour:
   image: {fileID: 3380691839521294702}
   diffuseFrames: []
   normalFrames: []
+  generatedTextures: []
   frameTime: 0.2
   animationMode: 0
+  enableNormals: 0
+  disableNormalsDisplay: 0
+  normalsOnly: 0
 --- !u!114 &7625224143223583235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,7 +155,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1382952921390252766}
-        m_MethodName: Export
+        m_MethodName: Clicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

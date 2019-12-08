@@ -100,11 +100,15 @@ public class FrameAnimation : MonoBehaviour {
         }
     }
 
-    public void Export() {
+    public void Clicked() {
+        InGameControls.instance.OpenSpritePanel(this);
+    }
+
+    public void EvolveShape() {
         Controls.instance.Evolve(generatedTextures);
-        return;
-        
-        //TODO: context menu
+    }
+    
+    public void Export() {
         var generatedTexture = new Texture2D(diffuseFrames[0].texture.width * diffuseFrames.Count, diffuseFrames[0].texture.height);
         for (var index = 0; index < diffuseFrames.Count; index++) {
             var frame = diffuseFrames[index];

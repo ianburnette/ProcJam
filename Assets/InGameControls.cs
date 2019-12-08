@@ -21,8 +21,16 @@ public class InGameControlsEditor : Editor
     
 
 public class InGameControls : MonoBehaviour {
+    public static InGameControls instance;
     [SerializeField] Controls controls;
     Recoloring recoloring;
+
+    [Header("Single Sprite Controls")] 
+    [SerializeField] List<GameObject> controlPanels;
+    [SerializeField] GameObject singleSpritePanel;
+    [SerializeField] FrameAnimation singleSpriteFrameAnimation;
+    [SerializeField] Button exportSingleSpriteButton;
+    [SerializeField] Button evolveSingleSpriteShapeButton;
 
     [Header("Sizing")]
     [SerializeField] Slider spacing;
@@ -101,7 +109,7 @@ public class InGameControls : MonoBehaviour {
         get => controls.Configuration;
         set => controls.Configuration = value;
     }
-
+    
     //SIZING
     public void Spacing(Single spacing) => Configuration.sizingConfig.spacing = (int)spacing;
     public void ImageGridSize(Single size) => Configuration.sizingConfig.imageGridSize = (int)size;
@@ -214,10 +222,29 @@ public class InGameControls : MonoBehaviour {
     }
 
     void OnEnable() {
+        instance = this;
         recoloring = controls.spriteGeneration.Recoloring;
         BindUi();
         RefreshUi();
         controls.Generate();
+    }
+
+    public void OpenSpritePanel(FrameAnimation frameAnimation) {
+        foreach (var panel in controlPanels) panel.SetActive(panel == singleSpritePanel);
+
+        singleSpriteFrameAnimation.DiffuseFrames = frameAnimation.DiffuseFrames;
+        singleSpriteFrameAnimation.NormalFrames = frameAnimation.NormalFrames;
+        singleSpriteFrameAnimation.GeneratedTextures = frameAnimation.GeneratedTextures;
+        singleSpriteFrameAnimation.FrameTime = frameAnimation.FrameTime;
+        singleSpriteFrameAnimation.animationMode = frameAnimation.animationMode;
+        singleSpriteFrameAnimation.enableNormals = frameAnimation.enableNormals;
+        singleSpriteFrameAnimation.disableNormalsDisplay = frameAnimation.disableNormalsDisplay;
+        singleSpriteFrameAnimation.normalsOnly = frameAnimation.normalsOnly;
+        
+        exportSingleSpriteButton.onClick.RemoveAllListeners();
+        evolveSingleSpriteShapeButton.onClick.RemoveAllListeners();
+        exportSingleSpriteButton.onClick.AddListener(frameAnimation.Export);
+        evolveSingleSpriteShapeButton.onClick.AddListener(frameAnimation.EvolveShape);
     }
     
     public void BindUi() {
