@@ -31,6 +31,8 @@ public class InGameControls : MonoBehaviour {
     [SerializeField] FrameAnimation singleSpriteFrameAnimation;
     [SerializeField] Button exportSingleSpriteButton;
     [SerializeField] Button evolveSingleSpriteShapeButton;
+    [SerializeField] Button evolveColorButton;
+    [SerializeField] Button addInterpolationFramesButton;
 
     [Header("Sizing")]
     [SerializeField] Slider spacing;
@@ -245,6 +247,8 @@ public class InGameControls : MonoBehaviour {
         evolveSingleSpriteShapeButton.onClick.RemoveAllListeners();
         exportSingleSpriteButton.onClick.AddListener(frameAnimation.Export);
         evolveSingleSpriteShapeButton.onClick.AddListener(frameAnimation.EvolveShape);
+        evolveColorButton.onClick.AddListener(frameAnimation.EvolveColor);
+        addInterpolationFramesButton.onClick.AddListener(frameAnimation.AddInterpolationFrames);
     }
     
     public void BindUi() {

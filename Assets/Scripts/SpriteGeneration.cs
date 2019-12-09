@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -30,20 +31,20 @@ public class SpriteGeneration : MonoBehaviour {
         var generatedTextures = new List<GeneratedTexture>();
         for (var i = 0; i < configuration.animationConfig.animationFrameCount; i++) {
             var generatedTexture = GenerateTexture(i, configuration, evolutionConfig);
-            var diffuseSprite = CreateSprite(generatedTexture.texture);
-            var normalSprite = CreateSprite(generatedTexture.normal);
+            var diffuseSprite = CreateSprite(generatedTexture.texture, configuration.scalingConfig.scalingModes, configuration.sizingConfig.pixelSize);
+            var normalSprite = CreateSprite(generatedTexture.normal, configuration.scalingConfig.scalingModes, configuration.sizingConfig.pixelSize);
             sprites.Add(diffuseSprite);
             normals.Add(normalSprite);
             generatedTextures.Add(generatedTexture);
         }
         return (sprites, normals, generatedTextures);
 
-        Sprite CreateSprite(Texture2D texture) {
-            return Sprite.Create(texture,
-                RectAccordingToScalingMode(configuration.scalingConfig.scalingModes,
-                    configuration.sizingConfig.pixelSize),
-                new Vector2(.5f, .5f));
-        }
+    }
+    
+    public static Sprite CreateSprite(Texture2D texture, ScalingMode[] scalingModes, int pixelSize) {
+        return Sprite.Create(texture,
+            RectAccordingToScalingMode(scalingModes, pixelSize),
+            new Vector2(.5f, .5f));
     }
 
     GeneratedTexture GenerateTexture(
@@ -56,8 +57,10 @@ public class SpriteGeneration : MonoBehaviour {
         Vector2 origin;
         if (evolutionConfig == null)
             origin = noiseGeneration.GetOrigin(frame, configuration.noiseConfig);
-        else
+        else if (evolutionConfig.evolutionType==EvolutionType.noiseOffset)
             origin = noiseGeneration.GetOriginWithOffset(frame, configuration.noiseConfig, evolutionConfig);
+        else// if (evolutionConfig.evolutionType == EvolutionType.color)
+            origin = evolutionConfig.evolutionSource[frame].origin;
         
         generatedTexture.origin = origin;
         var tex = noiseGeneration.GetNoise(configuration.noiseConfig, configuration.sizingConfig.pixelSize, origin);
@@ -76,10 +79,21 @@ public class SpriteGeneration : MonoBehaviour {
         ColorOutcome colorOutcome;
         if (evolutionConfig == null) {
             colorOutcome = ColorOutcome.None;
-        } else {
-            colorOutcome = evolutionConfig.evolutionSource[frame].colorOutcome;
         }
-
+        else{
+            switch (evolutionConfig.evolutionType) {
+                case EvolutionType.noiseOffset:
+                    colorOutcome = evolutionConfig.evolutionSource[frame].colorOutcome;
+                    break;
+                case EvolutionType.color:
+                    colorOutcome = ColorOutcome.None;
+                    break;
+                default:
+                    colorOutcome = ColorOutcome.None;
+                    break;
+            }
+        }
+        
         if (configuration.colorConfig.colorEnabled) {
             colorOutcome = recoloring.Recolor(ref tex, frame,
                 configuration.colorConfig, configuration.backgroundColorConfig, configuration.outlineConfig,
@@ -125,11 +139,13 @@ public class SpriteGeneration : MonoBehaviour {
         normalMap.filterMode = configuration.normalsConfig.filterMode;
         normalMap.Apply();
         generatedTexture.normal = normalMap;
+        generatedTexture.scalingModes = configuration.scalingConfig.scalingModes;
+        generatedTexture.filterMode = configuration.scalingConfig.filterMode;
 
         return generatedTexture;
     }
 
-    Rect RectAccordingToScalingMode(ScalingMode[] scalingModes, int spritePixelSize) {
+    static Rect RectAccordingToScalingMode(ScalingMode[] scalingModes, int spritePixelSize) {
         var scalingFactor = Scaling.ScalingFactorMultiple(scalingModes);
         return new Rect(0, 0, spritePixelSize * scalingFactor, spritePixelSize * scalingFactor);
     }

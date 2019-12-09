@@ -50,15 +50,13 @@ public class Controls : MonoBehaviour {
 
     void OnEnable() => instance = this;
 
-    public void Evolve(List<GeneratedTexture> source) => 
-        GenerateEvolution(new EvolutionConfig(source,
-        EvolutionType.noiseOffset, 
-        new InheritedSymmetryConfig(true, source[0].symmetryOutcome)));
+    public void Evolve(List<GeneratedTexture> sourceGeneratedTextures, EvolutionType type) => 
+        GenerateEvolution(new EvolutionConfig(sourceGeneratedTextures, type, 
+        new InheritedSymmetryConfig(true, sourceGeneratedTextures[0].symmetryOutcome)));
 
     public void GenerateEvolution(EvolutionConfig evolutionConfig) {
         Reset();
         var gridSize = Configuration.sizingConfig.imageGridSize;
-        var spritesToGenerate = gridSize * gridSize;
         var rowCenter = (int) Math.Floor(gridSize / 2f);
         var centerPoint = new Vector2Int(rowCenter, rowCenter);
         for (var column = 0; column < gridSize; column++) {

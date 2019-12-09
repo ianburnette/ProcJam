@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 [ExecuteInEditMode]
 public class FrameAnimation : MonoBehaviour {
@@ -105,7 +106,7 @@ public class FrameAnimation : MonoBehaviour {
     }
 
     public void EvolveShape() {
-        Controls.instance.Evolve(generatedTextures);
+        Controls.instance.Evolve(generatedTextures, EvolutionType.noiseOffset);
     }
     
     public void Export() {
@@ -149,5 +150,23 @@ public class FrameAnimation : MonoBehaviour {
         if (!Directory.Exists(directory))
             Directory.CreateDirectory(directory);
         return directory;
+    }
+
+    public void AddInterpolationFrames() {
+        var newFrames = FrameInterpolation.AddInterpolationFrames(generatedTextures, 1);
+        var scalingMode = generatedTextures[0].scalingModes;
+        var size = generatedTextures[0].texture.width;
+        normalFrames.Clear();
+        diffuseFrames.Clear();
+        generatedTextures.Clear();
+        for (var index = 0; index < newFrames.Count; index++) {
+            DiffuseFrames.Add(SpriteGeneration.CreateSprite(newFrames[index].texture, scalingMode, size));
+            NormalFrames.Add(SpriteGeneration.CreateSprite(newFrames[index].normal, scalingMode, size));
+            GeneratedTextures.Add(newFrames[index]);    
+        }
+    }
+
+    public void EvolveColor() {
+        Controls.instance.Evolve(generatedTextures, EvolutionType.color);
     }
 }

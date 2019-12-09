@@ -8,6 +8,18 @@ public class GeneratedTexture {
     public Vector2 origin;
     public SymmetryOutcome symmetryOutcome;
     public ColorOutcome colorOutcome;
+    public ScalingMode[] scalingModes;
+    public FilterMode filterMode;
+
+    public GeneratedTexture() {}
+    
+    public GeneratedTexture(Texture2D texture, Texture2D normal, Vector2 origin, SymmetryOutcome symmetryOutcome, ColorOutcome colorOutcome) {
+        this.texture = texture;
+        this.normal = normal;
+        this.origin = origin;
+        this.symmetryOutcome = symmetryOutcome;
+        this.colorOutcome = colorOutcome;
+    }
 }
 
 [Serializable]

@@ -15,5 +15,6 @@ public class EvolutionConfig {
 }
 
 public enum EvolutionType {
-    noiseOffset
+    noiseOffset,
+    color
 }
