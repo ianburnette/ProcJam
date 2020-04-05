@@ -25,11 +25,10 @@ public class Recoloring : MonoBehaviour {
         ref Texture2D tex, int frame, ColorConfig colorConfig, BackgroundColorConfig backgroundColorConfig,
         OutlineConfig outlineConfig, ColorOutcome colorOutcome) {
 
-        if (colorOutcome == ColorOutcome.None) {
+        if (colorOutcome == ColorOutcome.None || colorOutcome == null) {
             colorOutcome = new ColorOutcome();
             if (frame == 0)
-                colorOutcome.generatedColors =
-                    cachedGeneratedColors = GenerateColors(colorConfig, backgroundColorConfig);
+                colorOutcome.generatedColors = cachedGeneratedColors = GenerateColors(colorConfig, backgroundColorConfig);
             else
                 colorOutcome.generatedColors = cachedGeneratedColors; 
             colorOutcome.backgroundColor = SetBackgroundColor();

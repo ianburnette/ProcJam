@@ -230,7 +230,6 @@ public class InGameControls : MonoBehaviour {
         Configuration.Copy(controls.configurationAssets[preset]);
         controls.Generate();
         RefreshUi(true);
-        //PRESET SET HERE
     }
 
     void OnEnable() {
@@ -238,6 +237,8 @@ public class InGameControls : MonoBehaviour {
         recoloring = controls.spriteGeneration.Recoloring;
         Configuration.colorConfig.colorLocked = false;
         BindUi();
+        SetPreset(0);
+        RefreshUi();
         controls.Generate();
     }
 
@@ -434,8 +435,9 @@ public class InGameControls : MonoBehaviour {
         if (omitPresets) return;
         presets.ClearOptions();
         var options = new List<TMP_Dropdown.OptionData>();
-        foreach (var c in controls.configurationAssets)
+        foreach (var c in controls.configurationAssets) {
             options.Add(new TMP_Dropdown.OptionData(c.name));
+        }
         presets.AddOptions(options);
         presets.value = 0;
         for (var i = 0; i < controls.configurationAssets.Count; i++)
