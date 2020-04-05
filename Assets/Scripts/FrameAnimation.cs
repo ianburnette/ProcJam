@@ -16,7 +16,7 @@ public class FrameAnimation : MonoBehaviour {
     bool ascending = true;
 
     #if UNITY_WEBGL
-    [DllImport("__Internal")]
+    //[DllImport("__Internal")]
     private static extern void ImageDownloader(string str, string fn);
     #endif
     
