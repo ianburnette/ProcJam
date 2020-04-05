@@ -32,6 +32,7 @@ public class InGameControls : MonoBehaviour {
     [SerializeField] Button exportSingleSpriteButton;
     [SerializeField] Button evolveSingleSpriteShapeButton;
     [SerializeField] Button evolveColorButton;
+    [SerializeField] Button lockColorButton;
     [SerializeField] Button addInterpolationFramesButton;
 
     [Header("Sizing")]
@@ -57,6 +58,9 @@ public class InGameControls : MonoBehaviour {
     [SerializeField] Toggle usePalettes;
     [SerializeField] Slider colorsPerSprite;
     [SerializeField] TMP_Dropdown palettes;
+    [SerializeField] Button unlockColor;
+    [SerializeField] private GameObject lockedPanel;
+    [SerializeField] private GameObject unlockedPanel;
     [Header("Background")]
     [SerializeField] Toggle randomPaletteColor;
     [SerializeField] TMP_Dropdown paletteColor;
@@ -137,6 +141,11 @@ public class InGameControls : MonoBehaviour {
     public void Palettes(int value) {
         Configuration.colorConfig.paletteIndex = value;
         colorsPerSprite.maxValue = controls.spriteGeneration.Recoloring.uniqueColorsInTextures[value].Count;
+    }
+    public void UnlockColor() {
+        Configuration.colorConfig.colorLocked = false;
+        Configuration.colorConfig.lockedColorTextures.Clear();
+        RefreshUi();
     }
 
     //BACKGROUND
@@ -221,13 +230,14 @@ public class InGameControls : MonoBehaviour {
         Configuration.Copy(controls.configurationAssets[preset]);
         controls.Generate();
         RefreshUi(true);
+        //PRESET SET HERE
     }
 
     void OnEnable() {
         instance = this;
         recoloring = controls.spriteGeneration.Recoloring;
+        Configuration.colorConfig.colorLocked = false;
         BindUi();
-        RefreshUi();
         controls.Generate();
     }
 
@@ -248,6 +258,7 @@ public class InGameControls : MonoBehaviour {
         exportSingleSpriteButton.onClick.AddListener(frameAnimation.Export);
         evolveSingleSpriteShapeButton.onClick.AddListener(frameAnimation.EvolveShape);
         evolveColorButton.onClick.AddListener(frameAnimation.EvolveColor);
+        lockColorButton.onClick.AddListener(frameAnimation.LockColor);
         addInterpolationFramesButton.onClick.AddListener(frameAnimation.AddInterpolationFrames);
     }
     
@@ -275,6 +286,7 @@ public class InGameControls : MonoBehaviour {
         usePalettes.onValueChanged.AddListener(UsePalettes); 
         colorsPerSprite.onValueChanged.AddListener(ColorsPerSprite);
         palettes.onValueChanged.AddListener(Palettes);
+        unlockColor.onClick.AddListener(UnlockColor);
         //BACKGROUND
         randomPaletteColor.onValueChanged.AddListener(RandomPaletteColor);
         paletteColor.onValueChanged.AddListener(PaletteColor);
@@ -349,17 +361,25 @@ public class InGameControls : MonoBehaviour {
         manualOriginX.text = Configuration.noiseConfig.manualOrigin.x.ToString();
         manualOriginY.text = Configuration.noiseConfig.manualOrigin.y.ToString();
         //COLOR
-        colorEnabled.isOn = Configuration.colorConfig.colorEnabled; 
-        usePalettes.isOn = Configuration.colorConfig.usePaletteColors; 
-        colorsPerSprite.value = Configuration.colorConfig.colorCountPerSprite;
-        palettes.ClearOptions();
-        var paletteOptions = new List<TMP_Dropdown.OptionData>();
-        foreach (var t in controls.spriteGeneration.Recoloring.palettes) {
-            var option = new TMP_Dropdown.OptionData(t.name);
-            paletteOptions.Add(option);
+        colorEnabled.isOn = Configuration.colorConfig.colorEnabled;
+        if (!Configuration.colorConfig.colorLocked) {
+            lockedPanel.SetActive(false);
+            unlockedPanel.SetActive(true);
+
+            usePalettes.isOn = Configuration.colorConfig.usePaletteColors; 
+            colorsPerSprite.value = Configuration.colorConfig.colorCountPerSprite;
+            palettes.ClearOptions();
+            var paletteOptions = new List<TMP_Dropdown.OptionData>();
+            foreach (var t in controls.spriteGeneration.Recoloring.palettes) {
+                var option = new TMP_Dropdown.OptionData(t.name);
+                paletteOptions.Add(option);
+            }
+            palettes.AddOptions(paletteOptions);
+            palettes.value = Configuration.colorConfig.paletteIndex;
+        } else {
+            lockedPanel.SetActive(true);
+            unlockedPanel.SetActive(false);
         }
-        palettes.AddOptions(paletteOptions);
-        palettes.value = Configuration.colorConfig.paletteIndex;
         //BACKGROUND
         randomPaletteColor.isOn = Configuration.backgroundColorConfig.randomPaletteColorForBackground;
         paletteColor.options = GetColorDropdownOptions();
@@ -477,11 +497,6 @@ public class InGameControls : MonoBehaviour {
             else if (index == 2) list.Add(new TMP_Dropdown.OptionData("Clear"));
             else if (index == 3) list.Add(new TMP_Dropdown.OptionData("Magenta"));
             else {
-                // var color = recoloring.uniqueColorsInTextures[Configuration.colorConfig.paletteIndex][index];
-               // var texture2D = new Texture2D(1,1);
-               // texture2D.SetPixel(0, 0, color);
-               // var sprite = Sprite.Create(texture2D, new Rect(0,0,1,1), Vector2.zero);
-                //sprite.name = $"{color.ToString()}";
                 list.Add(new TMP_Dropdown.OptionData($"Color {index-3}"));
             }
         }

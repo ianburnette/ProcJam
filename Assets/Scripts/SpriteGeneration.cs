@@ -57,7 +57,7 @@ public class SpriteGeneration : MonoBehaviour {
         Vector2 origin;
         if (evolutionConfig == null)
             origin = noiseGeneration.GetOrigin(frame, configuration.noiseConfig);
-        else if (evolutionConfig.evolutionType==EvolutionType.noiseOffset)
+        else if (evolutionConfig.evolutionType == EvolutionType.noiseOffset)
             origin = noiseGeneration.GetOriginWithOffset(frame, configuration.noiseConfig, evolutionConfig);
         else// if (evolutionConfig.evolutionType == EvolutionType.color)
             origin = evolutionConfig.evolutionSource[frame].origin;
@@ -78,9 +78,11 @@ public class SpriteGeneration : MonoBehaviour {
 
         ColorOutcome colorOutcome;
         if (evolutionConfig == null) {
-            colorOutcome = ColorOutcome.None;
+            colorOutcome = InGameControls.instance.Configuration.colorConfig.colorLocked ? 
+                    InGameControls.instance.Configuration.colorConfig.lockedColorTextures[frame].colorOutcome : 
+                    ColorOutcome.None;
         }
-        else{
+        else {
             switch (evolutionConfig.evolutionType) {
                 case EvolutionType.noiseOffset:
                     colorOutcome = evolutionConfig.evolutionSource[frame].colorOutcome;

@@ -35,6 +35,8 @@ public class ColorConfig{
     public int paletteIndex;
     public int colorCountPerSprite;
     public bool usePaletteColors;
+    public bool colorLocked;
+    public List<GeneratedTexture> lockedColorTextures;
 }
 
 [Serializable]

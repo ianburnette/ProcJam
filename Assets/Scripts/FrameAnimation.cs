@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Video;
 
 [ExecuteInEditMode]
 public class FrameAnimation : MonoBehaviour {
@@ -62,8 +60,10 @@ public class FrameAnimation : MonoBehaviour {
     public bool normalsOnly;
 
     void OnEnable() {
-        ImageComponent.material = Instantiate(ImageComponent.material);
-        myMaterial = ImageComponent.material;
+        if (ImageComponent != null && ImageComponent.material != null) {
+            ImageComponent.material = Instantiate(ImageComponent.material);
+            myMaterial = ImageComponent.material;
+        }
     }
 
     void Animate() {
@@ -107,6 +107,7 @@ public class FrameAnimation : MonoBehaviour {
 
     public void EvolveShape() {
         Controls.instance.Evolve(generatedTextures, EvolutionType.noiseOffset);
+        RefreshSpritePanel();
     }
     
     public void Export() {
@@ -140,8 +141,8 @@ public class FrameAnimation : MonoBehaviour {
             ImageDownloader(System.Convert.ToBase64String(bytes), $"{name}_{time}.png");
         #endif
         #if UNITY_STANDALONE_WIN
-            var directory = ExtantDirectory(targetDirectory);
-            File.WriteAllBytes($"{directory}/{name}_{time}.png", bytes);
+            var standaloneDirectory = ExtantDirectory(targetDirectory);
+            File.WriteAllBytes($"{standaloneDirectory}/{name}_{time}.png", bytes);
         #endif
     }
 
@@ -168,5 +169,14 @@ public class FrameAnimation : MonoBehaviour {
 
     public void EvolveColor() {
         Controls.instance.Evolve(generatedTextures, EvolutionType.color);
+        RefreshSpritePanel();
     }
+
+    public void LockColor() {
+        Controls.instance.Configuration.colorConfig.colorLocked = true;
+        Controls.instance.Configuration.colorConfig.lockedColorTextures = generatedTextures;
+        RefreshSpritePanel();
+    }
+
+    private void RefreshSpritePanel() => InGameControls.instance.OpenSpritePanel(this);
 }
