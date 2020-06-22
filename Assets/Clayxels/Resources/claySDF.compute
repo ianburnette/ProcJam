@@ -1,0 +1,207 @@
+
+// Signed distance function library
+// After changing something here, click reload on the clayxel container in scene.
+
+#define MAXTHREADS 8 // set this to 4 on low-end integrated graphic cards
+
+float globalRoundCornerValue = 0.0; // externally set from Clayxel.cs
+float3 mulQuat(float3 v, float4 q);
+bool checkMirrorX(int mask);
+float2 bezier(float3 p0, float3 p1, float3 p2);
+float cylinderCone(float3 p, float3 s, float3 r);
+
+float computeClayDistanceFunction(uint solidType, float3 cellPoint, float3 solidPos, float4 solidRot, float3 solidSize, float4 extraAttrs){
+	float dist = 1e10;
+
+	if(checkMirrorX(extraAttrs.w)){
+		cellPoint.x = abs(cellPoint.x);
+	}
+	
+	float3 localPoint = cellPoint - solidPos;
+	float3 pointRotated = mulQuat(localPoint, solidRot);
+	
+	if(solidType == 0){// label: cube, w0: painter 0, w1: mirrorX 0, x: round 0
+		// Inigo Quilez
+		float round = extraAttrs.x + globalRoundCornerValue;
+		float3 a = abs(pointRotated) - solidSize + round;
+		dist = length(max(a, 0.0)) + min(max(a.x, max(a.y, a.z)), 0.0) - round;
+	}
+	else if(solidType == 1){// label: sphere, w0: painter 0, w1: mirrorX 0
+		// Inigo Quilez ellipsoid approximation
+		
+		float k0 = length(pointRotated / solidSize);
+		float k1 = length(pointRotated / (solidSize * solidSize));
+		dist = k0 * (k0 - 1.0) / k1;
+	}
+	else if(solidType == 2){// label: cylinder, w0: painter 0, w1: mirrorX 0, x: round 0, y: sharp 0, z: cone 0
+		float round = extraAttrs.x + globalRoundCornerValue;
+
+		float3 params = float3(
+			(-1.0 * extraAttrs.y) + min(solidSize.x, solidSize.z), 
+			round, 
+			extraAttrs.z);
+		
+		dist = cylinderCone(pointRotated, solidSize, params);
+	}
+	else if(solidType == 3){// label: torus, w0: painter 0, w1: mirrorX 0, x: fat 0.2
+		// Inigo Quilez
+		float3 elongationVec = float3(0.0, 0.0, ((solidSize.z) - (extraAttrs.x)));
+		pointRotated = pointRotated - clamp(pointRotated, -elongationVec, elongationVec);// elongation op
+
+		float le = solidSize.y - solidSize.x;
+		float r1 = solidSize.x - extraAttrs.x;
+		float r2 = extraAttrs.x;
+
+		float3 a = float3(pointRotated.x, max(abs(pointRotated.y) - le, 0.0), pointRotated.z);
+				dist = length(float2(length(a.xy) - r1, a.z)) - r2;
+	}
+	else if(solidType == 4){// label: curve, w0: painter 0, w1: mirrorX 0, x: slide 0.5, y: weight 0.5, z: fat 0.5
+		pointRotated.x += solidSize.x - (extraAttrs.z * 0.5);
+		pointRotated.y += solidSize.y - ((extraAttrs.z) - (extraAttrs.z*0.5));
+		float3 elongationVec = float3(0.0, 0.0, solidSize.z-0.5);
+		pointRotated = pointRotated - clamp(pointRotated, -elongationVec, elongationVec);// elongation op
+
+		float2 distParam = bezier(pointRotated, 
+			float3(extraAttrs.x * ((solidSize.x*2.0) - extraAttrs.z), (solidSize.y * 3.0) - extraAttrs.z, 0.0), float3((solidSize.x*2.0) - extraAttrs.z, 0.0, 0.0));
+
+		float weightParam = clamp(extraAttrs.y, 0.0, 1.0);
+		float weight = clamp(lerp((1.0 - weightParam), weightParam, distParam.y), 0.0, 1.0);
+		dist = distParam.x - (extraAttrs.z * weight);
+	}
+	else if(solidType == 5){// label: hexagon, w0: painter 0, w1: mirrorX 0, x: round 0
+		// Inigo Quilez
+		float round = extraAttrs.x + globalRoundCornerValue;
+
+		float3 k = float3(-0.8660254, 0.5, 0.57735);
+		pointRotated = abs(pointRotated);
+		pointRotated.xy -= 2.0 * min(dot(k.xy, pointRotated.xy), 0.0) * k.xy;
+
+		float sizeX = solidSize.x - round;
+		float sizeZ = solidSize.z - round;
+
+		float2 d = float2(
+			length(pointRotated.xy - float2(clamp(pointRotated.x, -k.z * sizeX, k.z *sizeX), sizeX)) * sign(pointRotated.y - sizeX),
+			pointRotated.z - sizeZ);
+
+		dist = min(max(d.x, d.y),0.0) + length(max(d, 0.0)) - round;
+	}
+	else if(solidType == 6){// label: prism, w0: painter 0, w1: mirrorX 0, x: round 0
+		// Inigo Quilez
+		float round = extraAttrs.x + globalRoundCornerValue;
+
+		float k = 1.73205080757;// sqrt(3.0);
+		float sizeX = solidSize.x * (0.5*k) - round;
+		float sizeZ = solidSize.z - round;
+
+		pointRotated.xy /= sizeX;
+		pointRotated.x = abs(pointRotated.x) - 1.0;
+		pointRotated.y = pointRotated.y + 1.0/k;
+		if( pointRotated.x+k*pointRotated.y>0.0 ) pointRotated.xy=float2(pointRotated.x-k*pointRotated.y,-k*pointRotated.x - pointRotated.y)/2.0;
+		pointRotated.x -= clamp( pointRotated.x, -2.0, 0.0 );
+		float d1 = length(pointRotated.xy)*sign(- pointRotated.y)*sizeX;
+		float d2 = abs(pointRotated.z)-sizeZ;
+		dist = length(max(float2(d1,d2),0.0)) + min(max(d1,d2), 0.) - round;
+	}
+	
+	return dist;
+}
+
+// utility functions
+float3 mulQuat(float3 v, float4 q){
+	float3 t = 2.0 * cross(v, q.xyz);
+
+	return v + q.w * t + cross(t, q.xyz);
+}
+
+// float3 mulQuat(float3 v, float4 q ){ 
+// 	return v + 2.0 * cross(cross(v, (q.xyz)) + 1.0 * v, (q.xyz));
+// } 
+
+bool checkMirrorX(int mask){
+	return (mask >> 1) & 1;
+}
+
+// https://www.shadertoy.com/view/ldj3Wh
+float2 bezier(float3 p0, float3 p1, float3 p2){    
+				float3 b = (-2.0)*p1 + p2;
+				float3 c = p1 * 2.0;
+				float3 d = - p0;
+
+				float kk = 1.0 / dot(b,b);
+				float kx = kk * dot(p1,b);
+				float ky = kk * (2.0*dot(p1,p1)+dot(d,b)) / 3.0;
+				float kz = kk * dot(d,p1);      
+
+				float2 res;
+
+
+				float p = ky - kx*kx;
+				float p3 = p*p*p;
+				float q = kx*(2.0*kx*kx - 3.0*ky) + kz;
+				float h = q*q + 4.0*p3;
+
+				if(h >= 0.0) 
+				{ 
+								h = sqrt(h);
+								float2 x = (float2(h, -h) - q) / 2.0;
+								float2 uv = sign(x)*pow(abs(x), 0.33333333333);
+								float t = uv.x + uv.y - kx;
+								t = clamp( t, 0.0, 1.0 );
+
+								// 1 root
+								float3 qos = d + (c + b*t)*t;
+								res = float2( length(qos),t);
+				}
+				else
+				{
+								float z = sqrt(-p);
+								float v = acos( q/(p*z*2.0) ) / 3.0;
+								float m = cos(v);
+								float n = sin(v)*1.732050808;
+								float3 t = float3(m + m, -n - m, n - m) * z - kx;
+								t = clamp( t, 0.0, 1.0 );
+
+								// 3 roots
+								float3 qos = d + (c + b*t.x)*t.x;
+								float dis = dot(qos,qos);
+								
+								res = float2(dis,t.x);
+
+								qos = d + (c + b*t.y)*t.y;
+								dis = dot(qos,qos);
+								if( dis<res.x ) res = float2(dis,t.y );
+
+								qos = d + (c + b*t.z)*t.z;
+								dis = dot(qos,qos);
+								if( dis<res.x ) res = float2(dis,t.z );
+
+								res.x = sqrt( res.x );
+				}
+				
+				return res;
+}
+
+// uberprim https://www.shadertoy.com/view/MsVGWG
+// s: width, height, depth
+// r: xy corner radius, z corner radius, bottom radius offset
+float cylinderCone(float3 p, float3 s, float3 r) {
+	s.xz -= r.x;
+	r.x -= r.y;
+	s.y -= r.y;
+
+	float2 b = float2(r.z, -2.0*s.y);
+	float2 ba = b/dot(b,b);
+	float sz2 = b.y;
+
+	float3 d = abs(p) - s.xyz;
+	float q = length(max(d.xz, 0.0)) + min(0.0,max(d.x,d.z)) - r.x;
+
+	float2 pa = float2(q, p.y - s.y);
+	float2 diag = pa - float2(r.z,sz2) * clamp(dot(pa,ba), 0.0, 1.0);
+	float2 h0 = float2(max(q - r.z,0.0),p.y + s.y);
+	float2 h1 = float2(max(q,0.0),p.y - s.y);
+
+	float res = sqrt(min(dot(diag,diag),min(dot(h0,h0),dot(h1,h1)))) * sign(max(dot(pa,float2(-ba.y, ba.x)), d.y)) - r.y;
+
+	return res;
+}

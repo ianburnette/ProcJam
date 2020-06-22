@@ -38,14 +38,12 @@ public class SpriteGeneration : MonoBehaviour {
             generatedTextures.Add(generatedTexture);
         }
         return (sprites, normals, generatedTextures);
-
     }
     
-    public static Sprite CreateSprite(Texture2D texture, ScalingMode[] scalingModes, int pixelSize) {
-        return Sprite.Create(texture,
+    public static Sprite CreateSprite(Texture2D texture, ScalingMode[] scalingModes, int pixelSize) =>
+        Sprite.Create(texture,
             RectAccordingToScalingMode(scalingModes, pixelSize),
             new Vector2(.5f, .5f));
-    }
 
     GeneratedTexture GenerateTexture(
         int frame, 
