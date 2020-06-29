@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 
 public class NoiseGeneration : MonoBehaviour {
     [Header("Debug")]
     [SerializeField] Vector2 origin;
+    [SerializeField] Vector3 origin3D;
     [SerializeField] float noisePerEvolutionStep = .1f;
 
     float maxFrequencySum = 1.1f;
@@ -12,6 +14,21 @@ public class NoiseGeneration : MonoBehaviour {
         var tex = new Texture2D(spritePixelSize, spritePixelSize);
         tex.SetPixels(CalcNoise(noiseConfig, spritePixelSize, desiredOrigin));
         return tex;
+    }
+
+    public Texture3D GetNoise3D(NoiseConfig noiseConfig, int spritePixelSize, ref Vector2 generatedVoxelOrigin) {
+
+        var modelData = new Texture3D(spritePixelSize, spritePixelSize, spritePixelSize, DefaultFormat.HDR,
+            TextureCreationFlags.None);
+        var colors = new Color[spritePixelSize * spritePixelSize * spritePixelSize];
+        // generate a 2D texture at every vertical layer of the 3D texture, stacking them on top of each other
+        for (var i = 0; i < modelData.depth; i++) {
+            var currentLayerOrigin = GetOrigin3D(noiseConfig, i);
+            CalcNoise(noiseConfig, spritePixelSize, currentLayerOrigin).CopyTo(colors, i * spritePixelSize);
+            if (i == 0) generatedVoxelOrigin = currentLayerOrigin;
+        }
+        modelData.SetPixels(colors);
+        return modelData;
     }
 
     public Vector2 GetOriginWithOffset(int frame, NoiseConfig config, EvolutionConfig evolutionConfig) {
@@ -26,9 +43,26 @@ public class NoiseGeneration : MonoBehaviour {
             origin = config.randomOrigin ? new Vector2(RandomValue(config.randomOriginBound), 
                 RandomValue(config.randomOriginBound)) : config.manualOrigin;
         } else
-            origin = new Vector2(origin.x + config.animationFrameNoiseOffset * frame, origin.y + config.animationFrameNoiseOffset * frame);
+            origin = new Vector2(
+                origin.x + config.animationFrameNoiseOffset * frame,
+                origin.y + config.animationFrameNoiseOffset * frame);
 
         return origin;
+    }
+
+    public Vector3 GetOrigin3D(NoiseConfig config, int depthLayer) {
+        if (depthLayer == 0) {
+            origin3D = new Vector3(
+                RandomValue(config.randomOriginBound),
+                RandomValue(config.randomOriginBound),
+                RandomValue(config.randomOriginBound));
+        } else {
+            origin3D = new Vector3(
+                origin3D.x + config.animationFrameNoiseOffset * depthLayer,
+                origin3D.y + config.animationFrameNoiseOffset * depthLayer,
+                origin3D.z + config.animationFrameNoiseOffset * depthLayer);
+        }
+        return origin3D;
     }
     
     float RandomValue(float randomBound) => Random.Range(-randomBound, randomBound);

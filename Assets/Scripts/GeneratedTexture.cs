@@ -1,15 +1,18 @@
 using System;
 using UnityEngine;
 
-[Serializable]
-public class GeneratedTexture {
-    public Texture2D texture;
-    public Texture2D normal;
+public class GeneratedData {
     public Vector2 origin;
     public SymmetryOutcome symmetryOutcome;
     public ColorOutcome colorOutcome;
     public ScalingMode[] scalingModes;
     public FilterMode filterMode;
+}
+
+[Serializable]
+public class GeneratedTexture : GeneratedData {
+    public Texture2D texture;
+    public Texture2D normal;
 
     public GeneratedTexture() {}
     

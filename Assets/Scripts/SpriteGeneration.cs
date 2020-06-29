@@ -52,6 +52,7 @@ public class SpriteGeneration : MonoBehaviour {
         
         var generatedTexture = new GeneratedTexture();
         
+        // find the position within the noise to start sampling
         Vector2 origin;
         if (evolutionConfig == null)
             origin = noiseGeneration.GetOrigin(frame, configuration.noiseConfig);
@@ -59,6 +60,7 @@ public class SpriteGeneration : MonoBehaviour {
             origin = noiseGeneration.GetOriginWithOffset(frame, configuration.noiseConfig, evolutionConfig);
         else// if (evolutionConfig.evolutionType == EvolutionType.color)
             origin = evolutionConfig.evolutionSource[frame].origin;
+        
         
         generatedTexture.origin = origin;
         var tex = noiseGeneration.GetNoise(configuration.noiseConfig, configuration.sizingConfig.pixelSize, origin);
@@ -148,5 +150,17 @@ public class SpriteGeneration : MonoBehaviour {
     static Rect RectAccordingToScalingMode(ScalingMode[] scalingModes, int spritePixelSize) {
         var scalingFactor = Scaling.ScalingFactorMultiple(scalingModes);
         return new Rect(0, 0, spritePixelSize * scalingFactor, spritePixelSize * scalingFactor);
+    }
+
+    public GeneratedVoxelModel GenerateVoxelModel(ConfigurationAsset configuration, EvolutionConfig evolutionConfig = null) {
+        var generatedVoxel = new GeneratedVoxelModel();
+
+        // fill a 3D texture with noise, offsetting the perlin origin a bit by each layer
+        generatedVoxel.modelData = noiseGeneration.GetNoise3D(
+            configuration.noiseConfig,
+            configuration.sizingConfig.pixelSize, 
+            ref generatedVoxel.origin);
+
+        return generatedVoxel;
     }
 }
