@@ -162,16 +162,18 @@ public class Symmetry : MonoBehaviour {
                                 if (symmetryOutcome.lowerIsDominant && columnIndex > rowIndex ||
                                     !symmetryOutcome.lowerIsDominant && columnIndex < rowIndex)
                                     texture.SetPixel(columnIndex, rowIndex, depthIndex,
-                                        texture.GetPixel(texture.width - rowIndex, 
-                                        texture.width - columnIndex, 
-                                        texture.depth - depthIndex));
+                                        texture.GetPixel(
+                                            texture.width - rowIndex, 
+                                            texture.width - columnIndex, 
+                                            texture.depth - depthIndex));
                             } else {
                                 if (symmetryOutcome.lowerIsDominant && rowIndex < texture.width - columnIndex ||
                                     !symmetryOutcome.lowerIsDominant && rowIndex > texture.width - columnIndex)
                                     texture.SetPixel(columnIndex, rowIndex, depthIndex,
-                                        texture.GetPixel(texture.width - rowIndex, 
-                                        texture.width - columnIndex, 
-                                        texture.depth - depthIndex));
+                                        texture.GetPixel(
+                                            texture.width - rowIndex, 
+                                            texture.width - columnIndex, 
+                                            texture.depth - depthIndex));
                             }
 
                             break;
