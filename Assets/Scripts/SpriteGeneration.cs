@@ -160,6 +160,9 @@ public class SpriteGeneration : MonoBehaviour {
             configuration.noiseConfig,
             configuration.sizingConfig.pixelSize, 
             ref generatedVoxel.origin);
+        
+        // apply falloff
+        falloff.ApplyFalloff(ref generatedVoxel.modelData, configuration.falloffConfig);
 
         return generatedVoxel;
     }

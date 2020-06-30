@@ -5,6 +5,10 @@ using UnityEngine;
 public class Voxel : MonoBehaviour
 {
     public void SetColor(Color color) {
-        GetComponent<Renderer>().material.color = color;
+        if (color == Color.black) {
+            gameObject.SetActive(false);
+        } else {
+            GetComponent<Renderer>().material.color = color;
+        }
     }
 }
