@@ -18,13 +18,14 @@ public class NoiseGeneration : MonoBehaviour {
 
     public Texture3D GetNoise3D(NoiseConfig noiseConfig, int spritePixelSize, ref Vector2 generatedVoxelOrigin) {
 
-        var modelData = new Texture3D(spritePixelSize, spritePixelSize, spritePixelSize, DefaultFormat.HDR,
+        var modelData = new Texture3D(spritePixelSize, spritePixelSize, spritePixelSize, DefaultFormat.LDR,
             TextureCreationFlags.None);
         var colors = new Color[spritePixelSize * spritePixelSize * spritePixelSize];
         // generate a 2D texture at every vertical layer of the 3D texture, stacking them on top of each other
         for (var i = 0; i < modelData.depth; i++) {
             var currentLayerOrigin = GetOrigin3D(noiseConfig, i);
-            CalcNoise(noiseConfig, spritePixelSize, currentLayerOrigin).CopyTo(colors, i * spritePixelSize);
+            var noise = CalcNoise(noiseConfig, spritePixelSize, currentLayerOrigin);
+            noise.CopyTo(colors, i * spritePixelSize * spritePixelSize);
             if (i == 0) generatedVoxelOrigin = currentLayerOrigin;
         }
         modelData.SetPixels(colors);

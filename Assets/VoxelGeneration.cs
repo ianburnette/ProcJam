@@ -27,8 +27,9 @@ public class VoxelGeneration : MonoBehaviour {
 
     [SerializeField] GameObject voxelPrefab;
     public void Generate() {
+        Clear();
         var voxelModel = spriteGeneration.GenerateVoxelModel(configuration);
-        StartCoroutine(SpawnVoxels(voxelModel));
+        SpawnVoxels(voxelModel);
     }
 
     public void Clear() {
@@ -46,15 +47,14 @@ public class VoxelGeneration : MonoBehaviour {
         }
     }
 
-    IEnumerator SpawnVoxels(GeneratedVoxelModel voxelModel) {
+    void SpawnVoxels(GeneratedVoxelModel voxelModel) {
         var tex = voxelModel.modelData;
         for (var i = 0; i < tex.depth; i++) {
-            for (var j = 0; j < tex.width; j++) {
-                for (var k = 0; k < tex.height; k++) {
+            for (var k = 0; k < tex.height; k++) {
+                for (var j = 0; j < tex.width; j++) {
                     var voxel = GameObject.Instantiate(voxelPrefab, transform);
                     voxel.transform.localPosition = new Vector3(i, j, k);
-                    voxel.GetComponent<Renderer>().material.color = tex.GetPixel(i, j, k);
-                    yield return new WaitForSecondsRealtime(0.001f);
+                    voxel.GetComponent<Voxel>().SetColor(tex.GetPixel(i, j, k));
                 }
             }
         }
