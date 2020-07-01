@@ -125,6 +125,7 @@ public class Controls : MonoBehaviour {
             Configuration.backgroundColorConfig,
             Configuration.outlineConfig,
             Configuration.symmetryConfig,
+            Configuration.symmetryConfig3D,
             Configuration.scalingConfig,
             Configuration.animationConfig,
             Configuration.shadingConfig,

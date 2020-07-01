@@ -17,7 +17,7 @@ public class RotateAround : MonoBehaviour {
 
     void Update() {
         transform.RotateAround(rotationPosition, rotationDirection, rotationSpeed);
-        transform.LookAt(rotationPosition);
+       // transform.LookAt(rotationPosition);
     }
 }
 

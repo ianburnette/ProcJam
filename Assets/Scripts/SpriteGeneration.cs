@@ -165,8 +165,8 @@ public class SpriteGeneration : MonoBehaviour {
         falloff.ApplyFalloff(ref generatedVoxel.modelData, configuration.falloffConfig);
 
         // apply symmetry
-        var symmetryOutcome = new SymmetryOutcome();
-        symmetry.AttemptToApplySymmetry(ref generatedVoxel, configuration.symmetryConfig, ref symmetryOutcome);
+        var symmetryOutcome = new SymmetryOutcome3D();
+        symmetry.AttemptToApplySymmetry(ref generatedVoxel, configuration.symmetryConfig3D, ref symmetryOutcome);
         
         return generatedVoxel;
     }

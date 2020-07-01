@@ -25,6 +25,8 @@ public class VoxelGeneration : MonoBehaviour {
     [SerializeField] SpriteGeneration spriteGeneration;
     [SerializeField] ConfigurationAsset configuration;
 
+    void OnEnable() => Generate();
+
     [SerializeField] GameObject voxelPrefab;
     public void Generate() {
         Clear();

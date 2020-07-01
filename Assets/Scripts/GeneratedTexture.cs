@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GeneratedData {
@@ -36,16 +37,9 @@ public class SymmetryOutcome {
     public bool quarterForwardDiagonalSymmetryResult;
     public bool quarterBackwardDiagonalSymmetryResult;
     public bool lowerIsDominant;
-    public SymmetryOutcome(
-        bool horizontalSymmetryResult, 
-        bool verticalSymmetryResult,
-        bool forwardDiagonalSymmetryResult,
-        bool backwardDiagonalSymmetryResult,
-        bool quarterHorizontalSymmetryResult,
-        bool quarterVerticalSymmetryResult,
-        bool quarterForwardDiagonalSymmetryResult,
-        bool quarterBackwardDiagonalSymmetryResult,
-        bool lowerIsDominant) {
+    public SymmetryOutcome(bool horizontalSymmetryResult, bool verticalSymmetryResult, bool forwardDiagonalSymmetryResult,
+        bool backwardDiagonalSymmetryResult, bool quarterHorizontalSymmetryResult, bool quarterVerticalSymmetryResult,
+        bool quarterForwardDiagonalSymmetryResult, bool quarterBackwardDiagonalSymmetryResult, bool lowerIsDominant) {
         this.horizontalSymmetryResult = horizontalSymmetryResult; 
         this.verticalSymmetryResult = verticalSymmetryResult; 
         this.forwardDiagonalSymmetryResult = forwardDiagonalSymmetryResult; 
@@ -57,6 +51,18 @@ public class SymmetryOutcome {
         this.lowerIsDominant = lowerIsDominant;
     }
     public SymmetryOutcome(){}
+}
+
+[Serializable]
+public class SymmetryOutcome3D {
+    public List<SymmetryDirection3D> symmetryDirections = new List<SymmetryDirection3D>();
+    public bool lowerIsDominant;
+    public SymmetryOutcome3D(List<SymmetryDirection3D> symmetryDirections, bool lowerIsDominant) {
+        this.symmetryDirections = symmetryDirections;
+        this.lowerIsDominant = lowerIsDominant;
+    }
+
+    public SymmetryOutcome3D() {}
 }
 
 public class ColorOutcome {

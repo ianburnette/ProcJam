@@ -9,6 +9,7 @@ public class ConfigurationAsset : ScriptableObject {
     public BackgroundColorConfig backgroundColorConfig;
     public OutlineConfig outlineConfig;
     public SymmetryConfig symmetryConfig;
+    public SymmetryConfig3D symmetryConfig3D;
     public ScalingConfig scalingConfig;
     public AnimationConfig animationConfig;
     public ShadingConfig shadingConfig;
@@ -23,6 +24,7 @@ public class ConfigurationAsset : ScriptableObject {
         BackgroundColorConfig backgroundColorConfig,
         OutlineConfig outlineConfig,
         SymmetryConfig symmetryConfig,
+        SymmetryConfig3D symmetryConfig3D,
         ScalingConfig scalingConfig,
         AnimationConfig animationConfig,
         ShadingConfig shadingConfig,
@@ -36,6 +38,7 @@ public class ConfigurationAsset : ScriptableObject {
         this.backgroundColorConfig = backgroundColorConfig;
         this.outlineConfig = outlineConfig;
         this.symmetryConfig = symmetryConfig;
+        this.symmetryConfig3D = symmetryConfig3D;
         this.scalingConfig = scalingConfig;
         this.animationConfig = animationConfig;
         this.shadingConfig = shadingConfig;
@@ -51,6 +54,7 @@ public class ConfigurationAsset : ScriptableObject {
         backgroundColorConfig = source.backgroundColorConfig;
         outlineConfig = source.outlineConfig;
         symmetryConfig = source.symmetryConfig;
+        symmetryConfig3D = source.symmetryConfig3D;
         scalingConfig = source.scalingConfig;
         animationConfig = source.animationConfig;
         shadingConfig = source.shadingConfig;

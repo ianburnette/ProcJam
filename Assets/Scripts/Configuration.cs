@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 [Serializable]
@@ -78,6 +79,37 @@ public class SymmetryConfig {
     [Header("Backward Diagonal")]
     [Range(0f,1f)] public float backwardDiagonalSymmetryChance;
     [Range(0f,1f)] public float quarterBackwardDiagonalSymmetryChance;
+}
+
+[Serializable]
+public class SymmetryConfig3D {
+    public bool allowMultipleSymmetryTypes = true;
+    public bool enforceSomeTypeOfSymmetry;
+    // https://images.slideplayer.com/26/8501691/slides/slide_24.jpg
+    [Range(0f,1f)] public float topLeftToBottomRightChance;
+    [Range(0f,1f)] public float frontBottomToTopBackChance;
+    [Range(0f,1f)] public float bottomLeftToTopRightChance;
+    [Range(0f,1f)] public float frontTopToBottomBackChance;
+    [Range(0f,1f)] public float frontRightToBackLeftChance;    
+    [Range(0f,1f)] public float frontLeftToBackRightChance;
+    [Range(0f,1f)] public float frontCenterToBackCenterVerticalChance;
+    [Range(0f,1f)] public float frontCenterToBackCenterHorizontalChance;
+    [Range(0f,1f)] public float middleTopToMiddleBottomChance;
+
+    public float ChanceOf(SymmetryDirection3D direction) {
+        switch (direction) {
+            case SymmetryDirection3D.TopLeftToBottomRight: return topLeftToBottomRightChance;
+            case SymmetryDirection3D.FrontBottomToTopBack: return frontBottomToTopBackChance;
+            case SymmetryDirection3D.BottomLeftToTopRight: return bottomLeftToTopRightChance;
+            case SymmetryDirection3D.FrontTopToBottomBack: return frontTopToBottomBackChance;
+            case SymmetryDirection3D.FrontRightToBackLeft: return frontRightToBackLeftChance;
+            case SymmetryDirection3D.FrontLeftToBackRight: return frontLeftToBackRightChance;
+            case SymmetryDirection3D.FrontCenterToBackCenterVertical: return frontCenterToBackCenterVerticalChance;
+            case SymmetryDirection3D.FrontCenterToBackCenterHorizontal: return frontCenterToBackCenterHorizontalChance;
+            case SymmetryDirection3D.MiddleTopToMiddleBottomVertical: return middleTopToMiddleBottomChance;
+            default: return 0;
+        }
+    }
 }
 
 [Serializable]
