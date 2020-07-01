@@ -30,7 +30,7 @@ MonoBehaviour:
     randomOrigin: 1
     randomOriginBound: 255
     manualOrigin: {x: 160, y: 160}
-    animationFrameNoiseOffset: 0.2
+    animationFrameNoiseOffset: 0.01
   falloffConfig:
     falloffCurve:
       serializedVersion: 2
@@ -61,6 +61,8 @@ MonoBehaviour:
     paletteIndex: 1
     colorCountPerSprite: 4
     usePaletteColors: 1
+    colorLocked: 0
+    lockedColorTextures: []
   backgroundColorConfig:
     randomPaletteColorForBackground: 0
     paletteColorIndexForBackground: 0
@@ -76,14 +78,14 @@ MonoBehaviour:
   symmetryConfig:
     allowMultipleSymmetryTypes: 1
     enforceSomeTypeOfSymmetry: 1
-    horizontalSymmetryChance: 0.2
-    quarterHorizontalSymmetryChance: 0.5
-    verticalSymmetryChance: 0.2
-    quarterVerticalSymmetryChance: 0.5
-    forwardDiagonalSymmetryChance: 0.2
-    quarterForwardDiagonalSymmetryChance: 0.5
-    backwardDiagonalSymmetryChance: 0.2
-    quarterBackwardDiagonalSymmetryChance: 0.5
+    horizontalSymmetryChance: 0
+    quarterHorizontalSymmetryChance: 0
+    verticalSymmetryChance: 1
+    quarterVerticalSymmetryChance: 0
+    forwardDiagonalSymmetryChance: 0
+    quarterForwardDiagonalSymmetryChance: 0
+    backwardDiagonalSymmetryChance: 0
+    quarterBackwardDiagonalSymmetryChance: 0
   scalingConfig:
     scalingModes: 000000000000000000000000000000000000000000000000
     filterMode: 0
