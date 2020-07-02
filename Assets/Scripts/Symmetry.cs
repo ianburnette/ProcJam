@@ -199,13 +199,13 @@ public class Symmetry : MonoBehaviour {
 //
                         //    break;
                         case SymmetryDirection3D.TopLeftToBottomRight:
-                            if (lowDominant && x > y || !lowDominant && x < y)
+                            if (x<y)//(lowDominant && x < y || !lowDominant && x > y)
                                 SetSymmetricalVoxel(texture, direction, y, x, z, halfwayPoint);
                             break;
                         case SymmetryDirection3D.FrontBottomToTopBack:
                             break;
                         case SymmetryDirection3D.BottomLeftToTopRight:
-                            if (lowDominant && x < y || !lowDominant && x > y)
+                            if (lowDominant && x > y || !lowDominant && x < y)
                                 SetSymmetricalVoxel(texture, direction, y, x, z, halfwayPoint);
                             break;
                         case SymmetryDirection3D.FrontTopToBottomBack:
@@ -256,7 +256,7 @@ public class Symmetry : MonoBehaviour {
         var readCoordinates = new Vector3Int();
         switch (direction) {
             case SymmetryDirection3D.TopLeftToBottomRight:
-                readCoordinates = new Vector3Int(texture.width - x, texture.width - y, texture.depth - z);
+                readCoordinates = new Vector3Int(texture.height - y + 1,texture.width - x + 1, z);
                 break;
             case SymmetryDirection3D.FrontBottomToTopBack:
                 break;
