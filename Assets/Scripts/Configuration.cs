@@ -85,7 +85,6 @@ public class SymmetryConfig {
 public class SymmetryConfig3D {
     public bool allowMultipleSymmetryTypes = true;
     public bool enforceSomeTypeOfSymmetry;
-    // https://images.slideplayer.com/26/8501691/slides/slide_24.jpg
     [Range(0f,1f)] public float eastTopToWestBottomChance;
     [Range(0f,1f)] public float southBottomToNorthTopChance;
     [Range(0f,1f)] public float westBottomToEastTopChance;

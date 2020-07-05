@@ -148,7 +148,7 @@ public class Symmetry : MonoBehaviour {
 
     void ApplySymmetry(ref Texture3D texture, SymmetryDirection3D direction, SymmetryOutcome3D symmetryOutcome) {
         var halfwayPoint = texture.width / 2;
-        var lowDominant = symmetryOutcome.lowerIsDominant;
+        var lowDominant = true;// symmetryOutcome.lowerIsDominant;
         
         for (var x = 0; x < texture.height; x++) {
             for (var z = 0; z < texture.depth; z++) {
@@ -168,11 +168,11 @@ public class Symmetry : MonoBehaviour {
                         case SymmetryDirection3D.SouthWestCenterToNorthEastCenter:
                             if (CompareTo(z, y, lowDominant)) setSymmetrical = true; break;
                         case SymmetryDirection3D.SouthCenterToNorthCenterVertical:
-                            if (CompareTo(y, halfwayPoint, lowDominant)) setSymmetrical = true; break;
+                            if (CompareTo(y, halfwayPoint - 1, lowDominant)) setSymmetrical = true; break;
                         case SymmetryDirection3D.SouthCenterToNorthCenterHorizontal:
-                            if (CompareTo(x, halfwayPoint, lowDominant)) setSymmetrical = true; break;
+                            if (CompareTo(x, halfwayPoint - 1, lowDominant)) setSymmetrical = true; break;
                         case SymmetryDirection3D.CenterUpToCenterDown:
-                            if (CompareTo(z, halfwayPoint, lowDominant)) setSymmetrical = true; break;
+                            if (CompareTo(z, halfwayPoint - 1, lowDominant)) setSymmetrical = true; break;
                     }
 
                     if (setSymmetrical) 
@@ -205,10 +205,10 @@ public class Symmetry : MonoBehaviour {
 
     static void SetSymmetricalVoxel(
         Texture3D texture, SymmetryDirection3D direction, int x, int y, int z, int halfwayPoint) {
-        var readCoordinates = new Vector3Int();
+        Vector3Int readCoordinates;
         switch (direction) {
             case SymmetryDirection3D.EastTopToWestBottom:
-                readCoordinates = new Vector3Int(texture.width - y, texture.height - x, z);
+                readCoordinates = new Vector3Int(texture.width - y - 1, texture.height - x - 1, z);
                 break;
             case SymmetryDirection3D.SouthBottomToNorthTop:
                 readCoordinates = new Vector3Int(x, z, y);
@@ -217,11 +217,13 @@ public class Symmetry : MonoBehaviour {
                 readCoordinates = new Vector3Int(y, x, z);
                 break;
             case SymmetryDirection3D.SouthTopToNorthBottom:
-                readCoordinates = new Vector3Int(x, texture.height - z, texture.depth - y);
+                readCoordinates = new Vector3Int(x, texture.height - z - 1, texture.depth - y - 1);
                 break;
             case SymmetryDirection3D.SouthEastCenterToNorthWestCenter:
+                readCoordinates = new Vector3Int(texture.width - z - 1, y, texture.depth - x - 1);
                 break;
             case SymmetryDirection3D.SouthWestCenterToNorthEastCenter:
+                readCoordinates = new Vector3Int(z, y, x);
                 break;
             case SymmetryDirection3D.SouthCenterToNorthCenterVertical:
                 readCoordinates = new Vector3Int(halfwayPoint - (x + 1 - halfwayPoint), y, z);
@@ -236,9 +238,7 @@ public class Symmetry : MonoBehaviour {
                 throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
         }
 
-        //texture.SetPixel(x, y, z, Color.blue);
-        //texture.SetPixel(x, y, z, texture.GetPixel(readCoordinates.x, readCoordinates.y, readCoordinates.z) + (Color.blue/2f));
-        texture.SetPixel(x, y, z, texture.GetPixel(x, y, z) + (Color.blue/2f));
+        texture.SetPixel(x, y, z, texture.GetPixel(readCoordinates.x, readCoordinates.y, readCoordinates.z));
     }
 }
 
@@ -250,6 +250,7 @@ enum SymmetryDirection {
     QuarterVertical,
 }
 
+// https://images.slideplayer.com/26/8501691/slides/slide_24.jpg
 public enum SymmetryDirection3D {
     EastTopToWestBottom,
     SouthBottomToNorthTop,
