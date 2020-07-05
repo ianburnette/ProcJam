@@ -56,6 +56,39 @@ public class Recoloring : MonoBehaviour {
             return backgroundColor;
         }
     }
+    
+    public ColorOutcome Recolor(
+        ref GeneratedVoxelModel generatedVoxel, ColorConfig configurationColorConfig,
+        BackgroundColorConfig configurationBackgroundColorConfig, OutlineConfig configurationOutlineConfig) {
+        
+        // generate the colors to use for the model
+        var colorOutcome = new ColorOutcome();
+        colorOutcome.generatedColors = GenerateColors(configurationColorConfig);
+        
+        // get the current (grayscale) colors of the model
+        var colors = generatedVoxel.modelData.GetPixels();
+        // determine how many different colors we will have in the final model
+        var increment = 1f / configurationColorConfig.colorCountPerSprite;
+        // create a new list to hold the new colors for the voxels
+        var newColors = new Color[colors.Length];
+        
+        // loop through each grayscale color and re-assign it to the new color according to the grayscale range
+        for (var index = 0; index < colors.Length; index++) {
+            var color = colors[index];
+            
+            var gray = color.grayscale;
+            
+            for (var i = 0; i < configurationColorConfig.colorCountPerSprite; i++) {
+                if (gray >= i * increment && gray <= (i + 1) * increment)
+                    newColors[index] = colorOutcome.generatedColors[i];
+            }
+        }
+
+        // set the values
+        generatedVoxel.modelData.SetPixels(newColors);
+        generatedVoxel.modelData.Apply();
+        return colorOutcome;
+    }
 
     Color OutlineColor(OutlineConfig outlineConfig, int frame, IReadOnlyList<Color> generatedColors) {
         if (outlineConfig.overrideOutlineColor)
@@ -91,7 +124,6 @@ public class Recoloring : MonoBehaviour {
             
             for (var index = 1; index < generatedColors.Length; index++) {
                 generatedColors[index] = uniqueColorsInTextures[colorConfig.paletteIndex][Random.Range(0, uniqueColorsInTextures[colorConfig.paletteIndex].Count)];
-                //uniqueColorsInTextures.Remove(generatedColors[index]);
             }
         }
         else {
@@ -103,6 +135,20 @@ public class Recoloring : MonoBehaviour {
         return generatedColors;
     }
 
+    Color[] GenerateColors(ColorConfig colorConfig) {
+        var generatedColors = new Color[colorConfig.colorCountPerSprite];
+        if (colorConfig.usePaletteColors)
+            for (var index = 1; index < generatedColors.Length; index++)
+                generatedColors[index] =
+                    uniqueColorsInTextures[colorConfig.paletteIndex][
+                        Random.Range(0, uniqueColorsInTextures[colorConfig.paletteIndex].Count)];
+        else
+            for (var index = 0; index < generatedColors.Length; index++)
+                generatedColors[index] = Random.ColorHSV(0f, 1f, 1f, 1f);
+        
+        return generatedColors;
+    }
+
     List<Color> GetUniqueColorsFromTexture(Texture2D texture) {
         var uniqueColors = new List<Color>();
         foreach (var col in texture.GetPixels()) {
@@ -111,4 +157,5 @@ public class Recoloring : MonoBehaviour {
         }
         return uniqueColors;
     }
+
 }

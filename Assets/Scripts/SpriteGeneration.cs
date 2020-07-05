@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -168,7 +168,14 @@ public class SpriteGeneration : MonoBehaviour {
         var symmetryOutcome = new SymmetryOutcome3D();
         symmetry.AttemptToApplySymmetry(ref generatedVoxel, configuration.symmetryConfig3D, ref symmetryOutcome);
 
-        
+       // if (configuration.colorConfig.colorEnabled) {
+       //     ColorOutcome colorOutcome = recoloring.Recolor(ref generatedVoxel, 
+       //         configuration.colorConfig, configuration.backgroundColorConfig, configuration.outlineConfig);
+       // }
+//
+       // // apply falloff
+       // falloff.ApplyFalloff(ref generatedVoxel.modelData, configuration.falloffConfig);
+
         return generatedVoxel;
     }
 }
