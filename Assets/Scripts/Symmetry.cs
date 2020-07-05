@@ -153,86 +153,38 @@ public class Symmetry : MonoBehaviour {
         for (var x = 0; x < texture.height; x++) {
             for (var z = 0; z < texture.depth; z++) {
                 for (var y = 0; y < texture.width; y++) {
+                    var setSymmetrical = false;
                     switch (direction) {
-                        //case SymmetryDirection.Horizontal:
-                        //    referenceValue = symmetryOutcome.quarterHorizontalSymmetryResult ? columnIndex : rowIndex;
-                        //    if ((symmetryOutcome.lowerIsDominant && referenceValue >= halfwayPoint - 1) ||
-                        //        (!symmetryOutcome.lowerIsDominant && referenceValue <= halfwayPoint + 1))
-                        //        SetSymmetricalVoxel(texture, direction, columnIndex, rowIndex, depthIndex, halfwayPoint);
-                        //    break;
-                        //case SymmetryDirection.Vertical:
-                        //    referenceValue = symmetryOutcome.quarterVerticalSymmetryResult ? rowIndex : columnIndex;
-                        //    if ((symmetryOutcome.lowerIsDominant && referenceValue >= halfwayPoint - 1) ||
-                        //        (!symmetryOutcome.lowerIsDominant && referenceValue <= halfwayPoint + 1))
-                        //        SetSymmetricalVoxel(texture, direction, columnIndex, rowIndex, depthIndex, halfwayPoint);
-                        //    break;
-                        //case SymmetryDirection.ForwardDiagonal:
-                        //    if (symmetryOutcome.quarterForwardDiagonalSymmetryResult) {
-                        //        if (symmetryOutcome.lowerIsDominant && columnIndex > rowIndex ||
-                        //            !symmetryOutcome.lowerIsDominant && columnIndex < rowIndex)
-                        //            texture.SetPixel(columnIndex, rowIndex, depthIndex,
-                        //                texture.GetPixel(
-                        //                    texture.width - rowIndex, 
-                        //                    texture.width - columnIndex, 
-                        //                    texture.depth - depthIndex));
-                        //    } else {
-                        //        if (symmetryOutcome.lowerIsDominant && rowIndex < texture.width - columnIndex ||
-                        //            !symmetryOutcome.lowerIsDominant && rowIndex > texture.width - columnIndex)
-                        //            texture.SetPixel(columnIndex, rowIndex, depthIndex,
-                        //                texture.GetPixel(
-                        //                    texture.width - rowIndex, 
-                        //                    texture.width - columnIndex, 
-                        //                    texture.depth - depthIndex));
-                        //    }
-                        //
-                        //    break;
-                        //case SymmetryDirection.BackwardDiagonal:
-                        //    if (symmetryOutcome.quarterBackwardDiagonalSymmetryResult) {
-                        //        if (symmetryOutcome.lowerIsDominant && rowIndex < texture.width - columnIndex ||
-                        //            !symmetryOutcome.lowerIsDominant && rowIndex > texture.width - columnIndex)
-                        //            texture.SetPixel(columnIndex, rowIndex, depthIndex, 
-                        //                texture.GetPixel(rowIndex, columnIndex, depthIndex));
-                        //    } else if (symmetryOutcome.lowerIsDominant && columnIndex > rowIndex ||
-                        //               !symmetryOutcome.lowerIsDominant && columnIndex < rowIndex)
-                        //        texture.SetPixel(columnIndex, rowIndex, depthIndex, 
-                        //            texture.GetPixel(rowIndex, columnIndex, depthIndex));
-//
-                        //    break;
-                        case SymmetryDirection3D.TopLeftToBottomRight:
-                            if (x<y)//(lowDominant && x < y || !lowDominant && x > y)
-                                SetSymmetricalVoxel(texture, direction, y, x, z, halfwayPoint);
-                            break;
-                        case SymmetryDirection3D.FrontBottomToTopBack:
-                            break;
-                        case SymmetryDirection3D.BottomLeftToTopRight:
-                            if (lowDominant && x > y || !lowDominant && x < y)
-                                SetSymmetricalVoxel(texture, direction, y, x, z, halfwayPoint);
-                            break;
-                        case SymmetryDirection3D.FrontTopToBottomBack:
-                            break;
-                        case SymmetryDirection3D.FrontRightToBackLeft:
-                            break;
-                        case SymmetryDirection3D.FrontLeftToBackRight:
-                            break;
-                        case SymmetryDirection3D.FrontCenterToBackCenterVertical:
-                            if (lowDominant && y > halfwayPoint || !lowDominant && y < halfwayPoint)
-                                SetSymmetricalVoxel(texture, direction, y, x, z, halfwayPoint);
-                            break;
-                        case SymmetryDirection3D.FrontCenterToBackCenterHorizontal:
-                            if (lowDominant && x > halfwayPoint || !lowDominant && x < halfwayPoint)
-                                SetSymmetricalVoxel(texture, direction, y, x, z, halfwayPoint);
-                            break;
-                        case SymmetryDirection3D.MiddleTopToMiddleBottomVertical:
-                            if (lowDominant && z > halfwayPoint || !lowDominant && z < halfwayPoint)
-                                SetSymmetricalVoxel(texture, direction, y, x, z, halfwayPoint);
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
+                        case SymmetryDirection3D.EastTopToWestBottom:
+                            if (CompareTo(x, texture.height - y - 1, lowDominant)) setSymmetrical = true; break;
+                        case SymmetryDirection3D.SouthBottomToNorthTop:
+                            if (CompareTo(z, x, lowDominant)) setSymmetrical = true; break;
+                        case SymmetryDirection3D.WestBottomToEastTop:
+                            if (CompareTo(x, y, lowDominant)) setSymmetrical = true; break;
+                        case SymmetryDirection3D.SouthTopToNorthBottom:
+                            if (CompareTo(z, texture.width - x - 1, lowDominant)) setSymmetrical = true; break;
+                        case SymmetryDirection3D.SouthEastCenterToNorthWestCenter:
+                            if (CompareTo(z, texture.height - y - 1, lowDominant)) setSymmetrical = true; break;
+                        case SymmetryDirection3D.SouthWestCenterToNorthEastCenter:
+                            if (CompareTo(z, y, lowDominant)) setSymmetrical = true; break;
+                        case SymmetryDirection3D.SouthCenterToNorthCenterVertical:
+                            if (CompareTo(y, halfwayPoint, lowDominant)) setSymmetrical = true; break;
+                        case SymmetryDirection3D.SouthCenterToNorthCenterHorizontal:
+                            if (CompareTo(x, halfwayPoint, lowDominant)) setSymmetrical = true; break;
+                        case SymmetryDirection3D.CenterUpToCenterDown:
+                            if (CompareTo(z, halfwayPoint, lowDominant)) setSymmetrical = true; break;
                     }
+
+                    if (setSymmetrical) 
+                        SetSymmetricalVoxel(texture, direction, y, x, z, halfwayPoint);
                 }
             }
         }
     }
+
+    bool CompareTo(int input, int comparison, bool lowDominant) => 
+        (lowDominant && input > comparison) || 
+        (!lowDominant && input < comparison);
 
     static void SetSymmetricalPixel(Texture2D texture, SymmetryDirection direction, int x, int y, int halfwayPoint) {
         var readCoordinates = new Vector2Int();
@@ -255,34 +207,38 @@ public class Symmetry : MonoBehaviour {
         Texture3D texture, SymmetryDirection3D direction, int x, int y, int z, int halfwayPoint) {
         var readCoordinates = new Vector3Int();
         switch (direction) {
-            case SymmetryDirection3D.TopLeftToBottomRight:
-                readCoordinates = new Vector3Int(texture.height - y + 1,texture.width - x + 1, z);
+            case SymmetryDirection3D.EastTopToWestBottom:
+                readCoordinates = new Vector3Int(texture.width - y, texture.height - x, z);
                 break;
-            case SymmetryDirection3D.FrontBottomToTopBack:
+            case SymmetryDirection3D.SouthBottomToNorthTop:
+                readCoordinates = new Vector3Int(x, z, y);
                 break;
-            case SymmetryDirection3D.BottomLeftToTopRight:
+            case SymmetryDirection3D.WestBottomToEastTop:
                 readCoordinates = new Vector3Int(y, x, z);
                 break;
-            case SymmetryDirection3D.FrontTopToBottomBack:
+            case SymmetryDirection3D.SouthTopToNorthBottom:
+                readCoordinates = new Vector3Int(x, texture.height - z, texture.depth - y);
                 break;
-            case SymmetryDirection3D.FrontRightToBackLeft:
+            case SymmetryDirection3D.SouthEastCenterToNorthWestCenter:
                 break;
-            case SymmetryDirection3D.FrontLeftToBackRight:
+            case SymmetryDirection3D.SouthWestCenterToNorthEastCenter:
                 break;
-            case SymmetryDirection3D.FrontCenterToBackCenterVertical:
+            case SymmetryDirection3D.SouthCenterToNorthCenterVertical:
                 readCoordinates = new Vector3Int(halfwayPoint - (x + 1 - halfwayPoint), y, z);
                 break;
-            case SymmetryDirection3D.FrontCenterToBackCenterHorizontal:
+            case SymmetryDirection3D.SouthCenterToNorthCenterHorizontal:
                 readCoordinates = new Vector3Int(x, halfwayPoint - (y + 1 - halfwayPoint), z);
                 break;
-            case SymmetryDirection3D.MiddleTopToMiddleBottomVertical:
+            case SymmetryDirection3D.CenterUpToCenterDown:
                 readCoordinates = new Vector3Int(x, y, halfwayPoint - (z + 1 - halfwayPoint));
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
         }
 
-        texture.SetPixel(x, y, z, texture.GetPixel(readCoordinates.x, readCoordinates.y, readCoordinates.z));
+        //texture.SetPixel(x, y, z, Color.blue);
+        //texture.SetPixel(x, y, z, texture.GetPixel(readCoordinates.x, readCoordinates.y, readCoordinates.z) + (Color.blue/2f));
+        texture.SetPixel(x, y, z, texture.GetPixel(x, y, z) + (Color.blue/2f));
     }
 }
 
@@ -295,13 +251,13 @@ enum SymmetryDirection {
 }
 
 public enum SymmetryDirection3D {
-    TopLeftToBottomRight,
-    FrontBottomToTopBack,
-    BottomLeftToTopRight,
-    FrontTopToBottomBack,
-    FrontRightToBackLeft,
-    FrontLeftToBackRight,
-    FrontCenterToBackCenterVertical,
-    FrontCenterToBackCenterHorizontal,
-    MiddleTopToMiddleBottomVertical,
+    EastTopToWestBottom,
+    SouthBottomToNorthTop,
+    WestBottomToEastTop,
+    SouthTopToNorthBottom,
+    SouthEastCenterToNorthWestCenter,
+    SouthWestCenterToNorthEastCenter,
+    SouthCenterToNorthCenterVertical,
+    SouthCenterToNorthCenterHorizontal,
+    CenterUpToCenterDown,
 }

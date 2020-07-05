@@ -30,7 +30,7 @@ MonoBehaviour:
     randomOrigin: 1
     randomOriginBound: 255
     manualOrigin: {x: 160, y: 160}
-    animationFrameNoiseOffset: 0.02
+    animationFrameNoiseOffset: 0.01
   falloffConfig:
     falloffCurve:
       serializedVersion: 2
@@ -87,17 +87,17 @@ MonoBehaviour:
     backwardDiagonalSymmetryChance: 0
     quarterBackwardDiagonalSymmetryChance: 0
   symmetryConfig3D:
-    allowMultipleSymmetryTypes: 1
+    allowMultipleSymmetryTypes: 0
     enforceSomeTypeOfSymmetry: 1
-    topLeftToBottomRightChance: 1
-    frontBottomToTopBackChance: 0
-    bottomLeftToTopRightChance: 0
-    frontTopToBottomBackChance: 0
-    frontRightToBackLeftChance: 0
-    frontLeftToBackRightChance: 0
-    frontCenterToBackCenterVerticalChance: 0
-    frontCenterToBackCenterHorizontalChance: 0
-    middleTopToMiddleBottomChance: 0
+    eastTopToWestBottomChance: 0
+    southBottomToNorthTopChance: 0
+    westBottomToEastTopChance: 0
+    southTopToNorthBottomChance: 1
+    southEastCenterToNorthWestCenterChance: 0
+    southWestCenterToNorthEastCenterChance: 0
+    southCenterToNorthCenterVerticalChance: 0
+    southCenterToNorthCenterHorizontalChance: 0
+    centerUpToCenterDownChance: 0
   scalingConfig:
     scalingModes: 000000000000000000000000000000000000000000000000
     filterMode: 0
