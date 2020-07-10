@@ -28,17 +28,18 @@ public class Falloff : MonoBehaviour
                     //var depthEval = Mathf.Lerp(0f, 1f, Mathf.InverseLerp(0f, tex.depth, depth));
 
 
-                    var falloffCurveValue = config.falloffCurve.Evaluate((float)column / (float)tex.width);
-                    var curveValue = config.falloffCurve.Evaluate(1f - (float)column / (float)tex.width);
+                    var xNormalized = (float)row / tex.width;
+                    var vNormalized = (float)column / tex.height;
+                    var zNormalized = (float)depth / tex.depth;
                     var horizontalFalloffCurveValue = column >= tex.width / 2
-                        ? falloffCurveValue
-                        : curveValue;
+                        ? config.xFalloffCurve.Evaluate(xNormalized)
+                        : config.xFalloffCurve.Evaluate(1f - xNormalized);
                     var verticalFalloffCurveValue = row >= tex.height / 2
-                        ? config.falloffCurve.Evaluate((float)row / tex.height)
-                        : config.falloffCurve.Evaluate(1f - (float)row / tex.height);
+                        ? config.yFalloffCurve.Evaluate(vNormalized)
+                        : config.yFalloffCurve.Evaluate(1f - vNormalized);
                     var depthFalloffCurveValue = depth >= tex.depth / 2
-                        ? config.falloffCurve.Evaluate((float)depth / tex.depth)
-                        : config.falloffCurve.Evaluate(1f - (float)depth / tex.depth);
+                        ? config.zFalloffCurve.Evaluate(zNormalized)
+                        : config.zFalloffCurve.Evaluate(1f - zNormalized);
                     
                     if (tex.GetPixel(column, row, depth).grayscale <= horizontalFalloffCurveValue ||
                         tex.GetPixel(column, row, depth).grayscale <= verticalFalloffCurveValue ||

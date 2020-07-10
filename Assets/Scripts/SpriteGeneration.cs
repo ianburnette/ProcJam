@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -158,23 +158,24 @@ public class SpriteGeneration : MonoBehaviour {
         // fill a 3D texture with noise, offsetting the perlin origin a bit by each layer
         generatedVoxel.modelData = noiseGeneration.GetNoise3D(
             configuration.noiseConfig,
-            configuration.sizingConfig.pixelSize, 
+            configuration.sizingConfig.voxelSize, 
             ref generatedVoxel.origin);
         
+       
         // apply falloff
         falloff.ApplyFalloff(ref generatedVoxel.modelData, configuration.falloffConfig);
         
         // apply symmetry
-        var symmetryOutcome = new SymmetryOutcome3D();
-        symmetry.AttemptToApplySymmetry(ref generatedVoxel, configuration.symmetryConfig3D, ref symmetryOutcome);
+        //var symmetryOutcome = new SymmetryOutcome3D();
+        //symmetry.AttemptToApplySymmetry(ref generatedVoxel, configuration.symmetryConfig3D, ref symmetryOutcome);
 
-       // if (configuration.colorConfig.colorEnabled) {
-       //     ColorOutcome colorOutcome = recoloring.Recolor(ref generatedVoxel, 
-       //         configuration.colorConfig, configuration.backgroundColorConfig, configuration.outlineConfig);
-       // }
-//
-       // // apply falloff
-       // falloff.ApplyFalloff(ref generatedVoxel.modelData, configuration.falloffConfig);
+        //if (configuration.colorConfig.colorEnabled) {
+        //    ColorOutcome colorOutcome = recoloring.Recolor(ref generatedVoxel, 
+        //        configuration.colorConfig, configuration.backgroundColorConfig, configuration.outlineConfig);
+        //}
+////
+        //// apply falloff
+        //falloff.ApplyFalloff(ref generatedVoxel.modelData, configuration.falloffConfig);
 
         return generatedVoxel;
     }

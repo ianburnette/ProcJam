@@ -8,6 +8,7 @@ public class SizingConfig {
     public int spacing = 16;
     public int imageGridSize = 16;
     public int pixelSize = 16;
+    public Vector3Int voxelSize = new Vector3Int(8, 8, 5);
 }
 
 [Serializable]
@@ -28,6 +29,9 @@ public class NoiseConfig{
 [Serializable]
 public class FalloffConfig{
     public AnimationCurve falloffCurve;
+    public AnimationCurve xFalloffCurve;
+    public AnimationCurve yFalloffCurve;
+    public AnimationCurve zFalloffCurve;
 }
 
 [Serializable]

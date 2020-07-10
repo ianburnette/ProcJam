@@ -51,12 +51,12 @@ public class VoxelGeneration : MonoBehaviour {
 
     void SpawnVoxels(GeneratedVoxelModel voxelModel) {
         var tex = voxelModel.modelData;
-        for (var i = 0; i < tex.depth; i++) {
-            for (var k = 0; k < tex.height; k++) {
-                for (var j = 0; j < tex.width; j++) {
+        for (var x = 0; x < tex.width; x++) {
+            for (var z = 0; z < tex.depth; z++) {
+                for (var y = 0; y < tex.height; y++) {
                     var voxel = GameObject.Instantiate(voxelPrefab, transform);
-                    voxel.transform.localPosition = new Vector3(i, j, k);
-                    voxel.GetComponent<Voxel>().SetColor(tex.GetPixel(i, j, k));
+                    voxel.transform.localPosition = new Vector3(x, y, z);
+                    voxel.GetComponent<Voxel>().SetColor(tex.GetPixel(x, y ,z));
                 }
             }
         }

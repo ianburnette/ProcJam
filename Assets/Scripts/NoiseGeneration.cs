@@ -12,20 +12,20 @@ public class NoiseGeneration : MonoBehaviour {
     public Texture2D GetNoise(NoiseConfig noiseConfig, int spritePixelSize, Vector2 desiredOrigin)
     {
         var tex = new Texture2D(spritePixelSize, spritePixelSize);
-        tex.SetPixels(CalcNoise(noiseConfig, spritePixelSize, desiredOrigin));
+        tex.SetPixels(CalcNoise(noiseConfig, spritePixelSize, spritePixelSize, desiredOrigin));
         return tex;
     }
 
-    public Texture3D GetNoise3D(NoiseConfig noiseConfig, int spritePixelSize, ref Vector2 generatedVoxelOrigin) {
-
-        var modelData = new Texture3D(spritePixelSize, spritePixelSize, spritePixelSize, DefaultFormat.LDR,
+    public Texture3D GetNoise3D(NoiseConfig noiseConfig, Vector3Int voxelSize, ref Vector2 generatedVoxelOrigin) {
+        var modelData = new Texture3D(voxelSize.x, voxelSize.y, voxelSize.z, DefaultFormat.LDR,
             TextureCreationFlags.None);
-        var colors = new Color[spritePixelSize * spritePixelSize * spritePixelSize];
+        var colors = new Color[voxelSize.x * voxelSize.y * voxelSize.z];
         // generate a 2D texture at every vertical layer of the 3D texture, stacking them on top of each other
-        for (var i = 0; i < modelData.depth; i++) {
+        for (var i = 0; i < modelData.width; i++) {
             var currentLayerOrigin = GetOrigin3D(noiseConfig, i);
-            var noise = CalcNoise(noiseConfig, spritePixelSize, currentLayerOrigin);
-            noise.CopyTo(colors, i * spritePixelSize * spritePixelSize);
+            var noise = CalcNoise(noiseConfig, voxelSize.y,voxelSize.z, currentLayerOrigin);
+            var colorStartIndex = i * noise.Length;
+            noise.CopyTo(colors, colorStartIndex);
             if (i == 0) generatedVoxelOrigin = currentLayerOrigin;
         }
         modelData.SetPixels(colors);
@@ -68,9 +68,8 @@ public class NoiseGeneration : MonoBehaviour {
     
     float RandomValue(float randomBound) => Random.Range(-randomBound, randomBound);
 
-    Color[] CalcNoise(NoiseConfig config, int spritePixelSize, Vector2 origin) {
-        var size = spritePixelSize;
-        var colors = new Color[size * size];
+    Color[] CalcNoise(NoiseConfig config, int pixelWidth, int pixelHeight, Vector2 origin) {
+        var colors = new Color[pixelHeight * pixelWidth];
 
         var frequencies = new float[config.octaves.Count];
         if (config.randomizeFrequency) {
@@ -90,12 +89,12 @@ public class NoiseGeneration : MonoBehaviour {
         }
         
         for (var octaveIndex = 0; octaveIndex < config.octaves.Count; octaveIndex++) {
-            for (var row = 0f; row < size; row++) {
-                for (var column = 0f; column < size; column++) {
-                    var xCoordinate = origin.x + row / size * config.octaves[octaveIndex].scale;
-                    var yCoordinate = origin.y + column / size * config.octaves[octaveIndex].scale;
+            for (var row = 0f; row < pixelHeight; row++) {
+                for (var column = 0f; column < pixelWidth; column++) {
+                    var xCoordinate = origin.x + row / pixelWidth * config.octaves[octaveIndex].scale;
+                    var yCoordinate = origin.y + column / pixelHeight * config.octaves[octaveIndex].scale;
                     var sample = Mathf.PerlinNoise(xCoordinate, yCoordinate);
-                    colors[(int) column * size + (int) row] += new Color(sample, sample, sample) * frequencies[octaveIndex];
+                    colors[(int) column * pixelHeight + (int) row] += new Color(sample, sample, sample) * frequencies[octaveIndex];
                 }
             }
         }
