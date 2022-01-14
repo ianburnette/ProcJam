@@ -242,6 +242,10 @@ public class InGameControls : MonoBehaviour {
         controls.Generate();
     }
 
+    public void Deselect() {
+        foreach (var panel in controlPanels) panel.SetActive(panel == controlPanels[0]);
+    }
+
     public void OpenSpritePanel(FrameAnimation frameAnimation) {
         foreach (var panel in controlPanels) panel.SetActive(panel == singleSpritePanel);
 

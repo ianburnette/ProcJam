@@ -634,22 +634,26 @@ namespace Clayxels{
 				return;
 			}
 			
-			for(int propertyId = 0; propertyId < this.material.shader.GetPropertyCount(); ++propertyId){
-				ShaderPropertyType type = this.material.shader.GetPropertyType(propertyId);
-				string name = this.material.shader.GetPropertyName(propertyId);
-				
-				if(render.sharedMaterial.shader.FindPropertyIndex(name) != -1){
-					if(type == ShaderPropertyType.Color || type == ShaderPropertyType.Vector){
-						render.sharedMaterial.SetVector(name, this.material.GetVector(name));
-					}
-					else if(type == ShaderPropertyType.Float || type == ShaderPropertyType.Range){
-						render.sharedMaterial.SetFloat(name, this.material.GetFloat(name));
-					}
-					else if(type == ShaderPropertyType.Texture){
-						render.sharedMaterial.SetTexture(name, this.material.GetTexture(name));
-					}
-				}
-			}
+		//for(int propertyId = 0; propertyId < ShaderUtil.GetPropertyCount(this.material.shader); ++propertyId){
+		//	var type = ShaderUtil.GetPropertyType(this.material.shader, propertyId);
+		//	var name = ShaderUtil.GetPropertyName(material.shader, propertyId);
+
+		//	switch (type) {
+		//		case ShaderUtil.ShaderPropertyType.Color:
+		//		case ShaderUtil.ShaderPropertyType.Vector:
+		//			render.sharedMaterial.SetVector(name, this.material.GetVector(name));
+		//			break;
+		//		case ShaderUtil.ShaderPropertyType.Float:
+		//		case ShaderUtil.ShaderPropertyType.Range:
+		//			render.sharedMaterial.SetFloat(name, this.material.GetFloat(name));
+		//			break;
+		//		case ShaderUtil.ShaderPropertyType.TexEnv:
+		//			render.sharedMaterial.SetTexture(name, this.material.GetTexture(name));
+		//			break;
+		//		default:
+		//			throw new ArgumentOutOfRangeException();
+		//	}
+		//	}
 
 		}
 

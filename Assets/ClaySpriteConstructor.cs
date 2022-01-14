@@ -63,7 +63,7 @@ public class ClaySpriteConstructor : MonoBehaviour {
                 clayPixel.transform.localScale = Vector3.one * objectSize;
             }
         }
-        ClayContainer.reloadAll();
+        //ClayContainer.reloadAll();
     }
 
     void SetObjectProperties() {
@@ -73,7 +73,7 @@ public class ClaySpriteConstructor : MonoBehaviour {
             clayObject.transform.localScale = Vector3.one * objectSize;
             clayObject.primitiveType = primitiveType;
         }
-        ClayContainer.reloadAll();
+        //ClayContainer.reloadAll();
     }
 
     void OnValidate() {

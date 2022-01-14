@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering.Universal;
+
 
 public class NormalsControls : WindowGuiBase {
     public override string WindowLabel => "Normals";
 
     public Animator rotatingLightAnim;
     public Transform spriteParent;
-    public Light2D rotatingLight, cursorLight;
+    public UnityEngine.Rendering.Universal.Light2D rotatingLight, cursorLight;
 
     protected override void Window() {
   //      ToggleButton("Enable Normals", ref controls.Configuration.normalsConfig.enableNormals);

@@ -35,18 +35,18 @@ public class VoxelGeneration : MonoBehaviour {
     }
 
     public void Clear() {
-        for (var i = transform.childCount - 1; i >= 0; i--) {
-            #if UNITY_EDITOR
-            if (!EditorApplication.isPlaying) {
-                DestroyImmediate(transform.GetChild(i).gameObject);
-            } else {
-                Destroy(transform.GetChild(i).gameObject);
-            }
-            #else
-            Destroy(transform.GetChild(i).gameObject);
-            yield return new WaitForSecondsRealtime(0.001f);
-            #endif
-        }
+       // for (var i = transform.childCount - 1; i >= 0; i--) {
+       //     #if UNITY_EDITOR
+       //     if (!EditorApplication.isPlaying) {
+       //         DestroyImmediate(transform.GetChild(i).gameObject);
+       //     } else {
+       //         Destroy(transform.GetChild(i).gameObject);
+       //     }
+       //     #else
+       //     Destroy(transform.GetChild(i).gameObject);
+       //     yield return new WaitForSecondsRealtime(0.001f);
+       //     #endif
+       // }
     }
 
     void SpawnVoxels(GeneratedVoxelModel voxelModel) {

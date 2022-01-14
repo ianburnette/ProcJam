@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering.Universal;
+
 
 public class NormalGeneration : MonoBehaviour
 {
     public Animator rotatingLightAnim;
     public Transform spriteParent;
-    public Light2D rotatingLight, cursorLight;
+    public UnityEngine.Rendering.Universal.Light2D rotatingLight, cursorLight;
     public Controls controls;
     List<FrameAnimation> animations;
     
@@ -63,7 +63,7 @@ public class NormalGeneration : MonoBehaviour
             if (controls != null)
                 controls.Configuration.normalsConfig.rotatingLightEnabled = value;
             rotatingLightAnim.enabled = value;
-            rotatingLight.lightType = value ? Light2D.LightType.Point : Light2D.LightType.Global;
+            rotatingLight.lightType = value ? UnityEngine.Rendering.Universal.Light2D.LightType.Point : UnityEngine.Rendering.Universal.Light2D.LightType.Global;
         }
     }
 
